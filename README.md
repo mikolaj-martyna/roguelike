@@ -1,20 +1,12 @@
 # Roguelike
 
 ## Fabuła gry
-[In progress]
+W świecie, w którym cywilizacja trzyma się nieba, pływające miasta i wyspy połączone skomplikowanymi sieciami mostów służą jako ostatnie bastiony ludzkości. Jako odważny kapitan sterowca, twoja podróż rozpoczyna się w tętniącym życiem pływającym mieście Aeolus. Twój dziadek, znany wynalazca, pozostawił po sobie tajemniczy dziennik wypełniony tajemniczymi szkicami i wskazówkami na temat dawno zaginionego artefaktu znanego jako "Wieczne Dynamo". Urządzenie to podobno posiada moc utrzymywania lewitacji całych miast w nieskończoność.
+
+Twoim zadaniem jest przemierzanie miast i wysp w poszukiwaniu tego bezcennego artefaktu, walcząc z nieuczciwymi piratami powietrznymi, zdradzieckimi automatami i nawigując po niebezpiecznych sieciach mostów. Po drodze odkryjesz spisek, który grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o losie pływających miast i zamieszkujących je ludzi.
 
 ## Główne mechaniki gry:
-1. **Wybór frakcji:** Na początku gry gracze wybierają jedną z przeciwnych frakcji, co wpływa na ich cele i zadania. Każda frakcja ma unikalne technologie, sojuszników i wrogów.
-- **Dyplomacja i negocjacje:** Podczas interakcji z postaciami niezależnymi, innymi graczami lub przedstawicielami przeciwnych frakcji, gracze mogą wybierać różne opcje dialogowe, które wpływają na stosunki i sojusze. Możliwość wyboru między przekupstwem, negocjacjami lub groźbami może mieć istotne konsekwencje.
-- **Walka i eksploracja:** W miarę jak rozwiązują zagadki i odkrywają tajemnice, gracze muszą walczyć z wrogami i przeprawiać się między różnymi latającymi wyspami. Walka opiera się na steampunkowych bronach i gadżetach, które można ulepszać.
-- **Zarządzanie zasobami:** Gracze muszą dbać o swoje zapasy, zarządzać surowcami i podejmować decyzje, które wpływają na ich frakcję. Na przykład, muszą zbierać próbki i opracowywać lekarstwa na epidemię.
-2. **Zmienne zakończenia:** Decyzje graczy wpływają na rozwój fabuły i kończenie gry. Istnieje wiele różnych zakończeń, zależnie od wyborów dokonanych przez graczy i wyników ich działań. To zachęca do ponownego grania i eksploracji różnych ścieżek fabularnych.
-
-### Inne mechaniki:
-1. **Permadeath** 
-2. **Proceduralnie generowany świat**
-3. **Hack and slash**
-4. **Potwory zachowują się jak gracz**
-
-## Opis frakcji:
-[In progress]
+1. **Miasta generowane proceduralnie:** Każda rozgrywka generuje unikalny zestaw pływających miast i wysp, zapewniając, że żadne dwie przygody nie są takie same. Układ, architektura i mieszkańcy różnią się, oferując świeże wrażenia przy każdej próbie.
+2. **Trwała śmierć i progresja:** Kiedy twoja umiera, traci wszystkie postępy, przedmioty i ulepszenia. Jednak w miarę eksploracji gromadzone są wiedza i plany, które pozwolą odblokować nowe części statku i ulepszenia w kolejnych rozgrywkach.
+3. **Personalizacja sterowca:** Zbieraj zasoby i odzyskuj części, aby ulepszać i dostosowywać swój sterowiec. Modyfikuj broń, silniki i pancerz swojego statku, dostosowując się do wyzwań stawianych przez każde pływające miasto. Twoje wybory wpływają na przetrwanie w tym steampunkowym świecie.
+4. **Dynamiczna nawigacja po mostach:** Mosty łączące miasta są głównym elementem rozgrywki. Sieci te pełne są niebezpieczeństw, zagadek i wrogów. Wybory, których dokonujesz podczas poruszania się po nich, mogą wpłynąć na twoje postępy. Użyj strategicznego planowania i sprytu, aby pokonać zdradzieckie ścieżki.
