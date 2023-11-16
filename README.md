@@ -10,3 +10,27 @@ Twoim zadaniem jest przemierzanie miast i wysp w poszukiwaniu tego bezcennego ar
 2. **Trwała śmierć i progresja:** Kiedy twoja postać umiera, traci wszystkie postępy, przedmioty i ulepszenia. Jednak w miarę eksploracji gromadzone są wiedza i plany, które pozwolą odblokować nowe części statku i ulepszenia w kolejnych rozgrywkach.
 3. **Personalizacja sterowca:** Zbieraj zasoby i odzyskuj części, aby ulepszać i dostosowywać swój sterowiec. Modyfikuj broń, silniki i pancerz swojego statku, dostosowując się do wyzwań stawianych przez każde miasto. Twoje wybory wpływają na przetrwanie w tym steampunkowym świecie.
 4. **Dynamiczna nawigacja po mostach:** Mosty łączące miasta są głównym elementem rozgrywki. Sieci te pełne są niebezpieczeństw, zagadek i wrogów. Wybory, których dokonujesz podczas poruszania się po nich, mogą wpłynąć na twoje postępy. Użyj strategicznego planowania i sprytu, aby pokonać zdradzieckie ścieżki.
+
+## Pola
+1. \' \' - pustka, po której nie można się poruszać
+2. \'@'\ - gracz
+3. \'#'\ - most
+4. \'.\' - teren wyspy
+5. \'|\', \'-\' - granice wyspy
+6. \'o\' - przeciwnik
+7. \'u\' - skrzynia
+
+## Przedmioty
+[TODO]
+
+## Walka
+[TODO]
+
+### Statystyki
+[TODO]
+
+### Umiejętności
+[TODO]
+
+### Losowość
+[TODO]

@@ -21,15 +21,14 @@ public class Map {
     }
 
     public boolean canPlaceItem(int x, int y) {
-        return isInBounds(x, y); // && Field.type is able to be placed at
+        return isInBounds(x, y) && (level[x][y].getName() == 'island' || level[x][y].getName() == 'bridge');
     }
 
     public boolean canPlaceEntity(int x, int y) {
         if (!isInBounds(x, y)) return false;
         if (level[x][y].entity != null) return false;
+	if (level[x][y].getName() != "island" && level[x][y].getName() != "bridge") return false;
 
-        // TODO: check if field type is compatible with placing entities
-        // need to figure out field types before
         return true;
     }
 
