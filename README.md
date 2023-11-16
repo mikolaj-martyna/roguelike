@@ -12,13 +12,13 @@ Twoim zadaniem jest przemierzanie miast i wysp w poszukiwaniu tego bezcennego ar
 4. **Dynamiczna nawigacja po mostach:** Mosty łączące miasta są głównym elementem rozgrywki. Sieci te pełne są niebezpieczeństw, zagadek i wrogów. Wybory, których dokonujesz podczas poruszania się po nich, mogą wpłynąć na twoje postępy. Użyj strategicznego planowania i sprytu, aby pokonać zdradzieckie ścieżki.
 
 ## Pola
-1. \' \' - pustka, po której nie można się poruszać
-2. \'@\' - gracz
-3. \'#\' - most
-4. \'.\' - teren wyspy
-5. \'|\', \'-\' - granice wyspy
-6. \'o\' - przeciwnik
-7. \'u\' - skrzynia
+1. ` ` - pustka, po której nie można się poruszać
+2. `@` - gracz
+3. `#` - most
+4. `.` - teren wyspy
+5. `|`, `-` - granice wyspy
+6. `o` - przeciwnik
+7. `u` - skrzynia
 
 ## Przedmioty
 [TODO]
