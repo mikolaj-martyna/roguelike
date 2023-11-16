@@ -13,8 +13,8 @@ Twoim zadaniem jest przemierzanie miast i wysp w poszukiwaniu tego bezcennego ar
 
 ## Pola
 1. \' \' - pustka, po której nie można się poruszać
-2. \'@'\ - gracz
-3. \'#'\ - most
+2. \'@\' - gracz
+3. \'#\' - most
 4. \'.\' - teren wyspy
 5. \'|\', \'-\' - granice wyspy
 6. \'o\' - przeciwnik
