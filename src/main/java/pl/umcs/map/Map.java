@@ -3,11 +3,11 @@ package pl.umcs.map;
 import lombok.*;
 
 import org.jetbrains.annotations.NotNull;
+
 import pl.umcs.Entity;
 import pl.umcs.Item;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 @Builder
 @Getter
@@ -16,11 +16,11 @@ import java.util.Objects;
 public class Map {
     // TODO: Remove or refactor when done better
     private Field[][] level;
-    private int rows;
-    private int cols;
+    private int rows; // [rows][    ]
+    private int cols; // [    ][cols]
 
-    private ArrayList<Item> items;
     private ArrayList<Entity> entities;
+    private ArrayList<Item> items;
 
     public boolean isInBounds(int x, int y) {
         return x >= 0 && y >= 0 && x <= cols && y <= rows;
@@ -28,16 +28,16 @@ public class Map {
 
     public boolean canPlaceItem(int x, int y) {
         return isInBounds(x, y)
-                && (Objects.equals(level[x][y].getName(), "island")
-                        || Objects.equals(level[x][y].getName(), "bridge"))
+                && (level[x][y] instanceof Floor
+                        || level[x][y] instanceof Bridge)
                 && level[x][y].items.isEmpty();
     }
 
     public boolean canPlaceEntity(int x, int y) {
         if (!isInBounds(x, y)) return false;
         if (level[x][y].entity != null) return false;
-        return Objects.equals(level[x][y].getName(), "island")
-                || Objects.equals(level[x][y].getName(), "bridge");
+        return (level[x][y] instanceof Floor
+                || level[x][y] instanceof Bridge);
     }
 
     public void placeItem(int x, int y, Item item) {
@@ -50,6 +50,7 @@ public class Map {
         if (!canPlaceEntity(x, y)) return;
 
         level[x][y].entity = entity;
+        entities.add(entity);
     }
 
     public void removeItem(int x, int y, Item item) {
@@ -57,28 +58,19 @@ public class Map {
     }
 
     public void removeEntity(int x, int y) {
+        entities.remove(level[x][y].entity);
         level[x][y].entity = null;
     }
 
     public void removeEntity(int x, int y, Entity entity) {
-        if (level[x][y].entity == entity) level[x][y].entity = null;
+        if (level[x][y].entity == entity) {
+            entities.remove(level[x][y].entity);
+            level[x][y].entity = null;
+        }
     }
 
-    // TODO: fix
     public void load(@NotNull String mapData) {
-        //        String[] rows = mapData.split("\n");
-        //
-        //        int x = 0;
-        //        for (String row : rows) {
-        //            for (int i = 0; i < cols; i++) {
-        //                Field field = Field.builder().symbol(row.charAt(i)).entity(null).items(new
-        // ArrayList<Item>()).build();
-        //                changeFieldType(x, i, field);
-        //            }
-        //            x++;
-        //            this.rows = row.length();
-        //        }
-        //        this.cols = x - 1;
+
     }
 
     public void changeFieldType(int x, int y, Field field) {

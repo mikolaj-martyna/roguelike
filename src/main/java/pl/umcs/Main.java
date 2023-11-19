@@ -5,7 +5,7 @@ import pl.umcs.map.Map;
 
 public class Main {
     public static void main(String[] args) {
-        Map map = Map.builder().level(new Field[19][11]).build();
+        Map map = Map.builder().level(new Field[11][19]).build();
         map.load(
                 """
                 -----------      \s
@@ -20,4 +20,10 @@ public class Main {
                     #   #  |.....|
                     #####  -------\s""");
     }
+
+    // Setup
+
+    // Main loop
+
+    // Cleanup
 }
