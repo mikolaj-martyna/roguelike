@@ -43,4 +43,14 @@ public class Entity extends GameElement {
     public boolean isAlive() {
         return this.health.current > 0;
     }
+
+    public int attack(Entity opponent) {
+        if (opponent.agility.current >= new Random().nextInt()) {
+            opponent.health.current -= this.attack.current;
+
+            return this.attack.current();
+        }
+
+	return 0;
+    }
 }

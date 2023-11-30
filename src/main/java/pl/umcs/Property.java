@@ -10,4 +10,6 @@ import lombok.Setter;
 public class Property {
     int baseline;
     int current;
+    int min;
+    int max;
 }
