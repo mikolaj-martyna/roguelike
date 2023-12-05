@@ -81,7 +81,7 @@ class MapTest {
                 '-'
             }
         };
-        Map map = Map.builder().level(new Field[11][19]).build();
+        Map map = Map.builder().level(new Field[11][19]).rows(11).cols(18).build();
         map.load(fields);
 
         for (int i = 0; i < map.getRows(); i++) {

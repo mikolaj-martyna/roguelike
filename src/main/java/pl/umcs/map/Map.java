@@ -21,7 +21,7 @@ public class Map {
     private ArrayList<Item> items;
 
     public boolean isInBounds(int x, int y) {
-        return x >= 0 && y >= 0 && x <= cols && y <= rows;
+        return x >= 0 && y >= 0 && x < cols && y < rows;
     }
 
     public boolean canPlaceItem(int x, int y) {
@@ -93,11 +93,12 @@ public class Map {
     }
 
     public void print() {
-        //        System.out.flush();
+        System.out.flush();
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                System.out.print(level[i][j].getSymbol());
+                if (level[i][j].entity == null) System.out.print(level[i][j].getSymbol());
+                else System.out.print('u');
             }
             System.out.println();
         }
