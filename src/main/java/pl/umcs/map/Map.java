@@ -2,8 +2,6 @@ package pl.umcs.map;
 
 import lombok.*;
 
-import org.jetbrains.annotations.NotNull;
-
 import pl.umcs.Entity;
 import pl.umcs.Item;
 
@@ -28,16 +26,14 @@ public class Map {
 
     public boolean canPlaceItem(int x, int y) {
         return isInBounds(x, y)
-                && (level[x][y] instanceof Floor
-                        || level[x][y] instanceof Bridge)
+                && (level[x][y] instanceof Floor || level[x][y] instanceof Bridge)
                 && level[x][y].items.isEmpty();
     }
 
     public boolean canPlaceEntity(int x, int y) {
         if (!isInBounds(x, y)) return false;
         if (level[x][y].entity != null) return false;
-        return (level[x][y] instanceof Floor
-                || level[x][y] instanceof Bridge);
+        return (level[x][y] instanceof Floor || level[x][y] instanceof Bridge);
     }
 
     public void placeItem(int x, int y, Item item) {
@@ -69,15 +65,36 @@ public class Map {
         }
     }
 
-    public void load(@NotNull String mapData) {
-
-    }
-
     public void changeFieldType(int x, int y, Field field) {
         level[x][y] = field;
     }
 
+    public void load(char[][] mapData) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Field field;
+                char c = mapData[i][j];
+
+                if (c == '.') {
+                    field = new Floor();
+                } else if (c == '-') {
+                    field = new HorizontalWall();
+                } else if (c == '|') {
+                    field = new VerticalWall();
+                } else if (c == '#') {
+                    field = new Bridge();
+                } else {
+                    field = new Field();
+                }
+
+                changeFieldType(i, j, field);
+            }
+        }
+    }
+
     public void print() {
+        //        System.out.flush();
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 System.out.print(level[i][j].getSymbol());

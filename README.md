@@ -36,6 +36,7 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 5. `|`, `-` - granice wyspy
 6. `o` - przeciwnik
 7. `u` - skrzynia
+8. `i` - przedmiot
 
 ## Przedmioty
 

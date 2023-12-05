@@ -2,7 +2,10 @@ package pl.umcs;
 
 import lombok.*;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 @Builder
 public class Entity extends GameElement {
@@ -13,7 +16,6 @@ public class Entity extends GameElement {
 
     private Property health;
     private Property attack;
-    private Property strength;
     private Property agility;
     private Property defense;
     private Property intelligence;
@@ -44,13 +46,13 @@ public class Entity extends GameElement {
         return this.health.current > 0;
     }
 
-    public int attack(Entity opponent) {
+    public int attack(@NotNull Entity opponent) {
         if (opponent.agility.current >= new Random().nextInt()) {
             opponent.health.current -= this.attack.current;
 
-            return this.attack.current();
+            return this.attack.current;
         }
 
-	return 0;
+        return 0;
     }
 }

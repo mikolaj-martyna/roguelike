@@ -1,7 +1,6 @@
 package pl.umcs.map;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import pl.umcs.Entity;
 import pl.umcs.GameElement;
@@ -11,14 +10,14 @@ import java.util.ArrayList;
 
 @Setter
 @Getter
-@SuperBuilder
 @AllArgsConstructor
 public class Field extends GameElement {
     Entity entity;
     ArrayList<Item> items;
 
     Field() {
+        this.setSymbol(' ');
         this.entity = null;
-        this.items = new ArrayList<Item>();
+        this.items = new ArrayList<>();
     }
 }
