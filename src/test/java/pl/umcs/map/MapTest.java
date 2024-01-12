@@ -3,87 +3,115 @@ package pl.umcs.map;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import pl.umcs.Entity;
+import pl.umcs.Property;
+
+import java.util.ArrayList;
 
 class MapTest {
+    private static Map map;
+    static char[][] fields = {
+        {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {'|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {'|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {'|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {'|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {'|', '.', '.', '.', '.', '|', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {'-', '-', '#', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', '-', '-', '-', '-', '-', '-', '-'},
+        {' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|', '.', '.', '.', '.', '.', '|'},
+        {' ', ' ', '#', '#', '#', ' ', ' ', ' ', '#', '#', '#', '#', '.', '.', '.', '.', '.', '|'},
+        {' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '|', '.', '.', '.', '.', '.', '|'},
+        {' ', ' ', ' ', ' ', '#', '#', '#', '#', '#', ' ', ' ', '-', '-', '-', '-', '-', '-', '-'}
+    };
+    public static Entity testEntity = Entity.builder().build();
 
-    @org.junit.jupiter.api.Test
-    void isInBounds() {}
-
-    @org.junit.jupiter.api.Test
-    void canPlaceItem() {}
-
-    @org.junit.jupiter.api.Test
-    void canPlaceEntity() {}
-
-    @org.junit.jupiter.api.Test
-    void placeItem() {}
-
-    @org.junit.jupiter.api.Test
-    void placeEntity() {}
-
-    @org.junit.jupiter.api.Test
-    void removeItem() {}
-
-    @org.junit.jupiter.api.Test
-    void removeEntity() {}
-
-    @org.junit.jupiter.api.Test
-    void testRemoveEntity() {}
-
-    @org.junit.jupiter.api.Test
-    void changeFieldType() {}
-
-    @org.junit.jupiter.api.Test
-    void load() {
-        char[][] fields = {
-            {
-                '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '|', '.', '.', '.', '.', '|', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '-', '-', '#', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', '-', '-', '-', '-', '-', '-',
-                '-'
-            },
-            {
-                ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|', '.', '.', '.', '.', '.',
-                '|'
-            },
-            {
-                ' ', ' ', '#', '#', '#', ' ', ' ', ' ', '#', '#', '#', '#', '.', '.', '.', '.', '.',
-                '|'
-            },
-            {
-                ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '|', '.', '.', '.', '.', '.',
-                '|'
-            },
-            {
-                ' ', ' ', ' ', ' ', '#', '#', '#', '#', '#', ' ', ' ', '-', '-', '-', '-', '-', '-',
-                '-'
-            }
-        };
-        Map map = Map.builder().level(new Field[11][19]).rows(11).cols(18).build();
+    @BeforeAll
+    public static void setup() {
+        map =
+                Map.builder()
+                        .level(new Field[11][18])
+                        .rows(11)
+                        .cols(18)
+                        .entities(new ArrayList<>())
+                        .items(new ArrayList<>())
+                        .build();
         map.load(fields);
+    }
 
+    @Test
+    public void isInBounds_InBoundsLower_ReturnsTrue() {
+        boolean inBounds = map.isInBounds(0, 0);
+        assertTrue(inBounds);
+    }
+
+    @Test
+    public void isInBounds_InBoundsUpper_ReturnsTrue() {
+        boolean inBounds = map.isInBounds(map.getCols() - 1, map.getRows() - 1);
+        assertTrue(inBounds);
+    }
+
+    @Test
+    public void isInBounds_OutOfBoundsColsLower_ReturnsFalse() {
+        boolean inBounds = map.isInBounds(-1, 0);
+        assertFalse(inBounds);
+    }
+
+    @Test
+    public void isInBounds_OutOfBoundsColsUpper_ReturnsFalse() {
+        boolean inBounds = map.isInBounds(map.getCols() + 1, 0);
+        assertFalse(inBounds);
+    }
+
+    @Test
+    public void isInBounds_OutOfBoundsRowsLower_ReturnsFalse() {
+        boolean inBounds = map.isInBounds(0, -1);
+        assertFalse(inBounds);
+    }
+
+    @Test
+    public void isInBounds_OutOfBoundsRowsUpper_ReturnsFalse() {
+        boolean inBounds = map.isInBounds(0, map.getRows() + 1);
+        assertFalse(inBounds);
+    }
+
+    @Test
+    public void canPlaceEntity_OutOfBoundsAndFieldTypeFloorAndNoEntityPresent_ReturnsFalse() {
+        boolean canBePlaced = map.canPlaceEntity(-1, -1);
+        assertFalse(canBePlaced);
+    }
+
+    @Test
+    public void canPlaceEntity_InBoundsAndFieldTypeFloorAndNoEntityPresent_ReturnsTrue() {
+        boolean canBePlaced = map.canPlaceEntity(1, 1);
+        assertTrue(canBePlaced);
+    }
+
+    @Test
+    public void canPlaceEntity_InBoundsAndFieldTypeBridgeAndNoEntityPresent_ReturnsTrue() {
+        boolean canBePlaced = map.canPlaceEntity(6, 2);
+        assertTrue(canBePlaced);
+    }
+
+    @Test
+    public void canPlaceEntity_InBoundsAndFieldTypeFloorAndEntityPresent_ReturnsFalse() {
+        map.placeEntity(1, 1, testEntity);
+        boolean canBePlaced = map.canPlaceEntity(1, 1);
+        map.removeEntity(1, 1, testEntity);
+        assertFalse(canBePlaced);
+    }
+
+    @Test
+    public void canPlaceEntity_InBoundsAndFieldTypeBridgeAndEntityPresent_ReturnsFalse() {
+        map.placeEntity(6, 2, testEntity);
+        boolean canBePlaced = map.canPlaceEntity(6, 2);
+        map.removeEntity(6, 2, testEntity);
+        assertFalse(canBePlaced);
+    }
+
+    @Test
+    public void load() {
         for (int i = 0; i < map.getRows(); i++) {
             for (int j = 0; j < map.getCols(); j++) {
                 System.out.print(map.getLevel()[i][j].getSymbol());
@@ -92,7 +120,4 @@ class MapTest {
             System.out.println();
         }
     }
-
-    @org.junit.jupiter.api.Test
-    void print() {}
 }
