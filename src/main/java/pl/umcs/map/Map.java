@@ -47,6 +47,9 @@ public class Map {
 
         level[x][y].entity = entity;
         entities.add(entity);
+
+        entity.setX(x);
+        entity.setY(y);
     }
 
     public void removeItem(int x, int y, Item item) {
@@ -55,6 +58,10 @@ public class Map {
 
     public void removeEntity(int x, int y) {
         entities.remove(level[x][y].entity);
+
+        level[x][y].entity.setX(-1);
+        level[x][y].entity.setY(-1);
+
         level[x][y].entity = null;
     }
 
@@ -62,6 +69,9 @@ public class Map {
         if (level[x][y].entity == entity) {
             entities.remove(level[x][y].entity);
             level[x][y].entity = null;
+
+            entity.setX(-1);
+            entity.setY(-1);
         }
     }
 
@@ -98,7 +108,7 @@ public class Map {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (level[i][j].entity == null) System.out.print(level[i][j].getSymbol());
-                else System.out.print('u');
+                else System.out.print('u'); // TODO: if instanceof Player
             }
             System.out.println();
         }
