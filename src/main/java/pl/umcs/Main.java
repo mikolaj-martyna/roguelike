@@ -95,16 +95,16 @@ public class Main {
 
             switch (input) {
                 case 'w':
-                    // Move up
+                    player.moveBy(map, -1, 0);
                     break;
                 case 'a':
-                    // Move left
+                    player.moveBy(map, 0, -1);
                     break;
                 case 's':
-                    // Move down
+                    player.moveBy(map, 1, 0);
                     break;
                 case 'd':
-                    // Move right
+                    player.moveBy(map, 0, 1);
                     break;
                 case 'i':
                     // Open inventory
