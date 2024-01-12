@@ -13,6 +13,7 @@ public class Entity extends GameElement {
     @Getter
     @Setter
     private int x;
+
     @Getter
     @Setter
     private int y;

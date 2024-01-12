@@ -21,7 +21,7 @@ public class Map {
     private ArrayList<Item> items;
 
     public boolean isInBounds(int x, int y) {
-        return x >= 0 && y >= 0 && x < cols && y < rows;
+        return x >= 0 && y >= 0 && x < rows && y < cols;
     }
 
     public boolean canPlaceItem(int x, int y) {

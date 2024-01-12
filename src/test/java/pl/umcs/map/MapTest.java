@@ -48,7 +48,7 @@ class MapTest {
 
     @Test
     public void isInBounds_InBoundsUpper_ReturnsTrue() {
-        boolean inBounds = map.isInBounds(map.getCols() - 1, map.getRows() - 1);
+        boolean inBounds = map.isInBounds(map.getRows() - 1, map.getCols() - 1);
         assertTrue(inBounds);
     }
 
@@ -60,7 +60,7 @@ class MapTest {
 
     @Test
     public void isInBounds_OutOfBoundsColsUpper_ReturnsFalse() {
-        boolean inBounds = map.isInBounds(map.getCols() + 1, 0);
+        boolean inBounds = map.isInBounds(map.getRows() + 1, 0);
         assertFalse(inBounds);
     }
 
@@ -72,7 +72,7 @@ class MapTest {
 
     @Test
     public void isInBounds_OutOfBoundsRowsUpper_ReturnsFalse() {
-        boolean inBounds = map.isInBounds(0, map.getRows() + 1);
+        boolean inBounds = map.isInBounds(0, map.getCols() + 1);
         assertFalse(inBounds);
     }
 
