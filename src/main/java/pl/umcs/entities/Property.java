@@ -1,4 +1,4 @@
-package pl.umcs;
+package pl.umcs.entities;
 
 import lombok.Builder;
 import lombok.Getter;

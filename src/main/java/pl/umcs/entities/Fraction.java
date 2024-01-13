@@ -1,4 +1,4 @@
-package pl.umcs;
+package pl.umcs.entities;
 
 public enum Fraction {
     ONE,

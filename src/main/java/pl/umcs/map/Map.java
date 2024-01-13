@@ -2,8 +2,8 @@ package pl.umcs.map;
 
 import lombok.*;
 
-import pl.umcs.Entity;
 import pl.umcs.Item;
+import pl.umcs.entities.Entity;
 
 import java.util.ArrayList;
 

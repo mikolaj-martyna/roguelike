@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import pl.umcs.Entity;
-import pl.umcs.Property;
+
+import pl.umcs.entities.Entity;
 
 import java.util.ArrayList;
 
 class MapTest {
-    private static Map map;
+    public static Entity testEntity = new Entity();
     static char[][] fields = {
         {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {'|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -25,7 +25,7 @@ class MapTest {
         {' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '|', '.', '.', '.', '.', '.', '|'},
         {' ', ' ', ' ', ' ', '#', '#', '#', '#', '#', ' ', ' ', '-', '-', '-', '-', '-', '-', '-'}
     };
-    public static Entity testEntity = Entity.builder().build();
+    private static Map map;
 
     @BeforeAll
     public static void setup() {

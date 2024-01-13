@@ -1,21 +1,20 @@
-package pl.umcs;
+package pl.umcs.entities;
 
 import lombok.*;
 
 import org.jetbrains.annotations.NotNull;
+
+import pl.umcs.GameElement;
+import pl.umcs.Item;
 import pl.umcs.map.Map;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-@Builder
+@Getter
+@Setter
 public class Entity extends GameElement {
-    @Getter
-    @Setter
     private int x;
-
-    @Getter
-    @Setter
     private int y;
 
     private ArrayList<Item> equipment;
@@ -29,9 +28,16 @@ public class Entity extends GameElement {
 
     private Fraction fraction;
 
+    public Entity() {
+        this.x = -1;
+        this.y = -1;
+
+        equipment = new ArrayList<>();
+    }
+
     // TODO: abilities
 
-    // TODO: behavior
+    // Behavior
     public void heal(int amount) {
         this.health.current -= amount;
     }
@@ -54,7 +60,7 @@ public class Entity extends GameElement {
 
     public int attack(@NotNull Entity opponent) {
         if (opponent.agility.current >= new Random().nextInt()) {
-            opponent.health.current -= this.attack.current;
+            opponent.health.current -= (int) (this.attack.current * this.attack.multiplier);
 
             return this.attack.current;
         }
@@ -62,7 +68,7 @@ public class Entity extends GameElement {
         return 0;
     }
 
-    // TODO: movement
+    // Movement
     public void moveBy(@NotNull Map map, int offsetX, int offsetY) {
         int newX = this.getX() + offsetX;
         int newY = this.getY() + offsetY;
