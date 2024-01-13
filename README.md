@@ -52,7 +52,7 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 
 ### Statystyki
 
-[TODO]
+[Przybliżona referencja statystyk](https://steampunkdnd.fandom.com/wiki/Classes)
 
 ### Umiejętności
 
