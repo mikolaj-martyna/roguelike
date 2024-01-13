@@ -10,7 +10,7 @@ import pl.umcs.entities.Entity;
 
 import java.util.ArrayList;
 
-class MapTest {
+class MapTests {
     public static Entity testEntity = new Entity();
     static char[][] fields = {
         {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' '},

@@ -35,8 +35,6 @@ public class Entity extends GameElement {
         equipment = new ArrayList<>();
     }
 
-    // TODO: abilities
-
     // Behavior
     public void heal(int amount) {
         this.health.current -= amount;
@@ -59,7 +57,7 @@ public class Entity extends GameElement {
     }
 
     public int attack(@NotNull Entity opponent) {
-        if (opponent.agility.current >= new Random().nextInt()) {
+        if (opponent.agility.current >= new Random().nextInt(100)) {
             opponent.health.current -= (int) (this.attack.current * this.attack.multiplier);
 
             return this.attack.current;
