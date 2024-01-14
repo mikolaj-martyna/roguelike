@@ -2,8 +2,9 @@ package pl.umcs.map;
 
 import lombok.*;
 
-import pl.umcs.Item;
+import pl.umcs.items.Item;
 import pl.umcs.entities.Entity;
+import pl.umcs.entities.Player;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,7 @@ public class Map {
         if (!canPlaceItem(x, y)) return;
 
         level[x][y].items.add(item);
+        items.add(item);
     }
 
     public void placeEntity(int x, int y, Entity entity) {
@@ -54,6 +56,7 @@ public class Map {
 
     public void removeItem(int x, int y, Item item) {
         level[x][y].items.remove(item);
+        items.remove(item);
     }
 
     public void removeEntity(int x, int y) {
@@ -107,9 +110,19 @@ public class Map {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (level[i][j].entity == null) System.out.print(level[i][j].getSymbol());
-                else System.out.print('u'); // TODO: if instanceof Player
+                Entity entity = level[i][j].entity;
+
+                if (entity == null && level[i][j].items.isEmpty()) {
+                    System.out.print(level[i][j].getSymbol());
+                } else if (!level[i][j].items.isEmpty()) {
+                    System.out.print('i');
+                } else if (entity instanceof Player) {
+                    System.out.print('@');
+                } else {
+                    System.out.print('o');
+                }
             }
+
             System.out.println();
         }
     }

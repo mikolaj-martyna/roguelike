@@ -1,6 +1,8 @@
 package pl.umcs;
 
 import pl.umcs.entities.Player;
+import pl.umcs.entities.monsters.ThoughtEater;
+import pl.umcs.items.EternalDynamo;
 import pl.umcs.map.Field;
 import pl.umcs.map.Map;
 
@@ -10,6 +12,19 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         /* Misc */
+//        char[][] fields = {
+//                {'╔', '═', '═', '═', '═', '═', '═', '═', '═', '═', '╗', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                {'║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                {'║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                {'║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                {'║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                {'║', '░', '░', '░', '░', '╔', '═', '═', '═', '═', '╝', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+//                {'╚', '═', '#', '═', '═', '╝', ' ', ' ', ' ', ' ', ' ', '╔', '═', '═', '═', '═', '═', '╗'},
+//                {' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '║', '░', '░', '░', '░', '░', '║'},
+//                {' ', ' ', '#', '#', '#', ' ', ' ', ' ', '#', '#', '#', '#', '░', '░', '░', '░', '░', '║'},
+//                {' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '║', '░', '░', '░', '░', '░', '║'},
+//                {' ', ' ', ' ', ' ', '#', '#', '#', '#', '#', ' ', ' ', '╚', '═', '═', '═', '═', '═', '╝'}
+//        };
         char[][] fields = {
                 {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                 {'|', '.', '.', '.', '.', '.', '.', '.', '.', '.', '|', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -38,10 +53,15 @@ public class Main {
                         .items(new ArrayList<>())
                         .build();
 
-        Player player = Player.builder().build();
+        Player player = new Player();
+        ThoughtEater thoughtEater = new ThoughtEater();
+
+        EternalDynamo eternalDynamo = new EternalDynamo();
 
         map.load(fields);
         map.placeEntity(5, 3, player);
+        map.placeEntity(8, 15, thoughtEater);
+        map.placeItem(8, 16, eternalDynamo);
 
         /* Main loop */
         while (player.isAlive()) {
