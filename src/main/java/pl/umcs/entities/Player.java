@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public class Player extends Entity {
-    Player() {
+    public Player() {
         super();
 
         // GameElement

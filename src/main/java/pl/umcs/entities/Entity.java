@@ -5,7 +5,7 @@ import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import pl.umcs.GameElement;
-import pl.umcs.Item;
+import pl.umcs.items.Item;
 import pl.umcs.map.Map;
 
 import java.util.ArrayList;
@@ -58,9 +58,13 @@ public class Entity extends GameElement {
 
     public int attack(@NotNull Entity opponent) {
         if (opponent.agility.current >= new Random().nextInt(100)) {
-            opponent.health.current -= (int) (this.attack.current * this.attack.multiplier);
+            int damageDealt = (int) (this.attack.current * this.attack.multiplier);
+            int defenseMultiplier = (int) (1 - (opponent.defense.current * opponent.defense.multiplier));
+            int damageTaken = damageDealt * defenseMultiplier;
 
-            return this.attack.current;
+            opponent.health.current -= damageTaken;
+
+            return damageTaken;
         }
 
         return 0;
