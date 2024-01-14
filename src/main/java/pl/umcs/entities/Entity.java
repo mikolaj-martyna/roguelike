@@ -28,6 +28,9 @@ public class Entity extends GameElement {
 
     private Fraction fraction;
 
+    private int numberOfDice;
+    private int maxRange;
+
     public Entity() {
         this.x = -1;
         this.y = -1;
@@ -59,7 +62,8 @@ public class Entity extends GameElement {
     public int attack(@NotNull Entity opponent) {
         if (opponent.agility.current >= new Random().nextInt(100)) {
             int damageDealt = (int) (this.attack.current * this.attack.multiplier);
-            int defenseMultiplier = (int) (1 - (opponent.defense.current * opponent.defense.multiplier));
+            int defenseMultiplier =
+                    (int) (1 - ((opponent.defense.current / 100) * opponent.defense.multiplier));
             int damageTaken = damageDealt * defenseMultiplier;
 
             opponent.health.current -= damageTaken;
