@@ -5,6 +5,7 @@ import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import pl.umcs.GameElement;
+import pl.umcs.items.Equipment;
 import pl.umcs.items.Item;
 import pl.umcs.map.Map;
 
@@ -17,7 +18,7 @@ public class Entity extends GameElement {
     private int x;
     private int y;
 
-    private ArrayList<Item> equipment;
+    private Equipment equipment;
 
     private Property health;
     private Property attack;
@@ -35,7 +36,7 @@ public class Entity extends GameElement {
         this.x = -1;
         this.y = -1;
 
-        equipment = new ArrayList<>();
+        equipment = new Equipment();
     }
 
     // Behavior
