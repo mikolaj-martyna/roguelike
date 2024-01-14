@@ -1,4 +1,6 @@
-package pl.umcs.map;
+package pl.umcs.map.walls;
+
+import pl.umcs.map.Field;
 
 public class Wall extends Field {
     Wall() {

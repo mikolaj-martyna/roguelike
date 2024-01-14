@@ -15,7 +15,7 @@ public class Field extends GameElement {
     Entity entity;
     ArrayList<Item> items;
 
-    Field() {
+    protected Field() {
         this.setSymbol(' ');
         this.entity = null;
         this.items = new ArrayList<>();

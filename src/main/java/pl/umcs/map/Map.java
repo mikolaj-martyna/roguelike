@@ -2,10 +2,12 @@ package pl.umcs.map;
 
 import lombok.*;
 
-import pl.umcs.items.Item;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
+import pl.umcs.items.Item;
+import pl.umcs.map.walls.*;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @Builder
@@ -88,12 +90,20 @@ public class Map {
                 Field field;
                 char c = mapData[i][j];
 
-                if (c == '.') {
+                if (c == '░') {
                     field = new Floor();
-                } else if (c == '-') {
+                } else if (c == '═') {
                     field = new HorizontalWall();
-                } else if (c == '|') {
+                } else if (c == '║') {
                     field = new VerticalWall();
+                } else if (c == '╔') {
+                    field = new UpperLeftWallCorner();
+                } else if (c == '╗') {
+                    field = new UpperRightWallCorner();
+                } else if (c == '╚') {
+                    field = new LowerLeftWallCorner();
+                } else if (c == '╝') {
+                    field = new LowerRightWallCorner();
                 } else if (c == '#') {
                     field = new Bridge();
                 } else {
@@ -114,16 +124,36 @@ public class Map {
 
                 if (entity == null && level[i][j].items.isEmpty()) {
                     System.out.print(level[i][j].getSymbol());
-                } else if (!level[i][j].items.isEmpty()) {
-                    System.out.print('i');
                 } else if (entity instanceof Player) {
                     System.out.print('@');
+                } else if (!level[i][j].items.isEmpty()) {
+                    System.out.print('i');
                 } else {
                     System.out.print('o');
                 }
             }
 
             System.out.println();
+        }
+    }
+
+    public void print(PrintWriter output) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Entity entity = level[i][j].entity;
+
+                if (entity == null && level[i][j].items.isEmpty()) {
+                    output.printf("%c", level[i][j].getSymbol());
+                } else if (entity instanceof Player) {
+                    output.printf("%c", '@');
+                } else if (!level[i][j].items.isEmpty()) {
+                    output.printf("%c", 'i');
+                } else {
+                    output.printf("%c", 'o');
+                }
+            }
+
+            output.printf("\n");
         }
     }
 }
