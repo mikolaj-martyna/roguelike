@@ -2,6 +2,7 @@ package pl.umcs.map;
 
 import lombok.*;
 
+import org.jetbrains.annotations.NotNull;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.items.Item;
@@ -137,7 +138,10 @@ public class Map {
         }
     }
 
-    public void print(PrintWriter output) {
+    public void print(@NotNull PrintWriter output) {
+        output.print("\033[H\033[2J");
+        output.flush();
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 Entity entity = level[i][j].entity;
