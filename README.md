@@ -38,10 +38,6 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 7. `u` - skrzynia
 8. `i` - przedmiot
 
-## Przedmioty
-
-[TODO]
-
 ## Walka
 
 1. Atak - Określa obrażenia, jakie istota może zadać przeciwnikowi. Im wyższa wartość, tym potężniejsze ataki.
@@ -77,3 +73,17 @@ Każda umiejętność ma przedział wartości, które może przyjąć. Przy jej 
 
 ### Clockwork Dragon
 [★★★★★]
+
+## Ekwipunek
+### Sloty
+1. Hełm
+2. Pancerz
+3. Buty
+4. Broń
+5. Przedmiot specjalny
+
+[TODO]
+
+### Przedmioty
+
+[TODO]

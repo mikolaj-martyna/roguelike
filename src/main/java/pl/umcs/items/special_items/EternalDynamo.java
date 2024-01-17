@@ -1,6 +1,6 @@
-package pl.umcs.items;
+package pl.umcs.items.special_items;
 
-public class EternalDynamo extends Item {
+public class EternalDynamo extends SpecialItem {
     public EternalDynamo() {
         setName("Eternal Dynamo");
         setSymbol('Ø');

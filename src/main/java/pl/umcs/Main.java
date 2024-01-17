@@ -2,7 +2,7 @@ package pl.umcs;
 
 import pl.umcs.entities.Player;
 import pl.umcs.entities.monsters.ThoughtEater;
-import pl.umcs.items.EternalDynamo;
+import pl.umcs.items.special_items.EternalDynamo;
 import pl.umcs.map.Field;
 import pl.umcs.map.Map;
 
