@@ -41,7 +41,7 @@ public class Entity extends GameElement {
 
     // Behavior
     public void heal(int amount) {
-        this.health.current -= amount;
+        this.health.current += amount;
     }
 
     public void takeDamage(int damage) {
@@ -57,22 +57,18 @@ public class Entity extends GameElement {
     }
 
     public boolean isAlive() {
-        return this.health.current > 0;
+        return this.getHealth() > 0;
     }
 
-    public int attack(@NotNull Entity opponent) {
+    public void attack(@NotNull Entity opponent) {
         if (opponent.agility.current >= new Random().nextInt(100)) {
             int damageDealt = (int) (this.attack.current * this.attack.multiplier);
             int defenseMultiplier =
                     (int) (1 - ((opponent.defense.current / 100) * opponent.defense.multiplier));
             int damageTaken = damageDealt * defenseMultiplier;
 
-            opponent.health.current -= damageTaken;
-
-            return damageTaken;
+            opponent.takeDamage(damageTaken);
         }
-
-        return 0;
     }
 
     // Movement
