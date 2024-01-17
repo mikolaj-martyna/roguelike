@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import pl.umcs.entities.monsters.ClockworkDragon;
 import pl.umcs.entities.monsters.Inevitable;
 import pl.umcs.entities.monsters.Modron;
 import pl.umcs.entities.monsters.ThoughtEater;
@@ -174,6 +175,62 @@ class EntityBalanceTests {
 
         System.out.printf(
                 "[Thought Eater first]\nWon by player: %d\nWon by thought eater: %d\n\n",
+                wonByPlayer, wonByMonster);
+    }
+
+    @Test
+    public void PlayerVsClockworkDragonBalance_PlayerFirst() {
+        int wonByPlayer = 0;
+        int wonByMonster = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            Player player = new Player();
+            ClockworkDragon clockworkDragon = new ClockworkDragon();
+
+            while (player.isAlive() && clockworkDragon.isAlive()) {
+                player.attack(clockworkDragon);
+
+                if (!clockworkDragon.isAlive()) {
+                    wonByPlayer++;
+                    break;
+                }
+
+                clockworkDragon.attack(player);
+            }
+
+            if (!player.isAlive()) wonByMonster++;
+        }
+
+        System.out.printf(
+                "[Player first]\nWon by player: %d\nWon by clockwork dragon: %d\n\n",
+                wonByPlayer, wonByMonster);
+    }
+
+    @Test
+    public void PlayerVsThoughClockworkDragon_MonsterFirst() {
+        int wonByPlayer = 0;
+        int wonByMonster = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            Player player = new Player();
+            ClockworkDragon clockworkDragon = new ClockworkDragon();
+
+            while (player.isAlive() && clockworkDragon.isAlive()) {
+                clockworkDragon.attack(player);
+
+                if (!player.isAlive()) {
+                    wonByMonster++;
+                    break;
+                }
+
+                player.attack(clockworkDragon);
+            }
+
+            if (!clockworkDragon.isAlive()) wonByPlayer++;
+        }
+
+        System.out.printf(
+                "[Clockwork Dragon first]\nWon by player: %d\nWon by clockwork dragon: %d\n\n",
                 wonByPlayer, wonByMonster);
     }
 }
