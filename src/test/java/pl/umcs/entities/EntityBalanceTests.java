@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import pl.umcs.entities.monsters.ClockworkDragon;
-import pl.umcs.entities.monsters.Inevitable;
-import pl.umcs.entities.monsters.Modron;
-import pl.umcs.entities.monsters.ThoughtEater;
+import pl.umcs.entities.monsters.*;
 
 class EntityBalanceTests {
     @Test
@@ -207,7 +204,7 @@ class EntityBalanceTests {
     }
 
     @Test
-    public void PlayerVsThoughClockworkDragon_MonsterFirst() {
+    public void PlayerVsClockworkDragon_MonsterFirst() {
         int wonByPlayer = 0;
         int wonByMonster = 0;
 
@@ -231,6 +228,62 @@ class EntityBalanceTests {
 
         System.out.printf(
                 "[Clockwork Dragon first]\nWon by player: %d\nWon by clockwork dragon: %d\n\n",
+                wonByPlayer, wonByMonster);
+    }
+
+    @Test
+    public void PlayerVsMyrBalance_PlayerFirst() {
+        int wonByPlayer = 0;
+        int wonByMonster = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            Player player = new Player();
+            Myr myr = new Myr();
+
+            while (player.isAlive() && myr.isAlive()) {
+                player.attack(myr);
+
+                if (!myr.isAlive()) {
+                    wonByPlayer++;
+                    break;
+                }
+
+                myr.attack(player);
+            }
+
+            if (!player.isAlive()) wonByMonster++;
+        }
+
+        System.out.printf(
+                "[Player first]\nWon by player: %d\nWon by myr: %d\n\n",
+                wonByPlayer, wonByMonster);
+    }
+
+    @Test
+    public void PlayerVsMyr_MonsterFirst() {
+        int wonByPlayer = 0;
+        int wonByMonster = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            Player player = new Player();
+            Myr myr = new Myr();
+
+            while (player.isAlive() && myr.isAlive()) {
+                myr.attack(player);
+
+                if (!player.isAlive()) {
+                    wonByMonster++;
+                    break;
+                }
+
+                player.attack(myr);
+            }
+
+            if (!myr.isAlive()) wonByPlayer++;
+        }
+
+        System.out.printf(
+                "[Myr first]\nWon by player: %d\nWon by myr: %d\n\n",
                 wonByPlayer, wonByMonster);
     }
 }

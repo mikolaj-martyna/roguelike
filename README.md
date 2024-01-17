@@ -47,7 +47,7 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 1. Atak - Określa obrażenia, jakie istota może zadać przeciwnikowi. Im wyższa wartość, tym potężniejsze ataki.
 2. Obrona - Mierzy zdolność istoty do obrony się przed atakami przeciwnika. Wysoka wartość OBR zmniejsza otrzymywane obrażenia.
 3. Zręczność - Decyduje o szybkości i precyzji ruchów w walce. Wyższa zręczność może wpłynąć na unikanie ataków przeciwnika.
-4. Życie - Oznacza ogólną wytrzymałość istoty. Kiedy PŻ spadnie do zera, istota ginie.
+4. Życie - Oznacza ogólną wytrzymałość istoty. Kiedy spadną do zera, istota ginie.
 5. Specjalne efekty przedmiotów - niektóre przedmioty posiadają specjalne efekty i statusy, które wpływają na statystyki bohatera.
 
 ### Statystyki
@@ -61,3 +61,19 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 ### Losowość
 
 Każda umiejętność ma przedział wartości, które może przyjąć. Przy jej wywołaniu losowana jest liczba z tego zakresu, a w przypadku niektórych umiejętności, na przykład uniku, losowana jest wartość z przedziału 0-100 i porównywana jest do szansy na unik (np. 30%, 0-30).
+
+## Potwory
+### Thought Eater
+[★☆☆☆☆]
+
+### Myr
+[★★☆☆☆]
+
+### Inevitable
+[★★★☆☆]
+
+### Modron
+[★★★★☆]
+
+### Clockwork Dragon
+[★★★★★]

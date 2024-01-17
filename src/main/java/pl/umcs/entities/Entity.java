@@ -63,9 +63,9 @@ public class Entity extends GameElement {
     public void attack(@NotNull Entity opponent) {
         if (opponent.agility.current >= new Random().nextInt(100)) {
             int damageDealt = (int) (this.attack.current * this.attack.multiplier);
-            int defenseMultiplier =
-                    (int) (1 - ((opponent.defense.current / 100) * opponent.defense.multiplier));
-            int damageTaken = damageDealt * defenseMultiplier;
+            double defenseMultiplier =
+                    (1 - (((double) opponent.defense.current / 100) * opponent.defense.multiplier));
+            int damageTaken = (int) (damageDealt * defenseMultiplier);
 
             opponent.takeDamage(damageTaken);
         }

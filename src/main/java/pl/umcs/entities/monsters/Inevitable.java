@@ -16,11 +16,11 @@ public class Inevitable extends Entity {
                 "Lawful, intelligent constructs whose single purpose is to enforce the fundamental laws of nature and morality and punish those who violate them.");
 
         // Entity
-        setHealth(Property.builder().baseline(8).current(8).multiplier(1).build());
-        setAttack(Property.builder().baseline(6).current(6).multiplier(1).build());
-        setAgility(Property.builder().baseline(5).current(5).multiplier(1).build());
-        setDefense(Property.builder().baseline(8).current(8).multiplier(1).build());
-        setIntelligence(Property.builder().baseline(8).current(8).multiplier(1).build());
-        setCharisma(Property.builder().baseline(6).current(6).multiplier(1).build());
+        setHealth(new Property(10));
+        setAttack(new Property(5));
+        setAgility(new Property(10));
+        setDefense(new Property(5));
+        setIntelligence(new Property(8));
+        setCharisma(new Property(6));
     }
 }

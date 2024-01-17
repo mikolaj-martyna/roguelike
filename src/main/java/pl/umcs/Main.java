@@ -87,7 +87,6 @@ public class Main {
                     break;
             }
 
-//            map.print();
             map.print(output);
         }
 
