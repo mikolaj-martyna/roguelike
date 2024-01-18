@@ -10,7 +10,8 @@ public class ClockworkDragon extends Entity {
         // GameElement
         setName("Clockwork Dragon");
         setSymbol('o');
-        setDescription("Towering monstrosity, combining intricate brass gears, whirring mechanisms, and bronze plating to form a majestic yet fearsome automaton resembling the mythical dragon.");
+        setDescription(
+                "Towering monstrosity, combining intricate brass gears, whirring mechanisms, and bronze plating to form a majestic yet fearsome automaton resembling the mythical dragon.");
 
         // Entity
         setHealth(new Property(25));

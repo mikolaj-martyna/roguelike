@@ -255,8 +255,7 @@ class EntityBalanceTests {
         }
 
         System.out.printf(
-                "[Player first]\nWon by player: %d\nWon by myr: %d\n\n",
-                wonByPlayer, wonByMonster);
+                "[Player first]\nWon by player: %d\nWon by myr: %d\n\n", wonByPlayer, wonByMonster);
     }
 
     @Test
@@ -283,7 +282,6 @@ class EntityBalanceTests {
         }
 
         System.out.printf(
-                "[Myr first]\nWon by player: %d\nWon by myr: %d\n\n",
-                wonByPlayer, wonByMonster);
+                "[Myr first]\nWon by player: %d\nWon by myr: %d\n\n", wonByPlayer, wonByMonster);
     }
 }

@@ -9,7 +9,7 @@ import pl.umcs.items.Equipment;
 import pl.umcs.items.Item;
 import pl.umcs.map.Map;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Getter
@@ -75,6 +75,15 @@ public class Entity extends GameElement {
     public void moveBy(@NotNull Map map, int offsetX, int offsetY) {
         int newX = this.getX() + offsetX;
         int newY = this.getY() + offsetY;
+
+        if (map.hasItem(newX, newY)) {
+            List<Item> items = map.getItems(newX, newY);
+
+            for (Item item : items) {
+                equipment.addItem(item);
+                map.removeItem(newX, newY, item);
+            }
+        }
 
         if (map.canPlaceEntity(newX, newY)) {
             map.removeEntity(this.getX(), this.getY(), this);

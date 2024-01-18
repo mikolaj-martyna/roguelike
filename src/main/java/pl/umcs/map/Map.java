@@ -3,6 +3,7 @@ package pl.umcs.map;
 import lombok.*;
 
 import org.jetbrains.annotations.NotNull;
+
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.items.Item;
@@ -10,6 +11,7 @@ import pl.umcs.map.walls.*;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
@@ -159,5 +161,13 @@ public class Map {
 
             output.printf("\n");
         }
+    }
+
+    public boolean hasItem(int x, int y) {
+        return isInBounds(x, y) && !this.level[x][y].items.isEmpty();
+    }
+
+    public List<Item> getItems(int x, int y) {
+        return level[x][y].getItems();
     }
 }

@@ -11,7 +11,6 @@ import pl.umcs.entities.Entity;
 import java.util.ArrayList;
 
 class MapTests {
-    public static Entity testEntity = new Entity();
     private static final char[][] fields = {
         {'╔', '═', '═', '═', '═', '═', '═', '═', '═', '═', '╗', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {'║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -25,6 +24,7 @@ class MapTests {
         {' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '║', '░', '░', '░', '░', '░', '║'},
         {' ', ' ', ' ', ' ', '#', '#', '#', '#', '#', ' ', ' ', '╚', '═', '═', '═', '═', '═', '╝'}
     };
+    public static Entity testEntity = new Entity();
     private static Map map;
 
     @BeforeAll
