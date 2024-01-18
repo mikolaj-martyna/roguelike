@@ -62,42 +62,42 @@ Każda umiejętność ma przedział wartości, które może przyjąć. Przy jej 
 ### Thought Eater
 [★☆☆☆☆]
 
-Atak: 1
-Obrona: 2
-Zręczność: 4
-Życie: 3
+Atak: 1\
+Obrona: 2\
+Zręczność: 4\
+Życie: 3\
 
 ### Myr
 [★★☆☆☆]
 
-Atak: 3
-Obrona: 3
-Zręczność: 7
-Życie: 7
+Atak: 3\
+Obrona: 3\
+Zręczność: 7\
+Życie: 7\
 
 ### Inevitable
 [★★★☆☆]
 
-Atak: 5
-Obrona: 5
-Zręczność: 10
-Życie: 10
+Atak: 5\
+Obrona: 5\
+Zręczność: 10\
+Życie: 10\
 
 ### Modron
 [★★★★☆]
 
-Atak: 10
-Obrona: 20
-Zręczność: 15
-Życie: 18
+Atak: 10\
+Obrona: 20\
+Zręczność: 15\
+Życie: 18\
 
 ### Clockwork Dragon
 [★★★★★]
 
-Atak: 10
-Obrona: 30
-Zręczność: 2
-Życie: 25
+Atak: 10\
+Obrona: 30\
+Zręczność: 2\
+Życie: 25\
 
 ## Ekwipunek
 ### Sloty
