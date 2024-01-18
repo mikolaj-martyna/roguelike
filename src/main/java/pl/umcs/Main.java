@@ -82,11 +82,13 @@ public class Main {
         ThoughtEater thoughtEater = new ThoughtEater();
 
         EternalDynamo eternalDynamo = new EternalDynamo();
+        EternalDynamo eternalDynamo2 = new EternalDynamo();
 
         map.load(fields);
         map.placeEntity(5, 3, player);
         map.placeEntity(8, 15, thoughtEater);
         map.placeItem(8, 16, eternalDynamo);
+        map.placeItem(4, 2, eternalDynamo2);
 
         /* Main loop */
         while (player.isAlive()) {

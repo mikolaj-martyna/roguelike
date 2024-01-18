@@ -81,7 +81,30 @@ public class Entity extends GameElement {
 
             for (Item item : items) {
                 equipment.addItem(item);
-                map.removeItem(newX, newY, item);
+            }
+
+            map.removeItems(newX, newY);
+        }
+
+        if (map.hasMonster(newX, newY)) {
+            Entity opponent = map.getLevel()[newX][newY].getEntity();
+
+            while (this.isAlive() && opponent.isAlive()) {
+                this.attack(opponent);
+
+                if (opponent.isAlive()) {
+                    opponent.attack(this);
+                }
+            }
+
+            // Opponent killed
+            if (this.isAlive()) {
+                map.removeEntity(opponent);
+            }
+
+            // Attacker killed
+            if (opponent.isAlive()) {
+                map.removeEntity(this);
             }
         }
 

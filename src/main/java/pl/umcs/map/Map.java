@@ -59,9 +59,18 @@ public class Map {
         entity.setY(y);
     }
 
-    public void removeItem(int x, int y, Item item) {
-        level[x][y].items.remove(item);
-        items.remove(item);
+    public void removeItems(int x, int y) {
+        this.items.removeAll(level[x][y].getItems());
+        level[x][y].items.clear();
+    }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+
+        level[entity.getX()][entity.getY()].entity = null;
+
+        entity.setX(-1);
+        entity.setY(-1);
     }
 
     public void removeEntity(int x, int y) {
@@ -140,9 +149,23 @@ public class Map {
         }
     }
 
+    public boolean hasItem(int x, int y) {
+        return isInBounds(x, y) && !this.level[x][y].items.isEmpty();
+    }
+
+    public boolean hasMonster(int x, int y) {
+        return isInBounds(x, y) && this.level[x][y].entity != null;
+    }
+
+    public List<Item> getItems(int x, int y) {
+        return level[x][y].getItems();
+    }
+
     public void print(@NotNull PrintWriter output) {
         output.print("\033[H\033[2J");
         output.flush();
+
+        Player player = null;
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -151,6 +174,7 @@ public class Map {
                 if (entity == null && level[i][j].items.isEmpty()) {
                     output.printf("%c", level[i][j].getSymbol());
                 } else if (entity instanceof Player) {
+                    player = (Player) entity;
                     output.printf("%c", '@');
                 } else if (!level[i][j].items.isEmpty()) {
                     output.printf("%c", 'i');
@@ -161,13 +185,15 @@ public class Map {
 
             output.printf("\n");
         }
-    }
 
-    public boolean hasItem(int x, int y) {
-        return isInBounds(x, y) && !this.level[x][y].items.isEmpty();
-    }
-
-    public List<Item> getItems(int x, int y) {
-        return level[x][y].getItems();
+        if (player != null) {
+            output.printf("HP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n",
+                    player.getHealth(),
+                    player.getAttack().getCurrent(),
+                    player.getAgility().getCurrent(),
+                    player.getDefense().getCurrent(),
+                    player.getIntelligence().getCurrent(),
+                    player.getCharisma().getCurrent());
+        }
     }
 }
