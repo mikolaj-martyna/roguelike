@@ -65,7 +65,7 @@ Każda umiejętność ma przedział wartości, które może przyjąć. Przy jej 
 Atak: 1\
 Obrona: 2\
 Zręczność: 4\
-Życie: 3\
+Życie: 3
 
 ### Myr
 [★★☆☆☆]
@@ -73,7 +73,7 @@ Zręczność: 4\
 Atak: 3\
 Obrona: 3\
 Zręczność: 7\
-Życie: 7\
+Życie: 7
 
 ### Inevitable
 [★★★☆☆]
@@ -81,7 +81,7 @@ Zręczność: 7\
 Atak: 5\
 Obrona: 5\
 Zręczność: 10\
-Życie: 10\
+Życie: 10
 
 ### Modron
 [★★★★☆]
@@ -89,7 +89,7 @@ Zręczność: 10\
 Atak: 10\
 Obrona: 20\
 Zręczność: 15\
-Życie: 18\
+Życie: 18
 
 ### Clockwork Dragon
 [★★★★★]
@@ -97,7 +97,7 @@ Zręczność: 15\
 Atak: 10\
 Obrona: 30\
 Zręczność: 2\
-Życie: 25\
+Życie: 25
 
 ## Ekwipunek
 ### Sloty
