@@ -102,11 +102,11 @@ public class Map {
                 Field field;
                 char c = mapData[i][j];
 
-                if (c == '░') {
+                if (c == '░' || c == '.') {
                     field = new Floor();
-                } else if (c == '═') {
+                } else if (c == '═' || c == '-') {
                     field = new HorizontalWall();
-                } else if (c == '║') {
+                } else if (c == '║' || c == '|') {
                     field = new VerticalWall();
                 } else if (c == '╔') {
                     field = new UpperLeftWallCorner();
@@ -119,7 +119,7 @@ public class Map {
                 } else if (c == '#') {
                     field = new Bridge();
                 } else {
-                    field = new Field();
+                    field = new Void();
                 }
 
                 changeFieldType(i, j, field);
