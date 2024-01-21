@@ -8,6 +8,7 @@ import pl.umcs.items.shoes.Shoes;
 import pl.umcs.items.special_items.SpecialItem;
 import pl.umcs.items.weapons.Weapon;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,5 +87,15 @@ public class Equipment {
     public void unequipSpecialItem() {
         this.items.add(this.specialItem);
         this.specialItem = null;
+    }
+
+    public void printItems(@NotNull PrintWriter output) {
+        output.print("\033[H\033[2J");
+        output.flush();
+
+        int index = 1;
+        for (Item item : items) {
+            output.printf("%d. %s\n", index++, item.getName());
+        }
     }
 }
