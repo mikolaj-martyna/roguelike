@@ -90,10 +90,11 @@ public class Main {
         map.placeItem(8, 16, eternalDynamo);
         map.placeItem(4, 2, eternalDynamo2);
 
+        char input;
         /* Main loop */
         while (player.isAlive()) {
             // Take input
-            char input = reader.next().charAt(0);
+            input = reader.next().charAt(0);
 
             // Parse input
             //// WASD <- movement
@@ -115,7 +116,14 @@ public class Main {
                     player.moveBy(map, 0, 1);
                     break;
                 case 'i':
-                    // Open inventory
+                    player.getEquipment().printItems(output);
+
+                    input = reader.next().charAt(0);
+                    while (input != 'q') {
+                        // Handle equipping the items
+                        // Handle exiting
+                        input = reader.next().charAt(0);
+                    }
                     break;
                 case 'u':
                     // Open equipment
