@@ -1,5 +1,7 @@
 package pl.umcs.items;
 
+import lombok.Getter;
+
 import org.jetbrains.annotations.NotNull;
 
 import pl.umcs.items.chestplates.Chestplate;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Equipment {
-    List<Item> items;
+    @Getter List<Item> items;
     private Helm helm;
     private Chestplate chestplate;
     private Shoes shoes;
@@ -37,6 +39,14 @@ public class Equipment {
 
     public void removeItem(Item item) {
         items.remove(item);
+    }
+
+    public void equipItem(Item item) {
+        if (item instanceof Helm) equipHelm((Helm) item);
+        if (item instanceof Chestplate) equipChestplate((Chestplate) item);
+        if (item instanceof Shoes) equipShoes((Shoes) item);
+        if (item instanceof Weapon) equipWeapon((Weapon) item);
+        if (item instanceof SpecialItem) equipSpecialItem((SpecialItem) item);
     }
 
     public void equipHelm(@NotNull Helm helm) {
@@ -89,13 +99,40 @@ public class Equipment {
         this.specialItem = null;
     }
 
-    public void printItems(@NotNull PrintWriter output) {
+    public void printEquipmentAndInventory(@NotNull PrintWriter output) {
         output.print("\033[H\033[2J");
         output.flush();
 
+        printEquipment(output);
+        printItems(output);
+
+        output.printf("\nquit: q\tequip: e\n");
+    }
+
+    public void printEquipment(@NotNull PrintWriter output) {
+        output.printf(
+                """
+                \033[1mEquipment\033[0m
+    
+                Head: %s
+                Body: %s
+                Feet: %s
+                Hands: %s
+                Special Item: %s
+    
+                """,
+                this.helm != null ? this.helm.getName() : "None",
+                this.chestplate.getName(),
+                this.shoes.getName(),
+                this.weapon.getName(),
+                this.specialItem != null ? this.specialItem.getName() : "None");
+    }
+
+    public void printItems(@NotNull PrintWriter output) {
+        output.printf("\033[1mInventory\033[0m\n");
         int index = 1;
         for (Item item : items) {
-            output.printf("%d. %s\n", index++, item.getName());
+            output.printf("%d. %s [%s]\n", index++, item.getName(), item);
         }
     }
 }

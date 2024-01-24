@@ -116,17 +116,27 @@ public class Main {
                     player.moveBy(map, 0, 1);
                     break;
                 case 'i':
-                    player.getEquipment().printItems(output);
-
-                    input = reader.next().charAt(0);
                     while (input != 'q') {
-                        // Handle equipping the items
-                        // Handle exiting
+                        // Show inventory
+                        player.getEquipment().printEquipmentAndInventory(output);
+
+                        // Get action
                         input = reader.next().charAt(0);
+
+                        // Handle equipping the items
+                        if (input == 'e') {
+                            output.printf("Index of item to equip: ");
+
+                            input = reader.next().charAt(0);
+                            if (!player.getEquipment().getItems().isEmpty())
+                                player.getEquipment()
+                                        .equipItem(
+                                                player.getEquipment()
+                                                        .getItems()
+                                                        .get(input - '0' - 1));
+                        }
                     }
-                    break;
-                case 'u':
-                    // Open equipment
+
                     break;
             }
 
