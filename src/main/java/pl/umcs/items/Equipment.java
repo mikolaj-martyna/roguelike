@@ -50,26 +50,36 @@ public class Equipment {
     }
 
     public void equipHelm(@NotNull Helm helm) {
+        if (this.helm != null) unequipHelm();
+
         this.helm = helm;
         this.items.remove(helm);
     }
 
     public void equipChestplate(@NotNull Chestplate chestplate) {
+        if (this.chestplate != null) unequipChestplate();
+
         this.chestplate = chestplate;
         this.items.remove(chestplate);
     }
 
     public void equipShoes(@NotNull Shoes shoes) {
+        if (this.shoes != null) unequipShoes();
+
         this.shoes = shoes;
         this.items.remove(shoes);
     }
 
     public void equipWeapon(@NotNull Weapon weapon) {
+        if (this.weapon != null) unequipWeapon();
+
         this.weapon = weapon;
         this.items.remove(weapon);
     }
 
     public void equipSpecialItem(@NotNull SpecialItem specialItem) {
+        if (this.specialItem != null) unequipSpecialItem();
+
         this.specialItem = specialItem;
         this.items.remove(specialItem);
     }
