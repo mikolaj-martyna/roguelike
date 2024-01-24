@@ -37,4 +37,8 @@ public class Item extends GameElement {
         this.intelligenceMultiplier = 1;
         this.charismaMultiplier = 1;
     }
+
+    public String getSlotName() {
+        return "";
+    }
 }

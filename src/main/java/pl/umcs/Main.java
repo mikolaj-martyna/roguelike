@@ -90,18 +90,19 @@ public class Main {
         map.placeItem(8, 16, eternalDynamo);
         map.placeItem(4, 2, eternalDynamo2);
 
-        char input;
         /* Main loop */
         while (player.isAlive()) {
+            // Print current map state
+            map.print(output);
+
             // Take input
-            input = reader.next().charAt(0);
+            char input = reader.next().charAt(0);
 
             // Parse input
             //// WASD <- movement
             //// I <- inventory
             //// U <- equipment
 
-            // TODO: handle walking into an enemy or a chest
             switch (input) {
                 case 'w':
                     player.moveBy(map, -1, 0);
@@ -139,8 +140,6 @@ public class Main {
 
                     break;
             }
-
-            map.print(output);
         }
 
         /* Cleanup */

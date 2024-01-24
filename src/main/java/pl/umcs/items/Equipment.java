@@ -142,7 +142,7 @@ public class Equipment {
         output.printf("\033[1mInventory\033[0m\n");
         int index = 1;
         for (Item item : items) {
-            output.printf("%d. %s [%s]\n", index++, item.getName(), item);
+            output.printf("%d. [%s] %s (%s)\n", index++, item.getSlotName(), item.getName(), item);
         }
     }
 }
