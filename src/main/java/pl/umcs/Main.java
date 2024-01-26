@@ -1,6 +1,7 @@
 package pl.umcs;
 
 import pl.umcs.entities.Player;
+import pl.umcs.entities.monsters.Inevitable;
 import pl.umcs.entities.monsters.ThoughtEater;
 import pl.umcs.items.special_items.EternalDynamo;
 import pl.umcs.map.Field;
@@ -62,13 +63,13 @@ public class Main {
         };
 
         /* Setup */
-        // Input setup
-        Scanner reader = new Scanner(System.in);
+        // Input
+        Scanner reader = new Scanner(System.in, StandardCharsets.UTF_8);
 
-        // Output setup
+        // Output
         PrintWriter output = new PrintWriter(System.out, true, StandardCharsets.UTF_8);
 
-        // Game setup
+        // Game
         Map map =
                 Map.builder()
                         .level(new Field[11][18])
@@ -79,14 +80,19 @@ public class Main {
                         .build();
 
         Player player = new Player();
+
         ThoughtEater thoughtEater = new ThoughtEater();
+        Inevitable inevitable = new Inevitable();
 
         EternalDynamo eternalDynamo = new EternalDynamo();
         EternalDynamo eternalDynamo2 = new EternalDynamo();
 
         map.load(fields);
+
         map.placeEntity(5, 3, player);
         map.placeEntity(8, 15, thoughtEater);
+        map.placeEntity(3, 2, inevitable);
+
         map.placeItem(8, 16, eternalDynamo);
         map.placeItem(4, 2, eternalDynamo2);
 
@@ -101,7 +107,6 @@ public class Main {
             // Parse input
             //// WASD <- movement
             //// I <- inventory
-            //// U <- equipment
 
             switch (input) {
                 case 'w':
@@ -124,23 +129,26 @@ public class Main {
                         // Get action
                         input = reader.next().charAt(0);
 
-                        // Handle equipping the items
                         if (input == 'e') {
                             output.printf("Index of item to equip: ");
-
                             input = reader.next().charAt(0);
-                            if (!player.getEquipment().getItems().isEmpty())
+
+                            // TODO: check if input is a number, if not print error message
+                            if (!player.getEquipment().getItems().isEmpty()) {
                                 player.getEquipment()
                                         .equipItem(
                                                 player.getEquipment()
                                                         .getItems()
-                                                        .get(input - '0' - 1));
+                                                        .get(input - '1'));
+                            }
                         }
                     }
 
                     break;
             }
         }
+
+        output.printf("You died.");
 
         /* Cleanup */
         reader.close();

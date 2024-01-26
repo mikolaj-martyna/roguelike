@@ -6,6 +6,7 @@ public class ClothArmor extends Chestplate {
 
         this.setName("Cloth armor");
         this.setSymbol('i');
-        this.setDescription("The only kind of wardrobe you have left after the collision. Will do for now.");
+        this.setDescription(
+                "The only kind of wardrobe you have left after the collision. Will do for now.");
     }
 }

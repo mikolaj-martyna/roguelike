@@ -3,7 +3,6 @@ package pl.umcs.items;
 import lombok.*;
 
 import pl.umcs.GameElement;
-import pl.umcs.entities.Property;
 
 @Getter
 @Setter

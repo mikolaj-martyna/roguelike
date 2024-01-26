@@ -1,5 +1,8 @@
 package pl.umcs.map;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 import lombok.*;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +28,10 @@ public class Map {
 
     private ArrayList<Entity> entities;
     private ArrayList<Item> items;
+
+    public static int distance(@NotNull Entity entity, @NotNull Player player) {
+        return (int) sqrt(pow(entity.getX() - player.getX(), 2) + pow(entity.getY() - player.getY(), 2));
+    }
 
     public boolean isInBounds(int x, int y) {
         return x >= 0 && y >= 0 && x < rows && y < cols;

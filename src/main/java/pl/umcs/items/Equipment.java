@@ -14,8 +14,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Equipment {
-    @Getter List<Item> items;
+    List<Item> items;
     private Helm helm;
     private Chestplate chestplate;
     private Shoes shoes;
@@ -115,21 +116,19 @@ public class Equipment {
 
         printEquipment(output);
         printItems(output);
-
-        output.printf("\nquit: q\tequip: e\n");
     }
 
     public void printEquipment(@NotNull PrintWriter output) {
         output.printf(
                 """
                 \033[1mEquipment\033[0m
-    
+
                 Head: %s
                 Body: %s
                 Feet: %s
                 Hands: %s
                 Special Item: %s
-    
+
                 """,
                 this.helm != null ? this.helm.getName() : "None",
                 this.chestplate.getName(),

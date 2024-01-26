@@ -1,6 +1,7 @@
 package pl.umcs.entities;
 
 import lombok.Builder;
+
 import pl.umcs.items.chestplates.ClothArmor;
 import pl.umcs.items.shoes.Feet;
 import pl.umcs.items.weapons.Hand;

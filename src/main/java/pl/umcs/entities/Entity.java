@@ -113,4 +113,12 @@ public class Entity extends GameElement {
             map.placeEntity(newX, newY, this);
         }
     }
+
+    public void move(Map map, Player player) {
+        if (Map.distance(this, player) < 10) {
+            // Path to player
+        } else {
+            moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
+        }
+    }
 }
