@@ -67,6 +67,8 @@ Obrona: 2\
 Zręczność: 4\
 Życie: 3
 
+**Zachowanie:** Poruszają się chaotycznie. Za ich akcjami nie stoi nic, poza instynktem do przeżycia.
+
 ### Myr
 [★★☆☆☆]
 

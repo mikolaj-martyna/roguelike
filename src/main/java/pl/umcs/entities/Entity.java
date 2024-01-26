@@ -9,8 +9,7 @@ import pl.umcs.items.Equipment;
 import pl.umcs.items.Item;
 import pl.umcs.map.Map;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Getter
 @Setter
@@ -89,6 +88,7 @@ public class Entity extends GameElement {
         if (map.hasMonster(newX, newY)) {
             Entity opponent = map.getLevel()[newX][newY].getEntity();
 
+            // TODO: improve attack mechanic (user input during combat)
             while (this.isAlive() && opponent.isAlive()) {
                 this.attack(opponent);
 
@@ -116,7 +116,8 @@ public class Entity extends GameElement {
 
     public void move(Map map, Player player) {
         if (Map.distance(this, player) < 10) {
-            // Path to player
+            // TODO: change distance calculation to DFS
+            // TODO: add next step direction
         } else {
             moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
         }

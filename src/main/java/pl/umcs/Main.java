@@ -70,14 +70,10 @@ public class Main {
         PrintWriter output = new PrintWriter(System.out, true, StandardCharsets.UTF_8);
 
         // Game
-        Map map =
-                Map.builder()
-                        .level(new Field[11][18])
-                        .rows(11)
-                        .cols(18)
-                        .entities(new ArrayList<>())
-                        .items(new ArrayList<>())
-                        .build();
+        Map map = new Map(11, 18);
+
+        // Default target map setup
+//        Map map = new Map();
 
         Player player = new Player();
 
