@@ -15,7 +15,6 @@ import pl.umcs.items.helms.Helm;
 import pl.umcs.items.shoes.Shoes;
 import pl.umcs.items.special_items.SpecialItem;
 import pl.umcs.items.weapons.Weapon;
-import pl.umcs.map.walls.*;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -25,7 +24,7 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 public class Map {
-    int currentLevel = 0;
+    int currentLevelNumber = 0;
     Random random;
     private List<Level> levels;
 
@@ -38,7 +37,7 @@ public class Map {
 
         random = new Random();
 
-        generateMap(1, rows, cols);
+        generateMap(100, rows, cols);
     }
 
     /* Misc */
@@ -47,13 +46,17 @@ public class Map {
                 sqrt(pow(entity.getX() - player.getX(), 2) + pow(entity.getY() - player.getY(), 2));
     }
 
+    public void nextLevel() {
+        this.currentLevelNumber++;
+    }
+
     /* Getters */
     public int getRows() {
-        return levels.get(currentLevel).getRows();
+        return levels.get(currentLevelNumber).getRows();
     }
 
     public int getCols() {
-        return levels.get(currentLevel).getCols();
+        return levels.get(currentLevelNumber).getCols();
     }
 
     public int getRows(int level) {
@@ -65,7 +68,7 @@ public class Map {
     }
 
     public Field[][] getFields() {
-        return levels.get(currentLevel).getFields();
+        return levels.get(currentLevelNumber).getFields();
     }
 
     public Field[][] getFields(int level) {
@@ -81,7 +84,7 @@ public class Map {
     }
 
     public List<Item> getItems(int x, int y) {
-        return getFields(currentLevel)[x][y].getItems();
+        return getFields(currentLevelNumber)[x][y].getItems();
     }
 
     public List<Item> getItems(int level, int x, int y) {
@@ -89,12 +92,20 @@ public class Map {
     }
 
     public Level getCurrentLevel() {
-        return levels.get(currentLevel);
+        return levels.get(currentLevelNumber);
+    }
+
+    public int getCurrentStartingX() {
+        return getCurrentLevel().getStartingX();
+    }
+
+    public int getCurrentStartingY() {
+        return getCurrentLevel().getStartingY();
     }
 
     /* Checks */
     public boolean isInBounds(int x, int y) {
-        return x >= 0 && y >= 0 && x < getRows(currentLevel) && y < getCols(currentLevel);
+        return x >= 0 && y >= 0 && x < getRows(currentLevelNumber) && y < getCols(currentLevelNumber);
     }
 
     public boolean isInBounds(int level, int x, int y) {
@@ -109,7 +120,7 @@ public class Map {
     }
 
     public boolean canPlaceEntity(int x, int y) {
-        return canPlaceEntity(currentLevel, x, y);
+        return canPlaceEntity(currentLevelNumber, x, y);
     }
 
     public boolean canPlaceEntity(int level, int x, int y) {
@@ -120,8 +131,7 @@ public class Map {
     }
 
     public boolean hasItem(int x, int y) {
-        return isInBounds(currentLevel, x, y)
-                && !this.getFields(currentLevel)[x][y].items.isEmpty();
+        return hasItem(currentLevelNumber, x, y);
     }
 
     public boolean hasItem(int level, int x, int y) {
@@ -129,7 +139,7 @@ public class Map {
     }
 
     public boolean hasMonster(int x, int y) {
-        return isInBounds(currentLevel, x, y) && this.getFields(currentLevel)[x][y].entity != null;
+        return hasMonster(currentLevelNumber, x, y);
     }
 
     public boolean hasMonster(int level, int x, int y) {
@@ -144,23 +154,24 @@ public class Map {
         getItems(level).add(item);
     }
 
-    public void placeEntity(int x, int y, Entity entity) {
-        placeEntity(currentLevel, x, y, entity);
+    public boolean placeEntity(int x, int y, Entity entity) {
+        return placeEntity(currentLevelNumber, x, y, entity);
     }
 
-    public void placeEntity(int level, int x, int y, Entity entity) {
-        if (!canPlaceEntity(level, x, y)) return;
+    public boolean placeEntity(int level, int x, int y, Entity entity) {
+        if (!canPlaceEntity(level, x, y)) return false;
 
         getFields(level)[x][y].entity = entity;
         getEntities(level).add(entity);
 
         entity.setX(x);
         entity.setY(y);
+
+        return true;
     }
 
     public void removeItems(int x, int y) {
-        getItems(currentLevel).removeAll(getFields(currentLevel)[x][y].getItems());
-        getFields(currentLevel)[x][y].items.clear();
+        removeItems(currentLevelNumber, x, y);
     }
 
     public void removeItems(int level, int x, int y) {
@@ -169,33 +180,27 @@ public class Map {
     }
 
     public void removeEntity(Entity entity) {
-        removeEntity(currentLevel, entity);
+        removeEntity(currentLevelNumber, entity);
     }
 
-    public void removeEntity(int level, Entity entity) {
-        getEntities(level).remove(entity);
-
+    public void removeEntity(int level, @NotNull Entity entity) {
         getFields(level)[entity.getX()][entity.getY()].entity = null;
 
-        entity.setX(-1);
-        entity.setY(-1);
+        getEntities(level).remove(entity);
     }
 
     public void removeEntity(int x, int y) {
-        removeEntity(currentLevel, x, y);
+        removeEntity(currentLevelNumber, x, y);
     }
 
     public void removeEntity(int level, int x, int y) {
         getEntities(level).remove(getFields(level)[x][y].entity);
 
-        getFields(level)[x][y].entity.setX(-1);
-        getFields(level)[x][y].entity.setY(-1);
-
         getFields(level)[x][y].entity = null;
     }
 
     public void removeEntity(int x, int y, Entity entity) {
-        removeEntity(currentLevel, x, y, entity);
+        removeEntity(currentLevelNumber, x, y, entity);
     }
 
     public void removeEntity(int level, int x, int y, Entity entity) {
@@ -271,21 +276,21 @@ public class Map {
                 // Each field walked on by the entity is considered land
                 // If walked twice on the same tile, don't decrease number of steps left
                 if (level.getFields()[entity.getX()][entity.getY()] instanceof Floor) {
-                    //                    if (random.nextBoolean()) i--;
                     --i;
                 } else {
                     level.getFields()[entity.getX()][entity.getY()] = new Floor();
                 }
             }
         }
+        entities.clear();
+
+        levels.add(level);
 
         generateBridges(level);
         generateItems(level);
         generateEntities(level);
         generatePassage(level);
         generateStartingPosition(level);
-
-        levels.add(level);
     }
 
     public void generateLevelDungeon(int rows, int cols) {
@@ -310,13 +315,13 @@ public class Map {
             generateRoom(level, x, y, dimensionX, dimensionY);
         }
 
+        levels.add(level);
+
         generateBridges(level);
         generateItems(level);
         generateEntities(level);
         generatePassage(level);
         generateStartingPosition(level);
-
-        levels.add(level);
     }
 
     public void generateRoom(@NotNull Level level, int x, int y, int dimensionX, int dimensionY) {
@@ -408,12 +413,14 @@ public class Map {
             int x = random.nextInt(level.getRows());
             int y = random.nextInt(level.getCols());
 
-            if (level.getFields()[x][y] instanceof Floor
-                    || level.getFields()[x][y] instanceof Bridge) {
+            if (level.getFields()[x][y] instanceof Floor || level.getFields()[x][y] instanceof Bridge) {
                 level.getFields()[x][y].entity = entity;
                 level.getEntities().add(entity);
+
+                entity.setX(x);
+                entity.setY(y);
             } else {
-                i--;
+                --i;
             }
         }
     }
@@ -460,18 +467,16 @@ public class Map {
     public void print() {
         System.out.flush();
 
-        for (int i = 0; i < getRows(currentLevel); i++) {
-            for (int j = 0; j < getCols(currentLevel); j++) {
-                Entity entity = getFields(currentLevel)[i][j].entity;
+        for (int i = 0; i < getRows(currentLevelNumber); i++) {
+            for (int j = 0; j < getCols(currentLevelNumber); j++) {
+                Entity entity = getFields(currentLevelNumber)[i][j].entity;
 
-                if (entity == null && getFields(currentLevel)[i][j].items.isEmpty()) {
-                    System.out.print(getFields(currentLevel)[i][j].getSymbol());
-                } else if (entity instanceof Player) {
-                    System.out.print('@');
-                } else if (!getFields(currentLevel)[i][j].items.isEmpty()) {
+                if (entity != null) {
+                    System.out.print(entity.getSymbol());
+                } else if (!getFields(currentLevelNumber)[i][j].items.isEmpty()) {
                     System.out.print('i');
                 } else {
-                    System.out.print('o');
+                    System.out.print(getFields()[i][j].getSymbol());
                 }
             }
 
@@ -485,19 +490,18 @@ public class Map {
 
         Player player = null;
 
-        for (int i = 0; i < getRows(currentLevel); i++) {
-            for (int j = 0; j < getCols(currentLevel); j++) {
-                Entity entity = getFields(currentLevel)[i][j].entity;
+        for (int i = 0; i < getRows(currentLevelNumber); i++) {
+            for (int j = 0; j < getCols(currentLevelNumber); j++) {
+                Entity entity = getFields(currentLevelNumber)[i][j].entity;
 
-                if (entity == null && getFields(currentLevel)[i][j].items.isEmpty()) {
-                    output.printf("%c", getFields(currentLevel)[i][j].getSymbol());
-                } else if (entity instanceof Player) {
-                    player = (Player) entity;
-                    output.printf("%c", '@');
-                } else if (!getFields(currentLevel)[i][j].items.isEmpty()) {
+                if (entity != null) {
+                    output.printf("%c", entity.getSymbol());
+
+                    if (entity instanceof Player) player = (Player) entity;
+                } else if (!getFields(currentLevelNumber)[i][j].items.isEmpty()) {
                     output.printf("%c", 'i');
                 } else {
-                    output.printf("%c", 'o');
+                    output.printf("%c", getFields()[i][j].getSymbol());
                 }
             }
 
@@ -508,11 +512,11 @@ public class Map {
             output.printf(
                     "HP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n",
                     player.getHealth(),
-                    player.getAttack().getCurrent(),
-                    player.getAgility().getCurrent(),
-                    player.getDefense().getCurrent(),
-                    player.getIntelligence().getCurrent(),
-                    player.getCharisma().getCurrent());
+                    player.getAttack(),
+                    player.getAgility(),
+                    player.getDefense(),
+                    player.getIntelligence(),
+                    player.getCharisma());
         }
     }
 }

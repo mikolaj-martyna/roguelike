@@ -13,18 +13,4 @@ public class EternalDynamo extends SpecialItem {
 
         this.setAttackMultiplier(2);
     }
-
-    @Override
-    public String toString() {
-        return "HP: +"
-                + this.getHealth()
-                + " ATK: +"
-                + this.getAttack()
-                + "(*"
-                + this.getAttackMultiplier()
-                + ") AGL: +"
-                + this.getAgility()
-                + " DEF: +"
-                + this.getDefense();
-    }
 }

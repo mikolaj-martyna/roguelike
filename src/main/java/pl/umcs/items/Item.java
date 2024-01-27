@@ -4,8 +4,8 @@ import lombok.*;
 
 import pl.umcs.GameElement;
 
-@Getter
 @Setter
+@Getter
 public class Item extends GameElement {
     private int health;
     private int attack;
@@ -37,7 +37,44 @@ public class Item extends GameElement {
         this.charismaMultiplier = 1;
     }
 
+    /* Getters */
+    public int getHealth() {
+        return (int) (this.health * this.healthMultiplier);
+    }
+
+    public int getAttack() {
+        return (int) (this.attack * this.attackMultiplier);
+    }
+
+    public int getAgility() {
+        return (int) (this.agility * this.agilityMultiplier);
+    }
+
+    public int getDefense() {
+        return (int) (this.defense * this.defenseMultiplier);
+    }
+
+    public int getIntelligence() {
+        return (int) (this.intelligence * this.intelligenceMultiplier);
+    }
+
+    public int getCharisma() {
+        return (int) (this.charisma * this.charismaMultiplier);
+    }
+
     public String getSlotName() {
         return "";
+    }
+
+    @Override
+    public String toString() {
+        return "HP: +"
+                + this.getHealth()
+                + " ATK: +"
+                + this.getAttack()
+                + "AGL: +"
+                + this.getAgility()
+                + " DEF: +"
+                + this.getDefense();
     }
 }

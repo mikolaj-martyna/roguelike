@@ -1,15 +1,10 @@
 package pl.umcs;
 
 import pl.umcs.entities.Player;
-import pl.umcs.entities.monsters.Inevitable;
-import pl.umcs.entities.monsters.ThoughtEater;
-import pl.umcs.items.special_items.EternalDynamo;
-import pl.umcs.map.Field;
 import pl.umcs.map.Map;
 
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -25,11 +20,18 @@ public class Main {
         Map map = new Map();
         Player player = new Player();
 
-        map.placeEntity(
-                map.getCurrentLevel().getStartingX(), map.getCurrentLevel().getStartingY(), player);
+        map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
+
+        int currentGameLevel = 0;
 
         /* Main loop */
         while (player.isAlive()) {
+            if (currentGameLevel != map.getCurrentLevelNumber()) {
+                map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
+
+                currentGameLevel++;
+            }
+
             // Print current map state
             map.print(output);
 
@@ -66,7 +68,6 @@ public class Main {
                             output.printf("Index of item to equip: ");
                             input = reader.next().charAt(0);
 
-                            // TODO: check if input is a number, if not print error message
                             if (!player.getEquipment().getItems().isEmpty()
                                     && validateNumber(input)) {
                                 player.getEquipment()

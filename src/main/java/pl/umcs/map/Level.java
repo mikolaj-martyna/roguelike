@@ -2,6 +2,7 @@ package pl.umcs.map;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import pl.umcs.entities.Entity;
 import pl.umcs.items.Item;
 

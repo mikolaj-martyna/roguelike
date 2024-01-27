@@ -10,6 +10,7 @@ import pl.umcs.items.shoes.Shoes;
 import pl.umcs.items.special_items.SpecialItem;
 import pl.umcs.items.weapons.Weapon;
 
+import javax.crypto.ShortBufferException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 public class Equipment {
     List<Item> items;
+
     private Helm helm;
     private Chestplate chestplate;
     private Shoes shoes;
@@ -24,16 +26,17 @@ public class Equipment {
     private SpecialItem specialItem;
 
     public Equipment() {
-        this.helm = null;
-        this.chestplate = null;
-        this.shoes = null;
+        this.helm = new Helm();
+        this.chestplate = new Chestplate();
+        this.shoes = new Shoes();
 
-        this.weapon = null;
-        this.specialItem = null;
+        this.weapon = new Weapon();
+        this.specialItem = new SpecialItem();
 
         items = new ArrayList<>();
     }
 
+    /* Inventory management */
     public void addItem(Item item) {
         items.add(item);
     }
@@ -42,6 +45,7 @@ public class Equipment {
         items.remove(item);
     }
 
+    /* Equipment management */
     public void equipItem(Item item) {
         if (item instanceof Helm) equipHelm((Helm) item);
         if (item instanceof Chestplate) equipChestplate((Chestplate) item);
@@ -110,6 +114,57 @@ public class Equipment {
         this.specialItem = null;
     }
 
+    /* Getters */
+    // Combined item statistics
+    public int getHealth() {
+        return this.helm.getHealth()
+                + this.chestplate.getHealth()
+                + this.shoes.getHealth()
+                + this.specialItem.getHealth()
+                + this.weapon.getHealth();
+    }
+
+    public int getAttack() {
+        return this.helm.getAttack()
+                + this.chestplate.getAttack()
+                + this.shoes.getAttack()
+                + this.specialItem.getAttack()
+                + this.weapon.getAttack();
+    }
+
+    public int getAgility() {
+        return this.helm.getAgility()
+                + this.chestplate.getAgility()
+                + this.shoes.getAgility()
+                + this.specialItem.getAgility()
+                + this.weapon.getAgility();
+    }
+
+    public int getDefense() {
+        return this.helm.getDefense()
+                + this.chestplate.getDefense()
+                + this.shoes.getDefense()
+                + this.specialItem.getDefense()
+                + this.weapon.getDefense();
+    }
+
+    public int getIntelligence() {
+        return this.helm.getIntelligence()
+                + this.chestplate.getIntelligence()
+                + this.shoes.getIntelligence()
+                + this.specialItem.getIntelligence()
+                + this.weapon.getIntelligence();
+    }
+
+    public int getCharisma() {
+        return this.helm.getCharisma()
+                + this.chestplate.getCharisma()
+                + this.shoes.getCharisma()
+                + this.specialItem.getCharisma()
+                + this.weapon.getCharisma();
+    }
+
+    /* Printing */
     public void printEquipmentAndInventory(@NotNull PrintWriter output) {
         output.print("\033[H\033[2J");
         output.flush();
@@ -123,10 +178,10 @@ public class Equipment {
                 """
                 \033[1mEquipment\033[0m
 
-                Head: %s
-                Body: %s
-                Feet: %s
-                Hands: %s
+                Helm: %s
+                Chestplate: %s
+                Shoes: %s
+                Weapon: %s
                 Special Item: %s
 
                 """,

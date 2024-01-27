@@ -8,15 +8,13 @@ import pl.umcs.GameElement;
 import pl.umcs.items.Equipment;
 import pl.umcs.items.Item;
 import pl.umcs.map.Map;
+import pl.umcs.map.Passage;
 
 import java.util.*;
 
 @Getter
 @Setter
 public class Entity extends GameElement {
-    private int x;
-    private int y;
-
     private Equipment equipment;
 
     private Property health;
@@ -28,25 +26,17 @@ public class Entity extends GameElement {
 
     private Fraction fraction;
 
+    private int x;
+    private int y;
+
     private int numberOfDice;
     private int maxRange;
 
     public Entity() {
-        this.x = -1;
-        this.y = -1;
-
         equipment = new Equipment();
     }
 
-    // Behavior
-    public void heal(int amount) {
-        this.health.current += amount;
-    }
-
-    public void takeDamage(int damage) {
-        this.health.current -= damage;
-    }
-
+    /* Getters */
     public int getBaselineHealth() {
         return this.health.baseline;
     }
@@ -55,25 +45,69 @@ public class Entity extends GameElement {
         return this.health.current;
     }
 
+    public int getAttack() {
+        return (int)
+                ((this.attack.baseline * this.attack.multiplier)
+                        + (this.getEquipment().getAttack()));
+    }
+
+    public int getAgility() {
+        return (int)
+                ((this.agility.baseline * this.agility.multiplier)
+                        + (this.getEquipment().getAgility()));
+    }
+
+    public int getDefense() {
+        return (int)
+                ((this.defense.baseline * this.defense.multiplier)
+                        + (this.getEquipment().getDefense()));
+    }
+
+    public int getIntelligence() {
+        return (int)
+                ((this.intelligence.baseline * this.intelligence.multiplier)
+                        + (this.getEquipment().getIntelligence()));
+    }
+
+    public int getCharisma() {
+        return (int)
+                ((this.charisma.baseline * this.charisma.multiplier)
+                        + (this.getEquipment().getCharisma()));
+    }
+
+    /* Behavior */
+    public void heal(int amount) {
+        this.health.current += amount;
+    }
+
+    public void takeDamage(int damage) {
+        this.health.current -= damage;
+    }
+
     public boolean isAlive() {
         return this.getHealth() > 0;
     }
 
     public void attack(@NotNull Entity opponent) {
-        if (opponent.agility.current >= new Random().nextInt(100)) {
-            int damageDealt = (int) (this.attack.current * this.attack.multiplier);
+        if (opponent.getAgility() >= new Random().nextInt(100)) {
+            int damageDealt = getAttack();
             double defenseMultiplier =
-                    (1 - (((double) opponent.defense.current / 100) * opponent.defense.multiplier));
+                    (1 - ((double) opponent.getDefense() / 100));
             int damageTaken = (int) (damageDealt * defenseMultiplier);
 
             opponent.takeDamage(damageTaken);
         }
     }
 
-    // Movement
+    /* Movement */
     public void moveBy(@NotNull Map map, int offsetX, int offsetY) {
         int newX = this.getX() + offsetX;
         int newY = this.getY() + offsetY;
+
+        if (map.getFields()[newX][newY] instanceof Passage) {
+            map.nextLevel();
+            return;
+        }
 
         if (map.hasItem(newX, newY)) {
             List<Item> items = map.getItems(newX, newY);
@@ -83,6 +117,7 @@ public class Entity extends GameElement {
             }
 
             map.removeItems(newX, newY);
+            return;
         }
 
         if (map.hasMonster(newX, newY)) {
@@ -106,6 +141,8 @@ public class Entity extends GameElement {
             if (opponent.isAlive()) {
                 map.removeEntity(this);
             }
+
+            return;
         }
 
         if (map.canPlaceEntity(newX, newY)) {
