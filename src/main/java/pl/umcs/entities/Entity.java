@@ -86,7 +86,7 @@ public class Entity extends GameElement {
         }
 
         if (map.hasMonster(newX, newY)) {
-            Entity opponent = map.getLevel()[newX][newY].getEntity();
+            Entity opponent = map.getFields()[newX][newY].getEntity();
 
             // TODO: improve attack mechanic (user input during combat)
             while (this.isAlive() && opponent.isAlive()) {

@@ -14,54 +14,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        /* Misc */
-        char[][] fields = {
-            {
-                '╔', '═', '═', '═', '═', '═', '═', '═', '═', '═', '╗', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '║', '░', '░', '░', '░', '░', '░', '░', '░', '░', '║', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '║', '░', '░', '░', '░', '╔', '═', '═', '═', '═', '╝', ' ', ' ', ' ', ' ', ' ', ' ',
-                ' '
-            },
-            {
-                '╚', '═', '#', '═', '═', '╝', ' ', ' ', ' ', ' ', ' ', '╔', '═', '═', '═', '═', '═',
-                '╗'
-            },
-            {
-                ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '║', '░', '░', '░', '░', '░',
-                '║'
-            },
-            {
-                ' ', ' ', '#', '#', '#', ' ', ' ', ' ', '#', '#', '#', '#', '░', '░', '░', '░', '░',
-                '║'
-            },
-            {
-                ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', '║', '░', '░', '░', '░', '░',
-                '║'
-            },
-            {
-                ' ', ' ', ' ', ' ', '#', '#', '#', '#', '#', ' ', ' ', '╚', '═', '═', '═', '═', '═',
-                '╝'
-            }
-        };
-
         /* Setup */
         // Input
         Scanner reader = new Scanner(System.in, StandardCharsets.UTF_8);
@@ -70,27 +22,10 @@ public class Main {
         PrintWriter output = new PrintWriter(System.out, true, StandardCharsets.UTF_8);
 
         // Game
-        Map map = new Map(11, 18);
-
-        // Default target map setup
-//        Map map = new Map();
-
+        Map map = new Map();
         Player player = new Player();
 
-        ThoughtEater thoughtEater = new ThoughtEater();
-        Inevitable inevitable = new Inevitable();
-
-        EternalDynamo eternalDynamo = new EternalDynamo();
-        EternalDynamo eternalDynamo2 = new EternalDynamo();
-
-        map.load(fields);
-
-        map.placeEntity(5, 3, player);
-        map.placeEntity(8, 15, thoughtEater);
-        map.placeEntity(3, 2, inevitable);
-
-        map.placeItem(8, 16, eternalDynamo);
-        map.placeItem(4, 2, eternalDynamo2);
+        map.placeEntity(map.getCurrentLevel().getStartingX(), map.getCurrentLevel().getStartingY(), player);
 
         /* Main loop */
         while (player.isAlive()) {
@@ -126,11 +61,12 @@ public class Main {
                         input = reader.next().charAt(0);
 
                         if (input == 'e') {
+                            // TODO: print equipment as pages with item indexes 1-9
                             output.printf("Index of item to equip: ");
                             input = reader.next().charAt(0);
 
                             // TODO: check if input is a number, if not print error message
-                            if (!player.getEquipment().getItems().isEmpty()) {
+                            if (!player.getEquipment().getItems().isEmpty() && validateNumber(input)) {
                                 player.getEquipment()
                                         .equipItem(
                                                 player.getEquipment()
@@ -149,5 +85,9 @@ public class Main {
         /* Cleanup */
         reader.close();
         output.close();
+    }
+
+    public static boolean validateNumber(char input) {
+        return input >= '0' && input <= '9';
     }
 }

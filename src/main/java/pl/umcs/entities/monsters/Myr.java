@@ -9,7 +9,7 @@ public class Myr extends Entity {
 
         // GameElement
         setName("Myr");
-        setSymbol('o');
+        setSymbol('2');
         setDescription("Small construct.");
 
         // Entity

@@ -11,7 +11,7 @@ public class Modron extends Entity {
 
         // GameElement
         setName("Modron");
-        setSymbol('o');
+        setSymbol('4');
         setDescription(
                 "Immortals known for their zealous adherence to the principles of law and order above all else.");
 

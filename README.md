@@ -34,7 +34,7 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 3. `#` - most
 4. `.` - teren wyspy
 5. `|`, `-` - granice wyspy
-6. `o` - przeciwnik
+6. `{dowolna cyfra}` - przeciwnik (wartość symbolizuje poziom trudności)
 7. `u` - skrzynia
 8. `i` - przedmiot
 

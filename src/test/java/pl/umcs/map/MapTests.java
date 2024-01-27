@@ -24,14 +24,11 @@ class MapTests {
     };
     public static Entity testEntity = new Entity();
     private static Map loadedMap;
-    private static Map map;
 
     @BeforeAll
     public static void setup() {
         loadedMap = new Map(11, 18);
-        loadedMap.load(fields);
-
-        map = new Map();
+//        loadedMap.load(fields);
     }
 
     @Test
@@ -108,22 +105,17 @@ class MapTests {
     public void load_CheckOutputIfLoadedCorrectly_ReturnsTrue() {
         for (int i = 0; i < loadedMap.getRows(); i++) {
             for (int j = 0; j < loadedMap.getCols(); j++) {
-                System.out.print(loadedMap.getLevel()[i][j].getSymbol());
-                Assertions.assertEquals(fields[i][j], loadedMap.getLevel()[i][j].getSymbol());
+                System.out.print(loadedMap.getFields()[i][j].getSymbol());
+                Assertions.assertEquals(fields[i][j], loadedMap.getFields()[i][j].getSymbol());
             }
             System.out.println();
         }
     }
 
     @Test
-    public void generateLevelIsland_CheckOutput_ReturnsTrue() {
-        map.setLevel(map.generateLevelIsland());
-        map.print();
-    }
+    public void generateLevel_CheckOutput_ReturnsTrue() {
+        Map map = new Map();
 
-    @Test
-    public void generateLevelDungeon_CheckOutput_ReturnsTrue() {
-        map.setLevel(map.generateLevelDungeon());
         map.print();
     }
 }

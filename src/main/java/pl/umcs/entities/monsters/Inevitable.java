@@ -11,7 +11,7 @@ public class Inevitable extends Entity {
 
         // GameElement
         setName("Inevitable");
-        setSymbol('o');
+        setSymbol('3');
         setDescription(
                 "Lawful, intelligent constructs whose single purpose is to enforce the fundamental laws of nature and morality and punish those who violate them.");
 

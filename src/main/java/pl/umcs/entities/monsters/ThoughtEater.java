@@ -15,7 +15,7 @@ public class ThoughtEater extends Entity {
 
         // GameElement
         setName("Thought eater");
-        setSymbol('o');
+        setSymbol('1');
         setDescription("Emaciated, sickly gray skeletal platypuses with over-sized heads.");
 
         // Entity
