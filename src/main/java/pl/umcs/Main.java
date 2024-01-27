@@ -25,7 +25,8 @@ public class Main {
         Map map = new Map();
         Player player = new Player();
 
-        map.placeEntity(map.getCurrentLevel().getStartingX(), map.getCurrentLevel().getStartingY(), player);
+        map.placeEntity(
+                map.getCurrentLevel().getStartingX(), map.getCurrentLevel().getStartingY(), player);
 
         /* Main loop */
         while (player.isAlive()) {
@@ -66,12 +67,11 @@ public class Main {
                             input = reader.next().charAt(0);
 
                             // TODO: check if input is a number, if not print error message
-                            if (!player.getEquipment().getItems().isEmpty() && validateNumber(input)) {
+                            if (!player.getEquipment().getItems().isEmpty()
+                                    && validateNumber(input)) {
                                 player.getEquipment()
                                         .equipItem(
-                                                player.getEquipment()
-                                                        .getItems()
-                                                        .get(input - '1'));
+                                                player.getEquipment().getItems().get(input - '1'));
                             }
                         }
                     }

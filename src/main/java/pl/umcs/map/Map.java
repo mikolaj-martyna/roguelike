@@ -25,10 +25,9 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 public class Map {
-    private List<Level> levels;
     int currentLevel = 0;
-
     Random random;
+    private List<Level> levels;
 
     public Map() {
         this(24, 80);
@@ -40,6 +39,12 @@ public class Map {
         random = new Random();
 
         generateMap(1, rows, cols);
+    }
+
+    /* Misc */
+    public static int distance(@NotNull Entity entity, @NotNull Player player) {
+        return (int)
+                sqrt(pow(entity.getX() - player.getX(), 2) + pow(entity.getY() - player.getY(), 2));
     }
 
     /* Getters */
@@ -85,12 +90,6 @@ public class Map {
 
     public Level getCurrentLevel() {
         return levels.get(currentLevel);
-    }
-
-    /* Misc */
-    public static int distance(@NotNull Entity entity, @NotNull Player player) {
-        return (int)
-                sqrt(pow(entity.getX() - player.getX(), 2) + pow(entity.getY() - player.getY(), 2));
     }
 
     /* Checks */

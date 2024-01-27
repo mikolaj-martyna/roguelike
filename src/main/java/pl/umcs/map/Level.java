@@ -37,7 +37,12 @@ public class Level {
         this.fields = fields;
     }
 
-    public Level(Field[][] fields, int rows, int cols, ArrayList<Item> items, ArrayList<Entity> entities) {
+    public Level(
+            Field[][] fields,
+            int rows,
+            int cols,
+            ArrayList<Item> items,
+            ArrayList<Entity> entities) {
         this(fields, rows, cols);
 
         this.entities = entities;
