@@ -669,7 +669,7 @@ public class Map {
                 Entity entity = getFields(currentLevelNumber)[currentX][currentY].entity;
 
                 if (entity != null) {
-                    output.printf("%c", entity.getSymbol());
+                    output.printf("\033[0;1m%c\033[0m", entity.getSymbol());
                 } else if (!getFields(currentLevelNumber)[currentX][currentY].items.isEmpty()) {
                     output.printf("%c", 'i');
                 } else {

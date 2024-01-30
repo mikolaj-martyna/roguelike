@@ -162,7 +162,7 @@ public class Entity extends GameElement {
 
     public void printStatistics(@NotNull PrintWriter output) {
         output.printf(
-                "HP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n",
+                "\033[0;1mHP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n\033[0m",
                 this.getHealth(),
                 this.getAttack(),
                 this.getAgility(),

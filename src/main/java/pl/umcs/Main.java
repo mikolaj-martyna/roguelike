@@ -24,9 +24,12 @@ public class Main {
         map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
 
         int currentGameLevel = 0;
+        int round = 0;
 
         /* Main loop */
         while (player.isAlive()) {
+            round++;
+
             if (currentGameLevel != map.getCurrentLevelNumber()) {
                 if (++currentGameLevel == map.getLevelsAmount()) break;
 
@@ -36,7 +39,7 @@ public class Main {
             // Print current map state
             map.print(output);
             player.printStatistics(output);
-            output.printf("Inventory: I\tMove: WASD\nAction: ");
+            output.printf("Round: %d\nInventory: I\tMove: WASD\nAction: ", round);
 
             // Take input
             char input = reader.next().charAt(0);
