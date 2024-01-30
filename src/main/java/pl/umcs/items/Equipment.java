@@ -14,6 +14,7 @@ import pl.umcs.items.special_items.Feather;
 import pl.umcs.items.special_items.SpecialItem;
 import pl.umcs.items.weapons.Stick;
 import pl.umcs.items.weapons.Weapon;
+import pl.umcs.map.Map;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -118,6 +119,13 @@ public class Equipment {
         this.specialItem = null;
     }
 
+    public void dropItem(@NotNull Map map, Item item, int x, int y) {
+        map.getCurrentLevel().getItems().add(item);
+        map.getCurrentLevel().getFields()[x][y].getItems().add(item);
+
+        this.removeItem(item);
+    }
+
     /* Getters */
     // Combined item statistics
     public int getHealth() {
@@ -175,6 +183,8 @@ public class Equipment {
 
         printEquipment(output);
         printItems(output);
+
+        output.printf("Press e to equip, d to drop, q to quit: ");
     }
 
     public void printEquipment(@NotNull PrintWriter output) {

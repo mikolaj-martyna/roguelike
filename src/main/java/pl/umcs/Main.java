@@ -74,6 +74,19 @@ public class Main {
                                         .equipItem(
                                                 player.getEquipment().getItems().get(input - '1'));
                             }
+                        } else if (input == 'd') {
+                            output.printf("Index of item to drop: ");
+                            input = reader.next().charAt(0);
+
+                            if (!player.getEquipment().getItems().isEmpty()
+                                    && validateNumber(input)) {
+                                player.getEquipment()
+                                        .dropItem(
+                                                map,
+                                                player.getEquipment().getItems().get(input - '1'),
+                                                player.getX(),
+                                                player.getY());
+                            }
                         }
                     }
 
