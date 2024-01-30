@@ -3,7 +3,8 @@ package pl.umcs.items.special_items;
 public class AncientScroll extends SpecialItem {
     public AncientScroll() {
         setName("Ancient scroll");
-        setDescription("An old, dusty and run-down reel hiding something only those before us understood.");
+        setDescription(
+                "An old, dusty and run-down reel hiding something only those before us understood.");
 
         this.setHealth(10);
         this.setAttack(3);

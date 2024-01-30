@@ -10,11 +10,11 @@ import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.entities.monsters.*;
 import pl.umcs.items.Item;
-import pl.umcs.items.chestplates.Chestplate;
-import pl.umcs.items.helms.Helm;
-import pl.umcs.items.shoes.Shoes;
-import pl.umcs.items.special_items.SpecialItem;
-import pl.umcs.items.weapons.Weapon;
+import pl.umcs.items.chestplates.*;
+import pl.umcs.items.helms.*;
+import pl.umcs.items.shoes.*;
+import pl.umcs.items.special_items.*;
+import pl.umcs.items.weapons.*;
 import pl.umcs.map.walls.HorizontalWall;
 import pl.umcs.map.walls.VerticalWall;
 
@@ -27,19 +27,27 @@ import java.util.*;
 @AllArgsConstructor
 public class Map {
     int currentLevelNumber = 0;
+    int levelsAmount;
+
     Random random;
+
     private List<Level> levels;
 
     public Map() {
-        this(80, 24);
+        this(100, 80, 24);
     }
 
-    public Map(int width, int height) {
+    public Map(int levelsAmount) {
+        this(levelsAmount, 80, 24);
+    }
+
+    public Map(int levelsAmount, int width, int height) {
         this.levels = new ArrayList<>();
+        this.levelsAmount = levelsAmount;
 
-        random = new Random();
+        this.random = new Random();
 
-        generateMap(100, width, height);
+        generateMap(levelsAmount, width, height);
     }
 
     /* Misc */
@@ -131,6 +139,7 @@ public class Map {
     public boolean canPlaceEntity(int level, int x, int y) {
         if (!isInBounds(level, x, y)) return false;
         if (getFields(level)[x][y].entity != null) return false;
+
         return (getFields(level)[x][y] instanceof Floor
                 || getFields(level)[x][y] instanceof Bridge
                 || getFields(level)[x][y] instanceof Door);
@@ -226,11 +235,9 @@ public class Map {
     /* Generators */
     public void generateMap(int numberOfLevels, int width, int height) {
         for (int currentLevel = 0; currentLevel < numberOfLevels; currentLevel++) {
-            //            if (currentLevel % 10 == 0) generateLevelIsland(width, height);
-            //            else generateLevelDungeon(width, height);
-
-            // TODO: remove after testing
-            generateLevelDungeon(width, height);
+            if (currentLevel % Math.max((levelsAmount / 10), 1) == 0)
+                generateLevelIsland(width, height);
+            else generateLevelDungeon(width, height);
         }
     }
 
@@ -282,8 +289,8 @@ public class Map {
 
         levels.add(level);
 
-        generateItems(level);
-        generateEntities(level);
+        generateItems(level, this.getLevels().size());
+        generateEntities(level, this.getLevels().size());
         generatePassage(level);
         generateStartingPosition(level);
     }
@@ -322,8 +329,8 @@ public class Map {
 
         levels.add(level);
 
-        generateItems(level);
-        generateEntities(level);
+        generateItems(level, this.getLevels().size());
+        generateEntities(level, this.getLevels().size());
         generatePassage(level);
         generateStartingPosition(level);
     }
@@ -442,7 +449,14 @@ public class Map {
         level.changeFieldType(doorTwoX, doorTwoY, doorTwo);
     }
 
-    public void drawBridge(Level level, int doorOneX, int doorOneY, int distance, int[] delta, int turnDistance, int[] deltaTurn) {
+    public void drawBridge(
+            Level level,
+            int doorOneX,
+            int doorOneY,
+            int distance,
+            int[] delta,
+            int turnDistance,
+            int[] deltaTurn) {
         int currentX = doorOneX;
         int currentY = doorOneY;
 
@@ -469,25 +483,37 @@ public class Map {
         }
     }
 
-    public Item generateItem() {
-        // TODO: this is temporary, will be fixed
-        ArrayList<Item> items =
+    public Item generateItem(int levelNumber) {
+        ArrayList<Item> itemsUnderThirty =
                 new ArrayList<>(
                         Arrays.asList(
-                                new Chestplate(),
-                                new Helm(),
-                                new Shoes(),
-                                new SpecialItem(),
-                                new Weapon()));
+                                new ClothArmor(),
+                                new BasicHelm(),
+                                new WornOutShoes(),
+                                new Feather(),
+                                new Stick()));
+        ArrayList<Item> itemsUnderEighty =
+                new ArrayList<>(Arrays.asList(new Chainmail(), new Sandals(), new CommonSword()));
+        ArrayList<Item> itemsEndgame =
+                new ArrayList<>(
+                        Arrays.asList(
+                                new CrystallineArmor(),
+                                new HelmetOfEnlightenment(),
+                                new AetherShoes(),
+                                new AncientScroll(),
+                                new ClockworkAxe()));
 
-        return items.get(random.nextInt(items.size()));
+        if (levelNumber >= 30) itemsUnderThirty.addAll(itemsUnderEighty);
+        if (levelNumber >= 80) itemsUnderThirty.addAll(itemsEndgame);
+
+        return itemsUnderThirty.get(random.nextInt(itemsUnderThirty.size()));
     }
 
-    public void generateItems(Level level) {
-        int items = (random.nextInt(12) + 3) / (random.nextBoolean() ? 2 : 1);
+    public void generateItems(Level level, int levelNumber) {
+        int items = (random.nextInt(6) + 3) / (random.nextBoolean() ? 2 : 1);
 
         for (int i = 1; i <= items; i++) {
-            Item item = generateItem();
+            Item item = generateItem(levelNumber);
 
             int x = random.nextInt(level.getWidth());
             int y = random.nextInt(level.getHeight());
@@ -500,48 +526,44 @@ public class Map {
                 i--;
             }
         }
+
+        if (levelNumber == 100) {
+            EternalDynamo eternalDynamo = new EternalDynamo();
+
+            while (true) {
+                int x = random.nextInt(level.getWidth());
+                int y = random.nextInt(level.getHeight());
+
+                if (level.getFields()[x][y] instanceof Floor
+                        || level.getFields()[x][y] instanceof Bridge) {
+                    level.getFields()[x][y].items.add(eternalDynamo);
+                    level.getItems().add(eternalDynamo);
+
+                    break;
+                }
+            }
+        }
     }
 
-    public Entity generateEntity() {
-        // TODO: this is temporary, will be fixed
-        ArrayList<Entity> entities =
-                new ArrayList<>(
-                        Arrays.asList(
-                                new ClockworkDragon(),
-                                new Inevitable(),
-                                new Inevitable(),
-                                new Modron(),
-                                new Modron(),
-                                new Modron(),
-                                new Myr(),
-                                new Myr(),
-                                new Myr(),
-                                new Myr(),
-                                new Myr(),
-                                new Myr(),
-                                new Myr(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater(),
-                                new ThoughtEater()));
+    public Entity generateEntity(int levelNumber) {
+        ArrayList<Entity> entitiesUnderOneFourth =
+                new ArrayList<>(Arrays.asList(new ThoughtEater(), new Myr()));
+        ArrayList<Entity> entitiesUnderThreeFourths =
+                new ArrayList<>(Arrays.asList(new Inevitable(), new Modron()));
+        ArrayList<Entity> entitiesEndgame = new ArrayList<>(Arrays.asList(new ClockworkDragon()));
 
-        return entities.get(random.nextInt(entities.size()));
+        if (levelNumber >= (levelsAmount * 0.25))
+            entitiesUnderOneFourth.addAll(entitiesUnderThreeFourths);
+        if (levelNumber >= (levelsAmount * 0.75)) entitiesUnderOneFourth.addAll(entitiesEndgame);
+
+        return entitiesUnderOneFourth.get(random.nextInt(entitiesUnderOneFourth.size()));
     }
 
-    public void generateEntities(Level level) {
+    public void generateEntities(Level level, int levelNumber) {
         int entities = (random.nextInt(12) + 3) / (random.nextBoolean() ? 2 : 1);
 
         for (int i = 1; i <= entities; i++) {
-            Entity entity = generateEntity();
+            Entity entity = generateEntity(levelNumber);
 
             int x = random.nextInt(level.getWidth());
             int y = random.nextInt(level.getHeight());

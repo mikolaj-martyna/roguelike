@@ -27,7 +27,7 @@ class MapTests {
 
     @BeforeAll
     public static void setup() {
-        loadedMap = new Map(11, 18);
+        loadedMap = new Map(20, 11, 18);
         //        loadedMap.load(fields);
     }
 

@@ -1,6 +1,7 @@
 package pl.umcs;
 
 import pl.umcs.entities.Player;
+import pl.umcs.items.special_items.EternalDynamo;
 import pl.umcs.map.Map;
 
 import java.io.PrintWriter;
@@ -17,7 +18,7 @@ public class Main {
         PrintWriter output = new PrintWriter(System.out, true, StandardCharsets.UTF_8);
 
         // Game
-        Map map = new Map();
+        Map map = new Map(1);
         Player player = new Player();
 
         map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
@@ -27,9 +28,9 @@ public class Main {
         /* Main loop */
         while (player.isAlive()) {
             if (currentGameLevel != map.getCurrentLevelNumber()) {
-                map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
+                if (++currentGameLevel == map.getLevelsAmount()) break;
 
-                currentGameLevel++;
+                map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
             }
 
             // Print current map state
@@ -58,52 +59,22 @@ public class Main {
                     player.moveBy(map, 1, 0);
                     break;
                 case 'i':
-                    while (input != 'q') {
-                        // Show inventory
-                        player.getEquipment().printEquipmentAndInventory(output);
-
-                        // Get action
-                        input = reader.next().charAt(0);
-
-                        if (input == 'e') {
-                            // TODO: print equipment as pages with item indexes 1-9
-                            output.printf("Index of item to equip: ");
-                            input = reader.next().charAt(0);
-
-                            if (!player.getEquipment().getItems().isEmpty()
-                                    && validateNumber(input)) {
-                                player.getEquipment()
-                                        .equipItem(
-                                                player.getEquipment().getItems().get(input - '1'));
-                            }
-                        } else if (input == 'd') {
-                            output.printf("Index of item to drop: ");
-                            input = reader.next().charAt(0);
-
-                            if (!player.getEquipment().getItems().isEmpty()
-                                    && validateNumber(input)) {
-                                player.getEquipment()
-                                        .dropItem(
-                                                map,
-                                                player.getEquipment().getItems().get(input - '1'),
-                                                player.getX(),
-                                                player.getY());
-                            }
-                        }
-                    }
-
+                    player.handleEquipment(map, reader, output);
                     break;
             }
         }
 
-        output.printf("You died.");
+        if (!player.isAlive()) output.printf("You died.");
+        if (player.getEquipment().getSpecialItem() instanceof EternalDynamo
+                || player.getEquipment().getItems().contains(new EternalDynamo()))
+            output.printf(
+                    "You've found the Eternal Dynamo! You can head back to your island now. Rest now, you did well.");
+        else
+            output.printf(
+                    "You've failed this time, but worry not! You can search again whenever you like.");
 
         /* Cleanup */
         reader.close();
         output.close();
-    }
-
-    public static boolean validateNumber(char input) {
-        return input >= '0' && input <= '9';
     }
 }

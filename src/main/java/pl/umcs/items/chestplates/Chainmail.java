@@ -5,8 +5,7 @@ public class Chainmail extends Chestplate {
         super();
 
         this.setName("Chainmail");
-        this.setDescription(
-                "Heavy, but protective.");
+        this.setDescription("Heavy, but protective.");
 
         this.setHealth(10);
         this.setAgility(-5);

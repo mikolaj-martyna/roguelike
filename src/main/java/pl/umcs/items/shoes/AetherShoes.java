@@ -5,10 +5,7 @@ public class AetherShoes extends Shoes {
         super();
 
         this.setName("Aether shoes");
-        this.setDescription(
-                "Mysterious, self propelling shoes taking energy from unknown source.");
-
-
+        this.setDescription("Mysterious, self propelling shoes taking energy from unknown source.");
 
         this.setHealth(3);
         this.setAgility(17);

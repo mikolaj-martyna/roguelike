@@ -43,7 +43,7 @@ public class Equipment {
 
     /* Inventory management */
     public void addItem(Item item) {
-        items.add(item);
+        if (items.size() < 9) items.add(item);
     }
 
     public void removeItem(Item item) {
@@ -95,27 +95,27 @@ public class Equipment {
     }
 
     public void unequipHelm() {
-        this.items.add(this.helm);
+        this.addItem(this.helm);
         this.helm = null;
     }
 
     public void unequipChestplate() {
-        this.items.add(this.chestplate);
+        this.addItem(this.chestplate);
         this.chestplate = null;
     }
 
     public void unequipShoes() {
-        this.items.add(this.shoes);
+        this.addItem(this.shoes);
         this.shoes = null;
     }
 
     public void unequipWeapon() {
-        this.items.add(this.weapon);
+        this.addItem(this.weapon);
         this.weapon = null;
     }
 
     public void unequipSpecialItem() {
-        this.items.add(this.specialItem);
+        this.addItem(this.specialItem);
         this.specialItem = null;
     }
 

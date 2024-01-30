@@ -5,8 +5,7 @@ public class CrystallineArmor extends Chestplate {
         super();
 
         this.setName("Chainmail");
-        this.setDescription(
-                "Looks astonishing and weights next to nothing.");
+        this.setDescription("Looks astonishing and weights next to nothing.");
 
         this.setHealth(15);
         this.setDefense(20);
