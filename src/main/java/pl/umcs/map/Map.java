@@ -105,7 +105,10 @@ public class Map {
 
     /* Checks */
     public boolean isInBounds(int x, int y) {
-        return x >= 0 && y >= 0 && x < getRows(currentLevelNumber) && y < getCols(currentLevelNumber);
+        return x >= 0
+                && y >= 0
+                && x < getRows(currentLevelNumber)
+                && y < getCols(currentLevelNumber);
     }
 
     public boolean isInBounds(int level, int x, int y) {
@@ -230,59 +233,46 @@ public class Map {
     public void generateLevelIsland(int rows, int cols) {
         Level level = generateEmptyLevel(rows, cols);
 
-        // Spawn n entities in random places
-        List<Entity> entities = new ArrayList<>();
-        int islands = random.nextInt(7) + 2;
+        Entity entity = new Entity();
 
-        for (int i = 1; i <= islands; i++) {
-            Entity entity = new Entity();
-
-            entity.setX(random.nextInt(level.getRows()));
-            entity.setY(random.nextInt(level.getCols()));
-
-            entities.add(entity);
-        }
+        entity.setX(random.nextInt(level.getRows()));
+        entity.setY(random.nextInt(level.getCols()));
 
         // Get them to move <i, j> steps in random directions
-        int minSteps = 30;
-        int maxSteps = 100;
+        int minSteps = 250;
+        int maxSteps = 640;
 
-        for (Entity entity : entities) {
-            int steps = random.nextInt(maxSteps - minSteps) + minSteps;
+        int steps = random.nextInt(maxSteps - minSteps) + minSteps;
 
-            for (int i = 0; i <= steps; i++) {
-                boolean moveX = random.nextBoolean();
+        for (int i = 0; i <= steps; i++) {
+            boolean moveX = random.nextBoolean();
 
-                if (moveX) {
-                    int newX =
-                            Math.max(
-                                    Math.min(
-                                            entity.getX() + random.nextInt(3) - 1,
-                                            level.getRows() - 1),
-                                    0);
+            if (moveX) {
+                int newX =
+                        Math.max(
+                                Math.min(
+                                        entity.getX() + random.nextInt(3) - 1, level.getRows() - 1),
+                                0);
 
-                    entity.setX(newX);
-                } else {
-                    int newY =
-                            Math.max(
-                                    Math.min(
-                                            entity.getY() + random.nextInt(3) - 1,
-                                            level.getCols() - 1),
-                                    0);
+                entity.setX(newX);
+            } else {
+                int newY =
+                        Math.max(
+                                Math.min(
+                                        entity.getY() + random.nextInt(3) - 1, level.getCols() - 1),
+                                0);
 
-                    entity.setY(newY);
-                }
+                entity.setY(newY);
+            }
 
-                // Each field walked on by the entity is considered land
-                // If walked twice on the same tile, don't decrease number of steps left
-                if (level.getFields()[entity.getX()][entity.getY()] instanceof Floor) {
-                    --i;
-                } else {
-                    level.getFields()[entity.getX()][entity.getY()] = new Floor();
-                }
+            // Each field walked on by the entity is considered land
+            // If walked twice on the same tile, don't decrease number of steps left
+            if (level.getFields()[entity.getX()][entity.getY()] instanceof Floor) {
+                --i;
+            } else {
+                level.getFields()[entity.getX()][entity.getY()] = new Floor();
             }
         }
-        entities.clear();
 
         levels.add(level);
 
@@ -413,7 +403,8 @@ public class Map {
             int x = random.nextInt(level.getRows());
             int y = random.nextInt(level.getCols());
 
-            if (level.getFields()[x][y] instanceof Floor || level.getFields()[x][y] instanceof Bridge) {
+            if (level.getFields()[x][y] instanceof Floor
+                    || level.getFields()[x][y] instanceof Bridge) {
                 level.getFields()[x][y].entity = entity;
                 level.getEntities().add(entity);
 
@@ -435,7 +426,7 @@ public class Map {
         } while (!(level.getFields()[x][y] instanceof Floor
                 || level.getFields()[x][y] instanceof Bridge));
 
-        return new int[]{x, y};
+        return new int[] {x, y};
     }
 
     public void generatePassage(@NotNull Level level) {
