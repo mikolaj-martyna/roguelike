@@ -5,12 +5,16 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import pl.umcs.items.chestplates.Chestplate;
+import pl.umcs.items.chestplates.ClothArmor;
+import pl.umcs.items.helms.BasicHelm;
 import pl.umcs.items.helms.Helm;
+import pl.umcs.items.shoes.WornOutShoes;
 import pl.umcs.items.shoes.Shoes;
+import pl.umcs.items.special_items.Feather;
 import pl.umcs.items.special_items.SpecialItem;
+import pl.umcs.items.weapons.Stick;
 import pl.umcs.items.weapons.Weapon;
 
-import javax.crypto.ShortBufferException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +30,12 @@ public class Equipment {
     private SpecialItem specialItem;
 
     public Equipment() {
-        this.helm = new Helm();
-        this.chestplate = new Chestplate();
-        this.shoes = new Shoes();
+        this.helm = new BasicHelm();
+        this.chestplate = new ClothArmor();
+        this.shoes = new WornOutShoes();
 
-        this.weapon = new Weapon();
-        this.specialItem = new SpecialItem();
+        this.weapon = new Stick();
+        this.specialItem = new Feather();
 
         items = new ArrayList<>();
     }
@@ -186,9 +190,9 @@ public class Equipment {
 
                 """,
                 this.helm != null ? this.helm.getName() : "None",
-                this.chestplate.getName(),
-                this.shoes.getName(),
-                this.weapon.getName(),
+                this.specialItem != null ? this.chestplate.getName() : "None",
+                this.specialItem != null ? this.shoes.getName() : "None",
+                this.specialItem != null ? this.weapon.getName() : "None",
                 this.specialItem != null ? this.specialItem.getName() : "None");
     }
 

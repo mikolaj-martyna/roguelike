@@ -22,6 +22,8 @@ public class Item extends GameElement {
     private double charismaMultiplier;
 
     public Item() {
+        this.setSymbol('i');
+
         this.health = 0;
         this.attack = 0;
         this.agility = 0;
