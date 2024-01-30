@@ -39,7 +39,7 @@ class MapTests {
 
     @Test
     public void isInBounds_InBoundsUpper_ReturnsTrue() {
-        boolean inBounds = loadedMap.isInBounds(loadedMap.getRows() - 1, loadedMap.getCols() - 1);
+        boolean inBounds = loadedMap.isInBounds(loadedMap.getWidth() - 1, loadedMap.getHeight() - 1);
         assertTrue(inBounds);
     }
 
@@ -51,7 +51,7 @@ class MapTests {
 
     @Test
     public void isInBounds_OutOfBoundsColsUpper_ReturnsFalse() {
-        boolean inBounds = loadedMap.isInBounds(loadedMap.getRows() + 1, 0);
+        boolean inBounds = loadedMap.isInBounds(loadedMap.getWidth() + 1, 0);
         assertFalse(inBounds);
     }
 
@@ -63,7 +63,7 @@ class MapTests {
 
     @Test
     public void isInBounds_OutOfBoundsRowsUpper_ReturnsFalse() {
-        boolean inBounds = loadedMap.isInBounds(0, loadedMap.getCols() + 1);
+        boolean inBounds = loadedMap.isInBounds(0, loadedMap.getHeight() + 1);
         assertFalse(inBounds);
     }
 
@@ -103,8 +103,8 @@ class MapTests {
 
     @Test
     public void load_CheckOutputIfLoadedCorrectly_ReturnsTrue() {
-        for (int i = 0; i < loadedMap.getRows(); i++) {
-            for (int j = 0; j < loadedMap.getCols(); j++) {
+        for (int i = 0; i < loadedMap.getWidth(); i++) {
+            for (int j = 0; j < loadedMap.getHeight(); j++) {
                 System.out.print(loadedMap.getFields()[i][j].getSymbol());
                 Assertions.assertEquals(fields[i][j], loadedMap.getFields()[i][j].getSymbol());
             }

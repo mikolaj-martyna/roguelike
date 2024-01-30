@@ -44,16 +44,16 @@ public class Main {
 
             switch (input) {
                 case 'w':
-                    player.moveBy(map, -1, 0);
-                    break;
-                case 'a':
                     player.moveBy(map, 0, -1);
                     break;
+                case 'a':
+                    player.moveBy(map, -1, 0);
+                    break;
                 case 's':
-                    player.moveBy(map, 1, 0);
+                    player.moveBy(map, 0, 1);
                     break;
                 case 'd':
-                    player.moveBy(map, 0, 1);
+                    player.moveBy(map, 1, 0);
                     break;
                 case 'i':
                     while (input != 'q') {
