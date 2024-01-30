@@ -527,7 +527,7 @@ public class Map {
             }
         }
 
-        if (levelNumber == 100) {
+        if (levelNumber == levelsAmount) {
             EternalDynamo eternalDynamo = new EternalDynamo();
 
             while (true) {

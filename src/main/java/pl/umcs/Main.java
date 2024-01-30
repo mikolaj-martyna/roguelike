@@ -18,7 +18,7 @@ public class Main {
         PrintWriter output = new PrintWriter(System.out, true, StandardCharsets.UTF_8);
 
         // Game
-        Map map = new Map(1);
+        Map map = new Map(20);
         Player player = new Player();
 
         map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
@@ -66,7 +66,7 @@ public class Main {
 
         if (!player.isAlive()) output.printf("You died.");
         if (player.getEquipment().getSpecialItem() instanceof EternalDynamo
-                || player.getEquipment().getItems().contains(new EternalDynamo()))
+                || player.getEquipment().getItems().stream().anyMatch(item -> item instanceof EternalDynamo))
             output.printf(
                     "You've found the Eternal Dynamo! You can head back to your island now. Rest now, you did well.");
         else
