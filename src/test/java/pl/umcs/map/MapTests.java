@@ -39,7 +39,8 @@ class MapTests {
 
     @Test
     public void isInBounds_InBoundsUpper_ReturnsTrue() {
-        boolean inBounds = loadedMap.isInBounds(loadedMap.getWidth() - 1, loadedMap.getHeight() - 1);
+        boolean inBounds =
+                loadedMap.isInBounds(loadedMap.getWidth() - 1, loadedMap.getHeight() - 1);
         assertTrue(inBounds);
     }
 

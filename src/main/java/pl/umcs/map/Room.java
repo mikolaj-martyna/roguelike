@@ -2,6 +2,7 @@ package pl.umcs.map;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -32,7 +33,8 @@ public class Room {
         this(id, x, y, xOffset, yOffset, width, height, false);
     }
 
-    public Room(int id, int x, int y, int xOffset, int yOffset, int width, int height, boolean isGone) {
+    public Room(
+            int id, int x, int y, int xOffset, int yOffset, int width, int height, boolean isGone) {
         this.id = id;
 
         this.x = x;
@@ -58,7 +60,7 @@ public class Room {
     }
 
     public int getStartY() {
-        return isGone ? this.y: this.y + this.yOffset;
+        return isGone ? this.y : this.y + this.yOffset;
     }
 
     public int getEndY() {

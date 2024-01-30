@@ -6,7 +6,6 @@ public class BasicHelm extends Helm {
 
         this.setName("Basic helm");
         this.setSymbol('i');
-        this.setDescription(
-                "Nothing fancy, but good enough to prevent some minor damage.");
+        this.setDescription("Nothing fancy, but good enough to prevent some minor damage.");
     }
 }

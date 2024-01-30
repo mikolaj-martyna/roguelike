@@ -27,9 +27,8 @@ import java.util.*;
 @AllArgsConstructor
 public class Map {
     int currentLevelNumber = 0;
-    private List<Level> levels;
-
     Random random;
+    private List<Level> levels;
 
     public Map() {
         this(80, 24);
@@ -133,8 +132,7 @@ public class Map {
         if (!isInBounds(level, x, y)) return false;
         if (getFields(level)[x][y].entity != null) return false;
         return (getFields(level)[x][y] instanceof Floor
-                || getFields(level)[x][y] instanceof Bridge
-                || getFields(level)[x][y] instanceof Door);
+                || getFields(level)[x][y] instanceof Bridge || getFields(level)[x][y] instanceof Door);
     }
 
     public boolean hasItem(int x, int y) {
@@ -442,7 +440,7 @@ public class Map {
         int currentY = doorOneY;
 
         int turningPoint;
-        if (distanceX > 0) turningPoint = distanceX == 1 ? 0 : random.nextInt(distanceX - 1);
+        if (distanceX > 0) turningPoint =  distanceX == 1 ? 0 : random.nextInt(distanceX - 1);
         else return;
 
         while (distanceX > 0) {
@@ -458,12 +456,12 @@ public class Map {
 
                     level.changeFieldType(currentX, currentY, new Bridge());
 
-                    //                    this.print(level);
+//                    this.print(level);
                     distanceY--;
                 }
             }
 
-            //            this.print(level);
+//            this.print(level);
             distanceX--;
         }
     }

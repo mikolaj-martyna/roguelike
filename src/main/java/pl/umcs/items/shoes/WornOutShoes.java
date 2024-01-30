@@ -6,6 +6,7 @@ public class WornOutShoes extends Shoes {
 
         this.setName("Worn out shoes");
         this.setSymbol('i');
-        this.setDescription("These have more holes in them than cheese. Better find something else.");
+        this.setDescription(
+                "These have more holes in them than cheese. Better find something else.");
     }
 }
