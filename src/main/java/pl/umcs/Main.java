@@ -34,6 +34,8 @@ public class Main {
 
             // Print current map state
             map.print(output);
+            player.printStatistics(output);
+            output.printf("Inventory: I\tMove: WASD\nAction: ");
 
             // Take input
             char input = reader.next().charAt(0);

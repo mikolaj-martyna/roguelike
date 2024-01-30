@@ -132,7 +132,8 @@ public class Map {
         if (!isInBounds(level, x, y)) return false;
         if (getFields(level)[x][y].entity != null) return false;
         return (getFields(level)[x][y] instanceof Floor
-                || getFields(level)[x][y] instanceof Bridge || getFields(level)[x][y] instanceof Door);
+                || getFields(level)[x][y] instanceof Bridge
+                || getFields(level)[x][y] instanceof Door);
     }
 
     public boolean hasItem(int x, int y) {
@@ -296,20 +297,26 @@ public class Map {
         int goneRooms = 0;
 
         for (int currentRoomNumber = 0; currentRoomNumber < roomsAmount; currentRoomNumber++) {
-            boolean isGone = goneRooms < 4 && random.nextBoolean();
+            //            boolean isGone = goneRooms < 4 && random.nextBoolean();
+            boolean isGone = false;
             if (isGone) goneRooms++;
 
             generateRoom(level, currentRoomNumber, isGone);
         }
 
         for (int currentRoom = 0; currentRoom < roomsAmount; currentRoom++) {
-            for (int neighbourId : new int[] {currentRoom + 1, currentRoom + 3}) {
-                if ((neighbourId % 3) != 0 && neighbourId < roomsAmount) {
-                    Room roomOne = level.getRooms().get(currentRoom);
-                    Room roomTwo = level.getRooms().get(neighbourId);
+            if (currentRoom + 3 < roomsAmount) {
+                Room roomOne = level.getRooms().get(currentRoom);
+                Room roomTwo = level.getRooms().get(currentRoom + 3);
 
-                    generateBridgeBetweenRooms(level, roomOne, roomTwo);
-                }
+                generateBridgeBetweenRooms(level, roomOne, roomTwo);
+            }
+
+            if ((currentRoom + 1) % 3 != 0) {
+                Room roomOne = level.getRooms().get(currentRoom);
+                Room roomTwo = level.getRooms().get(currentRoom + 1);
+
+                generateBridgeBetweenRooms(level, roomOne, roomTwo);
             }
         }
 
@@ -377,9 +384,6 @@ public class Map {
             roomTwo = temp;
         }
 
-        // Tunnel right if ri1 + 1 == ri2
-        // Tunnel down if ri1 + 5 == ri2
-
         // Generate doors
         int doorOneX;
         int doorOneY;
@@ -392,16 +396,18 @@ public class Map {
 
         if (isGoingRight) {
             doorOneX = roomOne.getEndX();
-            doorOneY =
-                    random.nextInt(roomOne.getEndY() - roomOne.getStartY() - 1)
-                            + roomOne.getStartY()
-                            + 1;
+            doorOneY = random.nextInt(roomOne.getHeight() - 2) + roomOne.getStartY() + 1;
 
             doorTwoX = roomTwo.getStartX();
-            doorTwoY =
-                    random.nextInt(roomTwo.getEndY() - roomTwo.getStartY() - 1)
-                            + roomTwo.getStartY()
-                            + 1;
+            doorTwoY = random.nextInt(roomTwo.getHeight() - 2) + roomTwo.getStartY() + 1;
+
+            int distance = Math.abs(doorTwoX - doorOneX);
+            int[] delta = new int[] {1, 0};
+
+            int turnDistance = Math.abs(doorTwoY - doorOneY);
+            int[] deltaTurn = doorOneY < doorTwoY ? new int[] {0, 1} : new int[] {0, -1};
+
+            drawBridge(level, doorOneX, doorOneY, distance, delta, turnDistance, deltaTurn);
         } else if (isGoingDown) {
             doorOneX =
                     random.nextInt(roomOne.getEndX() - roomOne.getStartX() - 1)
@@ -414,6 +420,14 @@ public class Map {
                             + roomTwo.getStartX()
                             + 1;
             doorTwoY = roomTwo.getStartY();
+
+            int distance = Math.abs(doorTwoY - doorOneY);
+            int[] delta = new int[] {0, 1};
+
+            int turnDistance = Math.abs(doorTwoX - doorOneX);
+            int[] deltaTurn = doorOneX < doorTwoX ? new int[] {1, 0} : new int[] {-1, 0};
+
+            drawBridge(level, doorOneX, doorOneY, distance, delta, turnDistance, deltaTurn);
         } else {
             return;
         }
@@ -426,43 +440,32 @@ public class Map {
 
         level.changeFieldType(doorOneX, doorOneY, doorOne);
         level.changeFieldType(doorTwoX, doorTwoY, doorTwo);
+    }
 
-        int distanceX = Math.abs(doorTwoX - doorOneX);
-        int distanceY = Math.abs(doorTwoY - doorOneY);
-
-        int[] deltaX = isGoingRight ? new int[] {1, 0} : new int[] {0, 1};
-        int[] deltaY =
-                isGoingRight
-                        ? (doorOneY < doorTwoY ? new int[] {0, 1} : new int[] {0, -1})
-                        : (doorOneX < doorTwoX ? new int[] {1, 0} : new int[] {-1, 0});
-
+    public void drawBridge(Level level, int doorOneX, int doorOneY, int distance, int[] delta, int turnDistance, int[] deltaTurn) {
         int currentX = doorOneX;
         int currentY = doorOneY;
 
-        int turningPoint;
-        if (distanceX > 0) turningPoint =  distanceX == 1 ? 0 : random.nextInt(distanceX - 1);
-        else return;
+        int turningPoint = random.nextInt(distance - 1) + 2;
 
-        while (distanceX > 0) {
-            currentX += deltaX[0];
-            currentY += deltaX[1];
+        while (distance > 0) {
+            currentX += delta[0];
+            currentY += delta[1];
 
             level.changeFieldType(currentX, currentY, new Bridge());
 
-            if (distanceX == turningPoint) {
-                while (distanceY > 0) {
-                    currentX += deltaY[0];
-                    currentY += deltaY[1];
+            if (distance == turningPoint) {
+                while (turnDistance > 0) {
+                    currentX += deltaTurn[0];
+                    currentY += deltaTurn[1];
 
                     level.changeFieldType(currentX, currentY, new Bridge());
 
-//                    this.print(level);
-                    distanceY--;
+                    turnDistance--;
                 }
             }
 
-//            this.print(level);
-            distanceX--;
+            distance--;
         }
     }
 
@@ -639,16 +642,12 @@ public class Map {
         output.print("\033[H\033[2J");
         output.flush();
 
-        Player player = null;
-
         for (int currentY = 0; currentY < getHeight(currentLevelNumber); currentY++) {
             for (int currentX = 0; currentX < getWidth(currentLevelNumber); currentX++) {
                 Entity entity = getFields(currentLevelNumber)[currentX][currentY].entity;
 
                 if (entity != null) {
                     output.printf("%c", entity.getSymbol());
-
-                    if (entity instanceof Player) player = (Player) entity;
                 } else if (!getFields(currentLevelNumber)[currentX][currentY].items.isEmpty()) {
                     output.printf("%c", 'i');
                 } else {
@@ -657,17 +656,6 @@ public class Map {
             }
 
             output.printf("\n");
-        }
-
-        if (player != null) {
-            output.printf(
-                    "HP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n",
-                    player.getHealth(),
-                    player.getAttack(),
-                    player.getAgility(),
-                    player.getDefense(),
-                    player.getIntelligence(),
-                    player.getCharisma());
         }
     }
 }

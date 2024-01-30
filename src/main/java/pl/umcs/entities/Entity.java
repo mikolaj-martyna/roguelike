@@ -10,6 +10,7 @@ import pl.umcs.items.Item;
 import pl.umcs.map.Map;
 import pl.umcs.map.Passage;
 
+import java.io.PrintWriter;
 import java.util.*;
 
 @Getter
@@ -157,5 +158,16 @@ public class Entity extends GameElement {
         } else {
             moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
         }
+    }
+
+    public void printStatistics(@NotNull PrintWriter output) {
+        output.printf(
+                "HP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n",
+                this.getHealth(),
+                this.getAttack(),
+                this.getAgility(),
+                this.getDefense(),
+                this.getIntelligence(),
+                this.getCharisma());
     }
 }

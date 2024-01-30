@@ -8,5 +8,11 @@ public class ClothArmor extends Chestplate {
         this.setSymbol('i');
         this.setDescription(
                 "The only kind of wardrobe you have left after the collision. Will do for now.");
+
+        this.setHealth(4);
+        this.setDefense(4);
+
+        this.setHealthMultiplier(1.1);
+        this.setDefenseMultiplier(1.2);
     }
 }
