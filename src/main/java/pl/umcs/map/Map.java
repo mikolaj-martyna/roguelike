@@ -15,6 +15,8 @@ import pl.umcs.items.helms.Helm;
 import pl.umcs.items.shoes.Shoes;
 import pl.umcs.items.special_items.SpecialItem;
 import pl.umcs.items.weapons.Weapon;
+import pl.umcs.map.walls.HorizontalWall;
+import pl.umcs.map.walls.VerticalWall;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -25,19 +27,20 @@ import java.util.*;
 @AllArgsConstructor
 public class Map {
     int currentLevelNumber = 0;
-    Random random;
     private List<Level> levels;
 
+    Random random;
+
     public Map() {
-        this(24, 80);
+        this(80, 24);
     }
 
-    public Map(int rows, int cols) {
+    public Map(int width, int height) {
         this.levels = new ArrayList<>();
 
         random = new Random();
 
-        generateMap(100, rows, cols);
+        generateMap(100, width, height);
     }
 
     /* Misc */
@@ -51,20 +54,20 @@ public class Map {
     }
 
     /* Getters */
-    public int getRows() {
-        return levels.get(currentLevelNumber).getRows();
+    public int getWidth() {
+        return levels.get(currentLevelNumber).getWidth();
     }
 
-    public int getCols() {
-        return levels.get(currentLevelNumber).getCols();
+    public int getHeight() {
+        return levels.get(currentLevelNumber).getHeight();
     }
 
-    public int getRows(int level) {
-        return levels.get(level).getRows();
+    public int getWidth(int level) {
+        return levels.get(level).getWidth();
     }
 
-    public int getCols(int level) {
-        return levels.get(level).getCols();
+    public int getHeight(int level) {
+        return levels.get(level).getHeight();
     }
 
     public Field[][] getFields() {
@@ -107,12 +110,12 @@ public class Map {
     public boolean isInBounds(int x, int y) {
         return x >= 0
                 && y >= 0
-                && x < getRows(currentLevelNumber)
-                && y < getCols(currentLevelNumber);
+                && x < getWidth(currentLevelNumber)
+                && y < getHeight(currentLevelNumber);
     }
 
     public boolean isInBounds(int level, int x, int y) {
-        return x >= 0 && y >= 0 && x < getRows(level) && y < getCols(level);
+        return x >= 0 && y >= 0 && x < getWidth(level) && y < getHeight(level);
     }
 
     public boolean canPlaceItem(int level, int x, int y) {
@@ -130,7 +133,8 @@ public class Map {
         if (!isInBounds(level, x, y)) return false;
         if (getFields(level)[x][y].entity != null) return false;
         return (getFields(level)[x][y] instanceof Floor
-                || getFields(level)[x][y] instanceof Bridge);
+                || getFields(level)[x][y] instanceof Bridge
+                || getFields(level)[x][y] instanceof Door);
     }
 
     public boolean hasItem(int x, int y) {
@@ -221,37 +225,39 @@ public class Map {
     }
 
     /* Generators */
-    public void generateMap(int numberOfLevels, int rows, int cols) {
-        for (int i = 0; i < numberOfLevels; i++) {
-            int random = new Random().nextInt(101);
+    public void generateMap(int numberOfLevels, int width, int height) {
+        for (int currentLevel = 0; currentLevel < numberOfLevels; currentLevel++) {
+            //            if (currentLevel % 10 == 0) generateLevelIsland(width, height);
+            //            else generateLevelDungeon(width, height);
 
-            if (random % 2 == 1) generateLevelIsland(rows, cols);
-            else generateLevelDungeon(rows, cols);
+            // TODO: remove after testing
+            generateLevelDungeon(width, height);
         }
     }
 
-    public void generateLevelIsland(int rows, int cols) {
-        Level level = generateEmptyLevel(rows, cols);
+    public void generateLevelIsland(int width, int height) {
+        Level level = generateEmptyLevel(width, height);
 
         Entity entity = new Entity();
 
-        entity.setX(random.nextInt(level.getRows()));
-        entity.setY(random.nextInt(level.getCols()));
+        entity.setX(random.nextInt(level.getWidth()));
+        entity.setY(random.nextInt(level.getHeight()));
 
         // Get them to move <i, j> steps in random directions
         int minSteps = 250;
         int maxSteps = 640;
 
-        int steps = random.nextInt(maxSteps - minSteps) + minSteps;
+        int stepsToTake = random.nextInt(maxSteps - minSteps) + minSteps;
 
-        for (int i = 0; i <= steps; i++) {
-            boolean moveX = random.nextBoolean();
+        for (int currentSteps = 0; currentSteps <= stepsToTake; currentSteps++) {
+            boolean willMoveX = random.nextBoolean();
 
-            if (moveX) {
+            if (willMoveX) {
                 int newX =
                         Math.max(
                                 Math.min(
-                                        entity.getX() + random.nextInt(3) - 1, level.getRows() - 1),
+                                        entity.getX() + random.nextInt(3) - 1,
+                                        level.getWidth() - 1),
                                 0);
 
                 entity.setX(newX);
@@ -259,7 +265,8 @@ public class Map {
                 int newY =
                         Math.max(
                                 Math.min(
-                                        entity.getY() + random.nextInt(3) - 1, level.getCols() - 1),
+                                        entity.getY() + random.nextInt(3) - 1,
+                                        level.getHeight() - 1),
                                 0);
 
                 entity.setY(newY);
@@ -268,7 +275,7 @@ public class Map {
             // Each field walked on by the entity is considered land
             // If walked twice on the same tile, don't decrease number of steps left
             if (level.getFields()[entity.getX()][entity.getY()] instanceof Floor) {
-                --i;
+                --currentSteps;
             } else {
                 level.getFields()[entity.getX()][entity.getY()] = new Floor();
             }
@@ -276,55 +283,190 @@ public class Map {
 
         levels.add(level);
 
-        generateBridges(level);
         generateItems(level);
         generateEntities(level);
         generatePassage(level);
         generateStartingPosition(level);
     }
 
-    public void generateLevelDungeon(int rows, int cols) {
-        Level level = generateEmptyLevel(rows, cols);
+    // Strongly based on original rogue dungeon generation (with min values tweaked slightly)
+    // http://99.255.210.85/2019/06/03/rogue-level-generation.html
+    public void generateLevelDungeon(int width, int height) {
+        Level level = generateEmptyLevel(width, height);
 
-        // Generate n points on the map
-        // For each point, generate a room with x and y dimensions in range <i, j> and <k, l>
-        int islands = random.nextInt(10) + 1;
+        int roomsAmount = 9;
+        int goneRooms = 0;
 
-        int minX = 5;
-        int maxX = 10;
-        int minY = 5;
-        int maxY = 17;
+        for (int currentRoomNumber = 0; currentRoomNumber < roomsAmount; currentRoomNumber++) {
+            boolean isGone = goneRooms < 4 && random.nextBoolean();
+            if (isGone) goneRooms++;
 
-        for (int i = 1; i <= islands; i++) {
-            int x = random.nextInt(rows - minX);
-            int y = random.nextInt(cols - minY);
+            generateRoom(level, currentRoomNumber, isGone);
+        }
 
-            int dimensionX = random.nextInt(maxX - minX) + minX;
-            int dimensionY = random.nextInt(maxY - minY) + minY;
+        for (int currentRoom = 0; currentRoom < roomsAmount; currentRoom++) {
+            for (int neighbourId : new int[] {currentRoom + 1, currentRoom + 3}) {
+                if ((neighbourId % 3) != 0 && neighbourId < roomsAmount) {
+                    Room roomOne = level.getRooms().get(currentRoom);
+                    Room roomTwo = level.getRooms().get(neighbourId);
 
-            generateRoom(level, x, y, dimensionX, dimensionY);
+                    generateBridgeBetweenRooms(level, roomOne, roomTwo);
+                }
+            }
         }
 
         levels.add(level);
 
-        generateBridges(level);
         generateItems(level);
         generateEntities(level);
         generatePassage(level);
         generateStartingPosition(level);
     }
 
-    public void generateRoom(@NotNull Level level, int x, int y, int dimensionX, int dimensionY) {
-        for (int i = 0; i < level.getRows(); i++) {
-            for (int j = 0; j < level.getCols(); j++) {
-                if (i >= x && i <= x + dimensionX && j >= y && j <= y + dimensionY) {
-                    level.getFields()[i][j] = new Floor();
+    public void generateRoom(@NotNull Level level, int roomNumber, boolean isGone) {
+        Room room = new Room();
+
+        int minX = 6 + 1;
+        int maxX = 26;
+        int minY = 4 + 1;
+        int maxY = 8;
+
+        room.id = roomNumber;
+
+        room.x = (roomNumber % 3) * 26 + 1;
+        room.y = (roomNumber / 3) * 8;
+
+        room.isGone = isGone;
+
+        if (room.isGone) {
+            room.width = 0;
+            room.height = 0;
+
+            room.xOffset = random.nextInt(24) + 1;
+            room.yOffset = random.nextInt(6) + 1;
+        } else {
+            room.width = random.nextInt(maxX - minX - 1) + minX;
+            room.height = random.nextInt(maxY - minY - 1) + minY;
+
+            room.xOffset = random.nextInt(26 - room.width);
+            room.yOffset = random.nextInt(8 - room.height);
+
+            addRoomToMap(level, room);
+        }
+
+        level.getRooms().add(room);
+    }
+
+    public void addRoomToMap(@NotNull Level level, @NotNull Room room) {
+        for (int currentX = room.getStartX(); currentX <= room.getEndX(); currentX++) {
+            for (int currentY = room.getStartY(); currentY <= room.getEndY(); currentY++) {
+                if (currentY == room.getStartY() || currentY == room.getEndY()) {
+                    level.getFields()[currentX][currentY] = new HorizontalWall();
+                } else if (currentX == room.getStartX() || currentX == room.getEndX()) {
+                    level.getFields()[currentX][currentY] = new VerticalWall();
+                } else {
+                    level.getFields()[currentX][currentY] = new Floor();
                 }
             }
         }
     }
 
-    public void generateBridges(Level level) {}
+    public void generateBridgeBetweenRooms(
+            Level level, @NotNull Room roomOne, @NotNull Room roomTwo) {
+        if (roomOne.getId() > roomTwo.getId()) {
+            Room temp = roomOne;
+            roomOne = roomTwo;
+            roomTwo = temp;
+        }
+
+        // Tunnel right if ri1 + 1 == ri2
+        // Tunnel down if ri1 + 5 == ri2
+
+        // Generate doors
+        int doorOneX;
+        int doorOneY;
+
+        int doorTwoX;
+        int doorTwoY;
+
+        boolean isGoingRight = roomOne.getId() + 1 == roomTwo.getId();
+        boolean isGoingDown = roomOne.getId() + 3 == roomTwo.getId();
+
+        if (isGoingRight) {
+            doorOneX = roomOne.getEndX();
+            doorOneY =
+                    random.nextInt(roomOne.getEndY() - roomOne.getStartY() - 1)
+                            + roomOne.getStartY()
+                            + 1;
+
+            doorTwoX = roomTwo.getStartX();
+            doorTwoY =
+                    random.nextInt(roomTwo.getEndY() - roomTwo.getStartY() - 1)
+                            + roomTwo.getStartY()
+                            + 1;
+        } else if (isGoingDown) {
+            doorOneX =
+                    random.nextInt(roomOne.getEndX() - roomOne.getStartX() - 1)
+                            + roomOne.getStartX()
+                            + 1;
+            doorOneY = roomOne.getEndY();
+
+            doorTwoX =
+                    random.nextInt(roomTwo.getEndX() - roomTwo.getStartX() - 1)
+                            + roomTwo.getStartX()
+                            + 1;
+            doorTwoY = roomTwo.getStartY();
+        } else {
+            return;
+        }
+
+        Door doorOne = new Door(doorOneX, doorOneY);
+        Door doorTwo = new Door(doorTwoX, doorTwoY);
+
+        roomOne.addDoor(doorOne);
+        roomTwo.addDoor(doorTwo);
+
+        level.changeFieldType(doorOneX, doorOneY, doorOne);
+        level.changeFieldType(doorTwoX, doorTwoY, doorTwo);
+
+        int distanceX = Math.abs(doorTwoX - doorOneX);
+        int distanceY = Math.abs(doorTwoY - doorOneY);
+
+        int[] deltaX = isGoingRight ? new int[] {1, 0} : new int[] {0, 1};
+        int[] deltaY =
+                isGoingRight
+                        ? (doorOneY < doorTwoY ? new int[] {0, 1} : new int[] {0, -1})
+                        : (doorOneX < doorTwoX ? new int[] {1, 0} : new int[] {-1, 0});
+
+        int currentX = doorOneX;
+        int currentY = doorOneY;
+
+        int turningPoint;
+        if (distanceX > 0) turningPoint = distanceX == 1 ? 0 : random.nextInt(distanceX - 1);
+        else return;
+
+        while (distanceX > 0) {
+            currentX += deltaX[0];
+            currentY += deltaX[1];
+
+            level.changeFieldType(currentX, currentY, new Bridge());
+
+            if (distanceX == turningPoint) {
+                while (distanceY > 0) {
+                    currentX += deltaY[0];
+                    currentY += deltaY[1];
+
+                    level.changeFieldType(currentX, currentY, new Bridge());
+
+                    //                    this.print(level);
+                    distanceY--;
+                }
+            }
+
+            //            this.print(level);
+            distanceX--;
+        }
+    }
 
     public Item generateItem() {
         // TODO: this is temporary, will be fixed
@@ -346,8 +488,8 @@ public class Map {
         for (int i = 1; i <= items; i++) {
             Item item = generateItem();
 
-            int x = random.nextInt(level.getRows());
-            int y = random.nextInt(level.getCols());
+            int x = random.nextInt(level.getWidth());
+            int y = random.nextInt(level.getHeight());
 
             if (level.getFields()[x][y] instanceof Floor
                     || level.getFields()[x][y] instanceof Bridge) {
@@ -400,8 +542,8 @@ public class Map {
         for (int i = 1; i <= entities; i++) {
             Entity entity = generateEntity();
 
-            int x = random.nextInt(level.getRows());
-            int y = random.nextInt(level.getCols());
+            int x = random.nextInt(level.getWidth());
+            int y = random.nextInt(level.getHeight());
 
             if (level.getFields()[x][y] instanceof Floor
                     || level.getFields()[x][y] instanceof Bridge) {
@@ -421,8 +563,8 @@ public class Map {
         int y;
 
         do {
-            x = random.nextInt(level.getRows());
-            y = random.nextInt(level.getCols());
+            x = random.nextInt(level.getWidth());
+            y = random.nextInt(level.getHeight());
         } while (!(level.getFields()[x][y] instanceof Floor
                 || level.getFields()[x][y] instanceof Bridge));
 
@@ -442,32 +584,52 @@ public class Map {
         level.setStartingY(position[1]);
     }
 
-    public Level generateEmptyLevel(int rows, int cols) {
-        Field[][] fields = new Field[rows][cols];
+    public Level generateEmptyLevel(int width, int height) {
+        Field[][] fields = new Field[width][height];
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                fields[i][j] = new Void();
+        for (int currentX = 0; currentX < width; currentX++) {
+            for (int currentY = 0; currentY < height; currentY++) {
+                fields[currentX][currentY] = new Void();
             }
         }
 
-        return new Level(fields, rows, cols);
+        return new Level(fields, width, height);
     }
 
     /* Printing */
     public void print() {
         System.out.flush();
 
-        for (int i = 0; i < getRows(currentLevelNumber); i++) {
-            for (int j = 0; j < getCols(currentLevelNumber); j++) {
-                Entity entity = getFields(currentLevelNumber)[i][j].entity;
+        for (int currentY = 0; currentY < getHeight(currentLevelNumber); currentY++) {
+            for (int currentX = 0; currentX < getWidth(currentLevelNumber); currentX++) {
+                Entity entity = getFields(currentLevelNumber)[currentX][currentY].entity;
 
                 if (entity != null) {
                     System.out.print(entity.getSymbol());
-                } else if (!getFields(currentLevelNumber)[i][j].items.isEmpty()) {
+                } else if (!getFields(currentLevelNumber)[currentX][currentY].items.isEmpty()) {
                     System.out.print('i');
                 } else {
-                    System.out.print(getFields()[i][j].getSymbol());
+                    System.out.print(getFields()[currentX][currentY].getSymbol());
+                }
+            }
+
+            System.out.println();
+        }
+    }
+
+    public void print(@NotNull Level level) {
+        System.out.flush();
+
+        for (int currentY = 0; currentY < level.getHeight(); currentY++) {
+            for (int currentX = 0; currentX < level.getWidth(); currentX++) {
+                Entity entity = level.getFields()[currentX][currentY].entity;
+
+                if (entity != null) {
+                    System.out.print(entity.getSymbol());
+                } else if (!level.getFields()[currentX][currentY].items.isEmpty()) {
+                    System.out.print('i');
+                } else {
+                    System.out.print(level.getFields()[currentX][currentY].getSymbol());
                 }
             }
 
@@ -481,18 +643,18 @@ public class Map {
 
         Player player = null;
 
-        for (int i = 0; i < getRows(currentLevelNumber); i++) {
-            for (int j = 0; j < getCols(currentLevelNumber); j++) {
-                Entity entity = getFields(currentLevelNumber)[i][j].entity;
+        for (int currentY = 0; currentY < getHeight(currentLevelNumber); currentY++) {
+            for (int currentX = 0; currentX < getWidth(currentLevelNumber); currentX++) {
+                Entity entity = getFields(currentLevelNumber)[currentX][currentY].entity;
 
                 if (entity != null) {
                     output.printf("%c", entity.getSymbol());
 
                     if (entity instanceof Player) player = (Player) entity;
-                } else if (!getFields(currentLevelNumber)[i][j].items.isEmpty()) {
+                } else if (!getFields(currentLevelNumber)[currentX][currentY].items.isEmpty()) {
                     output.printf("%c", 'i');
                 } else {
-                    output.printf("%c", getFields()[i][j].getSymbol());
+                    output.printf("%c", getFields()[currentX][currentY].getSymbol());
                 }
             }
 
