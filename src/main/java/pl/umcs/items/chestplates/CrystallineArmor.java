@@ -4,7 +4,7 @@ public class CrystallineArmor extends Chestplate {
     public CrystallineArmor() {
         super();
 
-        this.setName("Chainmail");
+        this.setName("Crystalline armor");
         this.setDescription("Looks astonishing and weights next to nothing.");
 
         this.setHealth(15);
