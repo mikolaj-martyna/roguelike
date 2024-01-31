@@ -13,4 +13,16 @@ public class BasicHelm extends Helm {
 
         this.setIntelligenceMultiplier(1.1);
     }
+
+    public BasicHelm(boolean starter) {
+        this();
+
+        if (starter) {
+            this.setHealth(0);
+            this.setDefense(0);
+            this.setIntelligence(0);
+
+            this.setIntelligenceMultiplier(1);
+        }
+    }
 }

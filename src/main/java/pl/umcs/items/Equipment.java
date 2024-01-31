@@ -33,12 +33,12 @@ public class Equipment {
     private SpecialItem specialItem;
 
     public Equipment() {
-        this.helm = new BasicHelm();
-        this.chestplate = new ClothArmor();
-        this.shoes = new WornOutShoes();
+        this.helm = new BasicHelm(true);
+        this.chestplate = new ClothArmor(true);
+        this.shoes = new WornOutShoes(true);
 
-        this.weapon = new Stick();
-        this.specialItem = new Feather();
+        this.weapon = new Stick(true);
+        this.specialItem = new Feather(true);
 
         items = new ArrayList<>();
     }

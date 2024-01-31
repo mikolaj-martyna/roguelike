@@ -15,4 +15,17 @@ public class ClothArmor extends Chestplate {
         this.setHealthMultiplier(1.1);
         this.setDefenseMultiplier(1.2);
     }
+
+
+    public ClothArmor(boolean starter) {
+        this();
+
+        if (starter) {
+            this.setHealth(0);
+            this.setDefense(0);
+
+            this.setHealthMultiplier(1);
+            this.setDefenseMultiplier(1);
+        }
+    }
 }

@@ -15,4 +15,9 @@ public class HealthPotion extends Consumable {
     public void use(@NotNull Entity entity) {
         entity.heal(this.getHealth());
     }
+
+    @Override
+    public String toString() {
+        return this.getName() + " (Heals 2 HP)";
+    }
 }

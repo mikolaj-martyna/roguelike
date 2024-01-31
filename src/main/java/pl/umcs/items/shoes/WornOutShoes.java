@@ -15,4 +15,16 @@ public class WornOutShoes extends Shoes {
         this.setAgilityMultiplier(1.1);
         this.setDefenseMultiplier(1.1);
     }
+
+    public WornOutShoes(boolean starter) {
+        this();
+
+        if (starter) {
+            this.setAgility(0);
+            this.setDefense(0);
+
+            this.setAgilityMultiplier(1);
+            this.setDefenseMultiplier(1);
+        }
+    }
 }
