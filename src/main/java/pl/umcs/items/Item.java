@@ -70,13 +70,12 @@ public class Item extends GameElement {
 
     @Override
     public String toString() {
-        return "HP: +"
-                + this.getHealth()
-                + " ATK: +"
-                + this.getAttack()
-                + "AGL: +"
-                + this.getAgility()
-                + " DEF: +"
-                + this.getDefense();
+        return "%s (HP: +%d, ATK: +%d, AGL: +%d, DEF: +%d)"
+                .formatted(
+                        this.getName(),
+                        this.getHealth(),
+                        this.getAttack(),
+                        this.getAgility(),
+                        this.getDefense());
     }
 }

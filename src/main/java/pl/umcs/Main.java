@@ -1,7 +1,6 @@
 package pl.umcs;
 
 import pl.umcs.entities.Player;
-import pl.umcs.items.special_items.EternalDynamo;
 import pl.umcs.map.Map;
 
 import java.io.PrintWriter;
@@ -39,7 +38,7 @@ public class Main {
             // Print current map state
             map.print(output);
             player.printStatistics(output);
-            output.printf("Round: %d\nInventory: I\tMove: WASD\nAction: ", round);
+            output.printf("Round: %d\nMove: WASD\tInventory: I\nAction: ", round);
 
             // Take input
             char input = reader.next().charAt(0);
@@ -67,14 +66,7 @@ public class Main {
             }
         }
 
-        if (!player.isAlive()) output.printf("You died.");
-        if (player.getEquipment().getSpecialItem() instanceof EternalDynamo
-                || player.getEquipment().getItems().stream().anyMatch(item -> item instanceof EternalDynamo))
-            output.printf(
-                    "You've found the Eternal Dynamo! You can head back to your island now. Rest now, you did well.");
-        else
-            output.printf(
-                    "You've failed this time, but worry not! You can search again whenever you like.");
+        map.printSummary(output, player);
 
         /* Cleanup */
         reader.close();

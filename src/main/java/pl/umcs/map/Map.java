@@ -680,4 +680,15 @@ public class Map {
             output.printf("\n");
         }
     }
+
+    public void printSummary(PrintWriter output, @NotNull Player player) {
+        if (!player.isAlive()) output.printf("You died.\n");
+
+        if (player.getEquipment().getSpecialItem() instanceof EternalDynamo
+                || player.getEquipment().getItems().stream().anyMatch(item -> item instanceof EternalDynamo))
+            output.printf(
+                    "You've found the Eternal Dynamo! You can head back to your island now. Rest now, you did well.");
+        else
+            output.printf("You've failed this time, but worry not! You can search again whenever you like.");
+    }
 }

@@ -192,25 +192,31 @@ public class Equipment {
                 """
                 \033[1mEquipment\033[0m
 
-                Helm: %s
-                Chestplate: %s
-                Shoes: %s
-                Weapon: %s
-                Special Item: %s
+                \033[1mHelm:\033[0m %s
+                \033[1mChestplate:\033[0m %s
+                \033[1mShoes:\033[0m %s
+                \033[1mWeapon:\033[0m %s
+                \033[1mSpecial item:\033[0m %s
 
                 """,
-                this.helm != null ? this.helm.getName() : "None",
-                this.specialItem != null ? this.chestplate.getName() : "None",
-                this.specialItem != null ? this.shoes.getName() : "None",
-                this.specialItem != null ? this.weapon.getName() : "None",
-                this.specialItem != null ? this.specialItem.getName() : "None");
+                this.helm != null ? this.helm : "None",
+                this.specialItem != null ? this.chestplate : "None",
+                this.specialItem != null ? this.shoes : "None",
+                this.specialItem != null ? this.weapon : "None",
+                this.specialItem != null ? this.specialItem : "None");
     }
 
     public void printItems(@NotNull PrintWriter output) {
         output.printf("\033[1mInventory\033[0m\n");
+
         int index = 1;
-        for (Item item : items) {
-            output.printf("%d. [%s] %s (%s)\n", index++, item.getSlotName(), item.getName(), item);
+        if (items.isEmpty()) {
+            output.printf("Empty\n");
+        } else {
+            for (Item item : items) {
+                output.printf(
+                        "%d. [%s] %s (%s)\n", index++, item.getSlotName(), item.getName(), item);
+            }
         }
     }
 }
