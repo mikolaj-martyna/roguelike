@@ -178,18 +178,19 @@ public class Entity extends GameElement {
             }
 
             boolean opponentKilled = this.isAlive();
+
+            if (map.getRandom().nextBoolean()) {
+                map.placeItem(
+                        opponentKilled ? opponent.getX() : this.getX(),
+                        opponentKilled ? opponent.getY() : this.getY(),
+                        new HealthPotion());
+            }
+
             if (opponentKilled) {
                 map.removeEntity(opponent);
             } else {
                 map.removeEntity(this);
             }
-
-//            if (map.getRandom().nextBoolean()) {
-                map.placeItem(
-                        opponentKilled ? opponent.getX() : this.getX(),
-                        opponentKilled ? opponent.getY() : this.getY(),
-                        new HealthPotion());
-//            }
 
             return;
         }

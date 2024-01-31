@@ -4,8 +4,10 @@ import lombok.Getter;
 
 import org.jetbrains.annotations.NotNull;
 
+import pl.umcs.entities.Entity;
 import pl.umcs.items.chestplates.Chestplate;
 import pl.umcs.items.chestplates.ClothArmor;
+import pl.umcs.items.consumables.Consumable;
 import pl.umcs.items.helms.BasicHelm;
 import pl.umcs.items.helms.Helm;
 import pl.umcs.items.shoes.Shoes;
@@ -214,6 +216,13 @@ public class Equipment {
             for (Item item : items) {
                 output.printf("%d. [%s] %s\n", index++, item.getSlotName(), item);
             }
+        }
+    }
+
+    public void useItem(Entity entity, Item item) {
+        if (item instanceof Consumable) {
+            ((Consumable) item).use(entity);
+            removeItem(item);
         }
     }
 }
