@@ -55,8 +55,10 @@ public class Graph {
                 List<Graph.Node> neighbourHistory = new ArrayList<>(currentNode.getHistory());
                 neighbourHistory.add(currentNode);
 
-                if (neighbourX == target.getX() && neighbourY == target.getY())
+                if (neighbourX == target.getX() && neighbourY == target.getY()) {
+                    neighbourHistory.add(target);
                     return neighbourHistory;
+                }
 
                 if (map.canPlaceEntity(neighbourX, neighbourY)) {
                     if (visited.stream()

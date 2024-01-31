@@ -101,6 +101,46 @@ public class Entity extends GameElement {
     }
 
     /* Movement */
+    public void performAction(@NotNull Map map, @NotNull Player player) {
+        // Two types of actions
+        // 1. Move
+        // 2. Equip item, if any in the inventory (higher chance to equip better items)
+
+        Random random = new Random();
+
+        // Move
+        moveEntity(map, player);
+
+        // Equip item
+        if (random.nextBoolean()) {
+            List<Item> items = this.getEquipment().getItems();
+
+            if (!items.isEmpty()) {
+                this.getEquipment().equipItem(items.get(random.nextInt(items.size())));
+            }
+        }
+    }
+
+    public void moveEntity(@NotNull Map map, Player player) {
+        List<Graph.Node> pathToPlayer = map.pathToPlayer(this, player);
+
+        int offsetX;
+        int offsetY;
+
+        if (pathToPlayer != null && pathToPlayer.size() > 1 && pathToPlayer.size() < 15) {
+            offsetX = pathToPlayer.get(1).getX() - this.getX();
+            offsetY = pathToPlayer.get(1).getY() - this.getY();
+        } else {
+            boolean willMoveX = new Random().nextBoolean();
+            int amount = new Random().nextInt(3) - 1;
+
+            offsetX = willMoveX ? amount : 0;
+            offsetY = willMoveX ? 0 : amount;
+        }
+
+        moveBy(map, offsetX, offsetY);
+    }
+
     public void moveBy(@NotNull Map map, int offsetX, int offsetY) {
         int newX = map.validateX(this.getX() + offsetX);
         int newY = map.validateY(this.getY() + offsetY);
@@ -122,10 +162,11 @@ public class Entity extends GameElement {
         }
 
         if (map.hasMonster(newX, newY)) {
-            if (!(this instanceof Player)) return;
             Entity opponent = map.getFields()[newX][newY].getEntity();
 
-            // TODO: improve attack mechanic (user input during combat)
+            // Monsters are not meant to fight each-other
+            if (!(this instanceof Player || opponent instanceof Player)) return;
+
             while (this.isAlive() && opponent.isAlive()) {
                 this.attack(opponent);
 
@@ -153,26 +194,6 @@ public class Entity extends GameElement {
         }
     }
 
-    public void moveEntity(@NotNull Map map, Player player) {
-        List<Graph.Node> pathToPlayer = map.pathToPlayer(this, player);
-
-        int offsetX;
-        int offsetY;
-
-        if (pathToPlayer != null && (pathToPlayer.size() >= 1 && pathToPlayer.size() < 15)) {
-            offsetX = pathToPlayer.get(1).getX() - this.getX();
-            offsetY = pathToPlayer.get(1).getY() - this.getY();
-        } else {
-            boolean willMoveX = new Random().nextBoolean();
-            int amount = new Random().nextInt(3) - 1;
-
-            offsetX = willMoveX ? amount : 0;
-            offsetY = willMoveX ? 0 : amount;
-        }
-
-        moveBy(map, offsetX, offsetY);
-    }
-
     public void printStatistics(@NotNull PrintWriter output) {
         output.printf(
                 "\033[0;1mHP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n\033[0m",
@@ -182,21 +203,5 @@ public class Entity extends GameElement {
                 this.getDefense(),
                 this.getIntelligence(),
                 this.getCharisma());
-    }
-
-    public void performAction(@NotNull Map map, @NotNull Player player) {
-        // Two types of actions
-        // 1. Move
-        // 2. Equip item, if any in the inventory (higher chance to equip better items)
-
-        // Move
-        moveEntity(map, player);
-
-        // Equip item
-//        List<Item> items = this.getEquipment().getItems();
-//
-//        if (!items.isEmpty()) {
-//            this.getEquipment().equipItem(items.get(random.nextInt(items.size())));
-//        }
     }
 }
