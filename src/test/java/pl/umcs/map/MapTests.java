@@ -3,10 +3,13 @@ package pl.umcs.map;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import pl.umcs.entities.Entity;
+import pl.umcs.entities.Player;
+import pl.umcs.entities.monsters.Myr;
+import pl.umcs.map.walls.HorizontalWall;
+import pl.umcs.map.walls.VerticalWall;
 
 class MapTests {
     private static final char[][] fields = {
@@ -25,12 +28,7 @@ class MapTests {
     public static Entity testEntity = new Entity();
     private static Map loadedMap;
 
-    @BeforeAll
-    public static void setup() {
-        loadedMap = new Map(20, 11, 18);
-        //        loadedMap.load(fields);
-    }
-
+    // TODO: fix tests to work correctly after adding map generation :^)
     @Test
     public void isInBounds_InBoundsLower_ReturnsTrue() {
         boolean inBounds = loadedMap.isInBounds(0, 0);
@@ -118,5 +116,57 @@ class MapTests {
         Map map = new Map();
 
         map.print();
+    }
+
+    @Test
+    public void pathToPlayer_PathFound_ReturnsLength() {
+        Map map = new Map(1);
+        Field[][] fields = {
+            {
+                new HorizontalWall(),
+                new VerticalWall(),
+                new VerticalWall(),
+                new VerticalWall(),
+                new HorizontalWall()
+            },
+            {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new VerticalWall(), new VerticalWall(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
+            {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
+            {
+                new HorizontalWall(),
+                new VerticalWall(),
+                new VerticalWall(),
+                new VerticalWall(),
+                new HorizontalWall()
+            }
+        };
+
+        Level level = new Level(fields, 15, 5);
+
+        map.getLevels().clear();
+        map.getLevels().add(level);
+
+        Player player = new Player();
+        Myr myr = new Myr();
+
+        map.placeEntity(1, 1, player);
+        map.placeEntity(8, 3, myr);
+
+        int length = map.pathToPlayer(myr, player);
+
+        map.print(level);
+        System.out.println("Distance from entity to player: " + length);
+
+        Assertions.assertEquals(19, length);
     }
 }

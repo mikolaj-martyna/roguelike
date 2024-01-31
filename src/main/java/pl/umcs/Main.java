@@ -1,10 +1,13 @@
 package pl.umcs;
 
 import pl.umcs.entities.Player;
+import pl.umcs.entities.Entity;
 import pl.umcs.map.Map;
 
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
@@ -20,10 +23,16 @@ public class Main {
         Map map = new Map(20);
         Player player = new Player();
 
+
         map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
+
+        // Rounds
+        Queue<Entity> roundOrder = new LinkedList<>();
 
         int currentGameLevel = 0;
         int round = 0;
+
+        roundOrder.add(player);
 
         /* Main loop */
         while (player.isAlive()) {

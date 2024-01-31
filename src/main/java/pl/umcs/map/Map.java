@@ -1,7 +1,5 @@
 package pl.umcs.map;
 
-import static java.lang.Math.*;
-
 import lombok.*;
 
 import org.jetbrains.annotations.NotNull;
@@ -51,9 +49,45 @@ public class Map {
     }
 
     /* Misc */
-    public static int distance(@NotNull Entity entity, @NotNull Player player) {
-        return (int)
-                sqrt(pow(entity.getX() - player.getX(), 2) + pow(entity.getY() - player.getY(), 2));
+    public int pathToPlayer(@NotNull Entity entity, @NotNull Player player) {
+        short[] offsetX = {-1, 0, 1, 0};
+        short[] offsetY = {0, 1, 0, -1};
+
+        int[] currentPosition = new int[] {entity.getX(), entity.getY()};
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] {currentPosition[0], currentPosition[1], 0});
+
+        HashSet<Field> visited = new HashSet<>();
+        visited.add(this.getFields()[currentPosition[0]][currentPosition[1]]);
+
+        while (!queue.isEmpty()) {
+            currentPosition = queue.poll();
+
+            int currentX = currentPosition[0];
+            int currentY = currentPosition[1];
+            int currentCost = currentPosition[2];
+
+            for (int idx = 0; idx < 4; idx++) {
+                int neighbourX = currentX + offsetX[idx];
+                int neighbourY = currentY + offsetY[idx];
+                int neighbourCost = currentCost + 1;
+
+                if (neighbourX == player.getX() && neighbourY == player.getY())
+                    return neighbourCost;
+
+                if (canPlaceEntity(neighbourX, neighbourY)) {
+                    Field neighbour = this.getFields()[neighbourX][neighbourY];
+
+                    if (!visited.contains(neighbour)) {
+                        visited.add(neighbour);
+                        queue.add(new int[] {neighbourX, neighbourY, neighbourCost});
+                    }
+                }
+            }
+        }
+
+        return -1;
     }
 
     public void nextLevel() {
@@ -125,6 +159,10 @@ public class Map {
         return x >= 0 && y >= 0 && x < getWidth(level) && y < getHeight(level);
     }
 
+    public boolean isInBounds(Level level, int x, int y) {
+        return x >= 0 && y >= 0 && x < level.getWidth() && y < level.getHeight();
+    }
+
     public boolean canPlaceItem(int level, int x, int y) {
         return isInBounds(level, x, y)
                 && (getFields(level)[x][y] instanceof Floor
@@ -143,6 +181,15 @@ public class Map {
         return (getFields(level)[x][y] instanceof Floor
                 || getFields(level)[x][y] instanceof Bridge
                 || getFields(level)[x][y] instanceof Door);
+    }
+
+    public boolean canPlaceEntity(Level level, int x, int y) {
+        if (!isInBounds(level, x, y)) return false;
+        if (level.getFields()[x][y].entity != null) return false;
+
+        return (level.getFields()[x][y] instanceof Floor
+                || level.getFields()[x][y] instanceof Bridge
+                || level.getFields()[x][y] instanceof Door);
     }
 
     public boolean hasItem(int x, int y) {
@@ -250,8 +297,8 @@ public class Map {
         entity.setY(random.nextInt(level.getHeight()));
 
         // Get them to move <i, j> steps in random directions
-        int minSteps = 250;
-        int maxSteps = 640;
+        int minSteps = (width * height) / 5;
+        int maxSteps = (int) ((width * height) / 1.25);
 
         int stepsToTake = random.nextInt(maxSteps - minSteps) + minSteps;
 
@@ -685,10 +732,12 @@ public class Map {
         if (!player.isAlive()) output.printf("You died.\n");
 
         if (player.getEquipment().getSpecialItem() instanceof EternalDynamo
-                || player.getEquipment().getItems().stream().anyMatch(item -> item instanceof EternalDynamo))
+                || player.getEquipment().getItems().stream()
+                        .anyMatch(item -> item instanceof EternalDynamo))
             output.printf(
                     "You've found the Eternal Dynamo! You can head back to your island now. Rest now, you did well.");
         else
-            output.printf("You've failed this time, but worry not! You can search again whenever you like.");
+            output.printf(
+                    "You've failed this time, but worry not! You can search again whenever you like.");
     }
 }

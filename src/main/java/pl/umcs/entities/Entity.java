@@ -151,10 +151,11 @@ public class Entity extends GameElement {
         }
     }
 
-    public void move(Map map, Player player) {
-        if (Map.distance(this, player) < 10) {
-            // TODO: change distance calculation to DFS
-            // TODO: add next step direction
+    public void move(@NotNull Map map, Player player) {
+        int pathToPlayer = map.pathToPlayer(this, player);
+
+        if (pathToPlayer < 10) {
+//            moveBy(map, pathToPlayer.get(0)[0], pathToPlayer.get(0)[1]);
         } else {
             moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
         }

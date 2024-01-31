@@ -1,5 +1,6 @@
 package pl.umcs.entities.monsters;
 
+import org.jetbrains.annotations.NotNull;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.entities.Property;
@@ -28,7 +29,7 @@ public class ThoughtEater extends Entity {
     }
 
     @Override
-    public void move(Map map, Player player) {
+    public void move(@NotNull Map map, Player player) {
         moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
     }
 }
