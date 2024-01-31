@@ -146,7 +146,7 @@ public class Entity extends GameElement {
         int newX = map.validateX(this.getX() + offsetX);
         int newY = map.validateY(this.getY() + offsetY);
 
-        if (map.getFields()[newX][newY] instanceof Passage) {
+        if (this instanceof Player && map.getFields()[newX][newY] instanceof Passage) {
             map.nextLevel();
             return;
         }
@@ -184,12 +184,12 @@ public class Entity extends GameElement {
                 map.removeEntity(this);
             }
 
-            if (map.getRandom().nextBoolean()) {
+//            if (map.getRandom().nextBoolean()) {
                 map.placeItem(
                         opponentKilled ? opponent.getX() : this.getX(),
                         opponentKilled ? opponent.getY() : this.getY(),
                         new HealthPotion());
-            }
+//            }
 
             return;
         }
