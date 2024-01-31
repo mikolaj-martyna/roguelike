@@ -17,13 +17,8 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 1. **Miasta generowane proceduralnie:** Każda rozgrywka generuje unikalny zestaw miast i wysp, zapewniając, że żadne
    dwie przygody nie będą takie same. Układ, architektura i mieszkańcy różnią się, oferując świeże wrażenia przy każdej
    próbie.
-2. **Trwała śmierć i progresja:** Kiedy twoja postać umiera, traci wszystkie postępy, przedmioty i ulepszenia. Jednak w
-   miarę eksploracji gromadzone są wiedza i plany, które pozwolą odblokować nowe części statku i ulepszenia w kolejnych
-   rozgrywkach.
-3. **Personalizacja sterowca:** Zbieraj zasoby i odzyskuj części, aby ulepszać i dostosowywać swój sterowiec. Modyfikuj
-   broń, silniki i pancerz swojego statku, dostosowując się do wyzwań stawianych przez każde miasto. Twoje wybory
-   wpływają na przetrwanie w tym steampunkowym świecie.
-4. **Dynamiczna nawigacja po mostach:** Mosty łączące miasta są głównym elementem rozgrywki. Sieci te pełne są
+2. **Trwała śmierć:** Kiedy twoja postać umiera, traci wszystkie postępy, przedmioty i ulepszenia.
+3. **Dynamiczna nawigacja po mostach:** Mosty łączące miasta są głównym elementem rozgrywki. Sieci te pełne są
    niebezpieczeństw, zagadek i wrogów. Wybory, których dokonujesz podczas poruszania się po nich, mogą wpłynąć na twoje
    postępy. Użyj strategicznego planowania i sprytu, aby pokonać zdradzieckie ścieżki.
 
@@ -32,11 +27,11 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 1. ` ` - pustka, po której nie można się poruszać
 2. `@` - gracz
 3. `#` - most
-4. `.` - teren wyspy
+4. `.` - teren wyspy lub podłoga
 5. `|`, `-` - granice wyspy
-6. `{dowolna cyfra}` - przeciwnik (wartość symbolizuje poziom trudności)
-7. `u` - skrzynia
-8. `i` - przedmiot
+6. `1-5` - przeciwnik (wartość symbolizuje poziom trudności)
+7. `i` - przedmiot
+8. `*` - mikstura
 
 ## Walka
 
@@ -50,9 +45,10 @@ grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o l
 
 [Przybliżona referencja statystyk](https://steampunkdnd.fandom.com/wiki/Classes)
 
-### Umiejętności
+[//]: # (### Umiejętności)
 
-[TODO]
+[//]: # ()
+[//]: # ([TODO])
 
 ### Losowość
 
@@ -62,44 +58,46 @@ Każda umiejętność ma przedział wartości, które może przyjąć. Przy jej 
 ### Thought Eater
 [★☆☆☆☆]
 
-Atak: 1\
-Obrona: 2\
-Zręczność: 4\
-Życie: 3
+**Atak:** 1\
+**Obrona:** 2\
+**Zręczność:** 4\
+**Życie:** 3
 
 **Zachowanie:** Poruszają się chaotycznie. Za ich akcjami nie stoi nic, poza instynktem do przeżycia.
 
 ### Myr
 [★★☆☆☆]
 
-Atak: 3\
-Obrona: 3\
-Zręczność: 7\
-Życie: 7
+**Atak:** 3\
+**Obrona:** 3\
+**Zręczność:** 7\
+**Życie:** 7
 
 ### Inevitable
 [★★★☆☆]
 
-Atak: 5\
-Obrona: 5\
-Zręczność: 10\
-Życie: 10
+**Atak:** 5\
+**Obrona:** 5\
+**Zręczność:** 10\
+**Życie:** 10
+
+**Zachowanie:** Są w stanie dostrzec Cię z każdego miejsca. Możesz uciekać, ale nie możesz się schować.
 
 ### Modron
 [★★★★☆]
 
-Atak: 10\
-Obrona: 20\
-Zręczność: 15\
-Życie: 18
+**Atak:** 10\
+**Obrona:** 20\
+**Zręczność:** 15\
+**Życie:** 18
 
 ### Clockwork Dragon
 [★★★★★]
 
-Atak: 10\
-Obrona: 30\
-Zręczność: 2\
-Życie: 25
+**Atak:** 10\
+**Obrona:** 30\
+**Zręczność:** 2\
+**Życie:** 25
 
 ## Ekwipunek
 ### Sloty
@@ -109,8 +107,12 @@ Zręczność: 2\
 4. Broń
 5. Przedmiot specjalny
 
-[TODO]
+#### Hełmy
 
-### Przedmioty
+#### Pancerze
 
-[TODO]
+#### Buty
+
+#### Bronie
+
+#### Przedmioty specjalne
