@@ -481,7 +481,7 @@ public class Map {
     }
 
     public Item generateItem(int levelNumber) {
-        ArrayList<Item> itemsUnderThirty =
+        ArrayList<Item> availableItems =
                 new ArrayList<>(
                         Arrays.asList(
                                 new ClothArmor(),
@@ -489,7 +489,7 @@ public class Map {
                                 new WornOutShoes(),
                                 new Feather(),
                                 new Stick()));
-        ArrayList<Item> itemsUnderEighty =
+        ArrayList<Item> itemsOverOneFourth =
                 new ArrayList<>(Arrays.asList(new Chainmail(), new Sandals(), new CommonSword()));
         ArrayList<Item> itemsEndgame =
                 new ArrayList<>(
@@ -500,10 +500,10 @@ public class Map {
                                 new AncientScroll(),
                                 new ClockworkAxe()));
 
-        if (levelNumber >= 30) itemsUnderThirty.addAll(itemsUnderEighty);
-        if (levelNumber >= 80) itemsUnderThirty.addAll(itemsEndgame);
+        if (levelNumber >= levelsAmount * 0.25) availableItems.addAll(itemsOverOneFourth);
+        if (levelNumber >= levelsAmount * 0.5) availableItems.addAll(itemsEndgame);
 
-        return itemsUnderThirty.get(random.nextInt(itemsUnderThirty.size()));
+        return availableItems.get(random.nextInt(availableItems.size()));
     }
 
     public void generateItems(Level level, int levelNumber) {
@@ -543,22 +543,21 @@ public class Map {
     }
 
     public Entity generateEntity(int levelNumber) {
-        ArrayList<Entity> entitiesUnderOneFourth =
+        ArrayList<Entity> availableEntities =
                 new ArrayList<>(Arrays.asList(new ThoughtEater(), new Myr()));
         ArrayList<Entity> entitiesUnderThreeFourths =
                 new ArrayList<>(Arrays.asList(new Inevitable(), new Modron()));
         ArrayList<Entity> entitiesEndgame = new ArrayList<>(Arrays.asList(new ClockworkDragon()));
 
         if (levelNumber >= (levelsAmount * 0.25)) {
-
-            entitiesUnderOneFourth.addAll(entitiesUnderThreeFourths);
+            availableEntities.addAll(entitiesUnderThreeFourths);
         }
 
         if (levelNumber >= (levelsAmount * 0.75)) {
-            entitiesUnderOneFourth.addAll(entitiesEndgame);
+            availableEntities.addAll(entitiesEndgame);
         }
 
-        return entitiesUnderOneFourth.get(random.nextInt(entitiesUnderOneFourth.size()));
+        return availableEntities.get(random.nextInt(availableEntities.size()));
     }
 
     public void generateEntities(Level level, int levelNumber) {
