@@ -10,6 +10,8 @@ import pl.umcs.entities.Player;
 import pl.umcs.entities.monsters.*;
 import pl.umcs.items.Item;
 import pl.umcs.items.chestplates.*;
+import pl.umcs.items.consumables.Consumable;
+import pl.umcs.items.consumables.HealthPotion;
 import pl.umcs.items.helms.*;
 import pl.umcs.items.shoes.*;
 import pl.umcs.items.special_items.*;
@@ -98,6 +100,10 @@ public class Map {
         return getFields(level)[x][y].getItems();
     }
 
+    public Level getLevel(int level) {
+        return levels.get(level);
+    }
+
     public Level getCurrentLevel() {
         return levels.get(currentLevelNumber);
     }
@@ -172,6 +178,10 @@ public class Map {
     }
 
     /* Utility */
+    public void placeItem(int x, int y, Item item) {
+        placeItem(currentLevelNumber, x, y, item);
+    }
+
     public void placeItem(int level, int x, int y, Item item) {
         if (!canPlaceItem(level, x, y)) return;
 
@@ -209,19 +219,7 @@ public class Map {
     }
 
     public void removeEntity(int level, @NotNull Entity entity) {
-        getFields(level)[entity.getX()][entity.getY()].entity = null;
-
-        getEntities(level).remove(entity);
-    }
-
-    public void removeEntity(int x, int y) {
-        removeEntity(currentLevelNumber, x, y);
-    }
-
-    public void removeEntity(int level, int x, int y) {
-        getEntities(level).remove(getFields(level)[x][y].entity);
-
-        getFields(level)[x][y].entity = null;
+        removeEntity(level, entity.getX(), entity.getY(), entity);
     }
 
     public void removeEntity(int x, int y, Entity entity) {
@@ -259,7 +257,6 @@ public class Map {
         entity.setX(random.nextInt(level.getWidth()));
         entity.setY(random.nextInt(level.getHeight()));
 
-        // Get them to move <i, j> steps in random directions
         int minSteps = (width * height) / 5;
         int maxSteps = (int) ((width * height) / 1.25);
 
@@ -594,7 +591,7 @@ public class Map {
     public void generatePassage(@NotNull Level level) {
         int[] position = chooseValidPosition(level);
 
-        level.getFields()[position[0]][position[1]] = new Passage();
+        level.changeFieldType(position[0], position[1], new Passage());
     }
 
     public void generateStartingPosition(@NotNull Level level) {

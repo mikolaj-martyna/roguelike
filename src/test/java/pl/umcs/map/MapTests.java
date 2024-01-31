@@ -11,6 +11,8 @@ import pl.umcs.entities.monsters.Myr;
 import pl.umcs.map.walls.HorizontalWall;
 import pl.umcs.map.walls.VerticalWall;
 
+import java.util.Arrays;
+
 class MapTests {
     private static final char[][] fields = {
         {'╔', '═', '═', '═', '═', '═', '═', '═', '═', '═', '╗', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -221,6 +223,22 @@ class MapTests {
 
         for (Entity entity : map.getEntities()) {
             System.out.println(map.pathToPlayer(entity, player).size());
+        }
+    }
+
+    @Test
+    public void generatePassage_GenerateOnePassagePerLevel_CountPassages() {
+        Map map = new Map(20);
+
+        for (Level level : map.getLevels()) {
+            long count =
+                    Arrays.stream(level.getFields())
+                            .flatMap(Arrays::stream)
+                            .filter(f -> f instanceof Passage && f.getSymbol() == 'x')
+                            .count();
+
+            System.out.println(count);
+            Assertions.assertEquals(1, count);
         }
     }
 }

@@ -212,8 +212,7 @@ public class Equipment {
             output.printf("Empty\n");
         } else {
             for (Item item : items) {
-                output.printf(
-                        "%d. [%s] %s (%s)\n", index++, item.getSlotName(), item.getName(), item);
+                output.printf("%d. [%s] %s\n", index++, item.getSlotName(), item);
             }
         }
     }

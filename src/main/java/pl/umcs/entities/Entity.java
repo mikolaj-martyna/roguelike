@@ -8,6 +8,7 @@ import pl.umcs.GameElement;
 import pl.umcs.Graph;
 import pl.umcs.items.Equipment;
 import pl.umcs.items.Item;
+import pl.umcs.items.consumables.HealthPotion;
 import pl.umcs.map.Map;
 import pl.umcs.map.Passage;
 
@@ -161,6 +162,7 @@ public class Entity extends GameElement {
             return;
         }
 
+        // Combat
         if (map.hasMonster(newX, newY)) {
             Entity opponent = map.getFields()[newX][newY].getEntity();
 
@@ -175,14 +177,18 @@ public class Entity extends GameElement {
                 }
             }
 
-            // Opponent killed
-            if (this.isAlive()) {
+            boolean opponentKilled = this.isAlive();
+            if (opponentKilled) {
                 map.removeEntity(opponent);
+            } else {
+                map.removeEntity(this);
             }
 
-            // Attacker killed
-            if (opponent.isAlive()) {
-                map.removeEntity(this);
+            if (map.getRandom().nextBoolean()) {
+                map.placeItem(
+                        opponentKilled ? opponent.getX() : this.getX(),
+                        opponentKilled ? opponent.getY() : this.getY(),
+                        new HealthPotion());
             }
 
             return;

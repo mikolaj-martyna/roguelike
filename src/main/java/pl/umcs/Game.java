@@ -34,8 +34,6 @@ public class Game {
 
         /* Main loop */
         while (player.isAlive()) {
-            round++;
-
             if (currentGameLevel != map.getCurrentLevelNumber()) {
                 if (++currentGameLevel == map.getLevelsAmount()) break;
 
@@ -50,6 +48,8 @@ public class Game {
             Entity currentEntity = roundOrder.poll();
 
             if (currentEntity instanceof Player) {
+                round++;
+
                 // Print current map state
                 map.print(output);
                 player.printStatistics(output);
@@ -81,7 +81,7 @@ public class Game {
                 }
 
                 roundOrder.add(player);
-            } else {
+            } else if (currentEntity != null && currentEntity.isAlive()) {
                 currentEntity.performAction(map, player);
 
                 if (currentEntity.isAlive()) roundOrder.add(currentEntity);
