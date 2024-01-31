@@ -1,6 +1,7 @@
 package pl.umcs.entities.monsters;
 
 import org.jetbrains.annotations.NotNull;
+
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.entities.Property;

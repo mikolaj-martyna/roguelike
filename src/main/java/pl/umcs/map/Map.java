@@ -48,48 +48,6 @@ public class Map {
         generateMap(levelsAmount, width, height);
     }
 
-    /* Misc */
-    public int pathToPlayer(@NotNull Entity entity, @NotNull Player player) {
-        short[] offsetX = {-1, 0, 1, 0};
-        short[] offsetY = {0, 1, 0, -1};
-
-        int[] currentPosition = new int[] {entity.getX(), entity.getY()};
-
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[] {currentPosition[0], currentPosition[1], 0});
-
-        HashSet<Field> visited = new HashSet<>();
-        visited.add(this.getFields()[currentPosition[0]][currentPosition[1]]);
-
-        while (!queue.isEmpty()) {
-            currentPosition = queue.poll();
-
-            int currentX = currentPosition[0];
-            int currentY = currentPosition[1];
-            int currentCost = currentPosition[2];
-
-            for (int idx = 0; idx < 4; idx++) {
-                int neighbourX = currentX + offsetX[idx];
-                int neighbourY = currentY + offsetY[idx];
-                int neighbourCost = currentCost + 1;
-
-                if (neighbourX == player.getX() && neighbourY == player.getY())
-                    return neighbourCost;
-
-                if (canPlaceEntity(neighbourX, neighbourY)) {
-                    Field neighbour = this.getFields()[neighbourX][neighbourY];
-
-                    if (!visited.contains(neighbour)) {
-                        visited.add(neighbour);
-                        queue.add(new int[] {neighbourX, neighbourY, neighbourCost});
-                    }
-                }
-            }
-        }
-
-        return -1;
-    }
-
     public void nextLevel() {
         this.currentLevelNumber++;
     }
@@ -664,6 +622,48 @@ public class Map {
         }
 
         return new Level(fields, width, height);
+    }
+
+    /* Misc */
+    public int pathToPlayer(@NotNull Entity entity, @NotNull Player player) {
+        short[] offsetX = {-1, 0, 1, 0};
+        short[] offsetY = {0, 1, 0, -1};
+
+        int[] currentPosition = new int[] {entity.getX(), entity.getY()};
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] {currentPosition[0], currentPosition[1], 0});
+
+        HashSet<Field> visited = new HashSet<>();
+        visited.add(this.getFields()[currentPosition[0]][currentPosition[1]]);
+
+        while (!queue.isEmpty()) {
+            currentPosition = queue.poll();
+
+            int currentX = currentPosition[0];
+            int currentY = currentPosition[1];
+            int currentCost = currentPosition[2];
+
+            for (int idx = 0; idx < 4; idx++) {
+                int neighbourX = currentX + offsetX[idx];
+                int neighbourY = currentY + offsetY[idx];
+                int neighbourCost = currentCost + 1;
+
+                if (neighbourX == player.getX() && neighbourY == player.getY())
+                    return neighbourCost;
+
+                if (canPlaceEntity(neighbourX, neighbourY)) {
+                    Field neighbour = this.getFields()[neighbourX][neighbourY];
+
+                    if (!visited.contains(neighbour)) {
+                        visited.add(neighbour);
+                        queue.add(new int[] {neighbourX, neighbourY, neighbourCost});
+                    }
+                }
+            }
+        }
+
+        return -1;
     }
 
     /* Printing */

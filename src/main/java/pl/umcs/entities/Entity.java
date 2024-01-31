@@ -155,7 +155,7 @@ public class Entity extends GameElement {
         int pathToPlayer = map.pathToPlayer(this, player);
 
         if (pathToPlayer < 10) {
-//            moveBy(map, pathToPlayer.get(0)[0], pathToPlayer.get(0)[1]);
+            //            moveBy(map, pathToPlayer.get(0)[0], pathToPlayer.get(0)[1]);
         } else {
             moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
         }

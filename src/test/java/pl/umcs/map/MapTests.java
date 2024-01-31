@@ -134,13 +134,55 @@ class MapTests {
             {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
             {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
             {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
-            {new HorizontalWall(), new Floor(), new VerticalWall(), new VerticalWall(), new HorizontalWall()},
-            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
-            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
-            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
-            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
-            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
-            {new HorizontalWall(), new Floor(), new HorizontalWall(), new Floor(), new HorizontalWall()},
+            {
+                new HorizontalWall(),
+                new Floor(),
+                new VerticalWall(),
+                new VerticalWall(),
+                new HorizontalWall()
+            },
+            {
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall()
+            },
+            {
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall()
+            },
+            {
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall()
+            },
+            {
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall()
+            },
+            {
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall()
+            },
+            {
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall(),
+                new Floor(),
+                new HorizontalWall()
+            },
             {new HorizontalWall(), new Floor(), new Floor(), new Floor(), new HorizontalWall()},
             {
                 new HorizontalWall(),

@@ -1,7 +1,7 @@
 package pl.umcs;
 
-import pl.umcs.entities.Player;
 import pl.umcs.entities.Entity;
+import pl.umcs.entities.Player;
 import pl.umcs.map.Map;
 
 import java.io.PrintWriter;
@@ -22,7 +22,6 @@ public class Main {
         // Game
         Map map = new Map(20);
         Player player = new Player();
-
 
         map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
 
