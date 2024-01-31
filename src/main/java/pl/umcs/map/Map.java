@@ -4,6 +4,7 @@ import lombok.*;
 
 import org.jetbrains.annotations.NotNull;
 
+import pl.umcs.Graph;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.entities.monsters.*;
@@ -79,6 +80,10 @@ public class Map {
 
     public List<Item> getItems(int level) {
         return levels.get(level).getItems();
+    }
+
+    public List<Entity> getEntities() {
+        return levels.get(currentLevelNumber).getEntities();
     }
 
     public List<Entity> getEntities(int level) {
@@ -175,14 +180,14 @@ public class Map {
     }
 
     public boolean placeEntity(int x, int y, Entity entity) {
-        return placeEntity(currentLevelNumber, x, y, entity);
+        return placeEntity(getCurrentLevel(), x, y, entity);
     }
 
-    public boolean placeEntity(int level, int x, int y, Entity entity) {
+    public boolean placeEntity(Level level, int x, int y, Entity entity) {
         if (!canPlaceEntity(level, x, y)) return false;
 
-        getFields(level)[x][y].entity = entity;
-        getEntities(level).add(entity);
+        level.getFields()[x][y].entity = entity;
+        level.getEntities().add(entity);
 
         entity.setX(x);
         entity.setY(y);
@@ -264,21 +269,11 @@ public class Map {
             boolean willMoveX = random.nextBoolean();
 
             if (willMoveX) {
-                int newX =
-                        Math.max(
-                                Math.min(
-                                        entity.getX() + random.nextInt(3) - 1,
-                                        level.getWidth() - 1),
-                                0);
+                int newX = validateX(entity.getX() + random.nextInt(3) - 1, width);
 
                 entity.setX(newX);
             } else {
-                int newY =
-                        Math.max(
-                                Math.min(
-                                        entity.getY() + random.nextInt(3) - 1,
-                                        level.getHeight() - 1),
-                                0);
+                int newY = validateY(entity.getY() + random.nextInt(3) - 1, height);
 
                 entity.setY(newY);
             }
@@ -557,15 +552,20 @@ public class Map {
                 new ArrayList<>(Arrays.asList(new Inevitable(), new Modron()));
         ArrayList<Entity> entitiesEndgame = new ArrayList<>(Arrays.asList(new ClockworkDragon()));
 
-        if (levelNumber >= (levelsAmount * 0.25))
+        if (levelNumber >= (levelsAmount * 0.25)) {
+
             entitiesUnderOneFourth.addAll(entitiesUnderThreeFourths);
-        if (levelNumber >= (levelsAmount * 0.75)) entitiesUnderOneFourth.addAll(entitiesEndgame);
+        }
+
+        if (levelNumber >= (levelsAmount * 0.75)) {
+            entitiesUnderOneFourth.addAll(entitiesEndgame);
+        }
 
         return entitiesUnderOneFourth.get(random.nextInt(entitiesUnderOneFourth.size()));
     }
 
     public void generateEntities(Level level, int levelNumber) {
-        int entities = (random.nextInt(12) + 3) / (random.nextBoolean() ? 2 : 1);
+        int entities = (random.nextInt(15) + 3) / (random.nextBoolean() ? 2 : 1);
 
         for (int i = 1; i <= entities; i++) {
             Entity entity = generateEntity(levelNumber);
@@ -573,14 +573,7 @@ public class Map {
             int x = random.nextInt(level.getWidth());
             int y = random.nextInt(level.getHeight());
 
-            if (level.getFields()[x][y] instanceof Floor
-                    || level.getFields()[x][y] instanceof Bridge) {
-                level.getFields()[x][y].entity = entity;
-                level.getEntities().add(entity);
-
-                entity.setX(x);
-                entity.setY(y);
-            } else {
+            if (!placeEntity(level, x, y, entity)) {
                 --i;
             }
         }
@@ -593,8 +586,7 @@ public class Map {
         do {
             x = random.nextInt(level.getWidth());
             y = random.nextInt(level.getHeight());
-        } while (!(level.getFields()[x][y] instanceof Floor
-                || level.getFields()[x][y] instanceof Bridge));
+        } while (!canPlaceEntity(level, x, y));
 
         return new int[] {x, y};
     }
@@ -625,45 +617,15 @@ public class Map {
     }
 
     /* Misc */
-    public int pathToPlayer(@NotNull Entity entity, @NotNull Player player) {
-        short[] offsetX = {-1, 0, 1, 0};
-        short[] offsetY = {0, 1, 0, -1};
+    public List<Graph.Node> pathToPlayer(@NotNull Entity entity, @NotNull Player player) {
+        return Graph.BFS(
+                this,
+                new Graph.Node(entity.getX(), entity.getY(), 0),
+                new Graph.Node(player.getX(), player.getY(), -1));
+    }
 
-        int[] currentPosition = new int[] {entity.getX(), entity.getY()};
-
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[] {currentPosition[0], currentPosition[1], 0});
-
-        HashSet<Field> visited = new HashSet<>();
-        visited.add(this.getFields()[currentPosition[0]][currentPosition[1]]);
-
-        while (!queue.isEmpty()) {
-            currentPosition = queue.poll();
-
-            int currentX = currentPosition[0];
-            int currentY = currentPosition[1];
-            int currentCost = currentPosition[2];
-
-            for (int idx = 0; idx < 4; idx++) {
-                int neighbourX = currentX + offsetX[idx];
-                int neighbourY = currentY + offsetY[idx];
-                int neighbourCost = currentCost + 1;
-
-                if (neighbourX == player.getX() && neighbourY == player.getY())
-                    return neighbourCost;
-
-                if (canPlaceEntity(neighbourX, neighbourY)) {
-                    Field neighbour = this.getFields()[neighbourX][neighbourY];
-
-                    if (!visited.contains(neighbour)) {
-                        visited.add(neighbour);
-                        queue.add(new int[] {neighbourX, neighbourY, neighbourCost});
-                    }
-                }
-            }
-        }
-
-        return -1;
+    public Graph.Node nextMove(@NotNull Entity entity, @NotNull Player player) {
+        return pathToPlayer(entity, player).get(0);
     }
 
     /* Printing */
@@ -739,5 +701,22 @@ public class Map {
         else
             output.printf(
                     "You've failed this time, but worry not! You can search again whenever you like.");
+    }
+
+    /* Validators */
+    public int validateX(int x) {
+        return Math.max(Math.min(x, this.getWidth() - 1), 0);
+    }
+
+    public int validateX(int x, int width) {
+        return Math.max(Math.min(x, width - 1), 0);
+    }
+
+    public int validateY(int y) {
+        return Math.max(Math.min(y, this.getHeight() - 1), 0);
+    }
+
+    public int validateY(int y, int height) {
+        return Math.max(Math.min(y, height - 1), 0);
     }
 }

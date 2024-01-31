@@ -30,7 +30,13 @@ public class ThoughtEater extends Entity {
     }
 
     @Override
-    public void move(@NotNull Map map, Player player) {
-        moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
+    public void moveEntity(@NotNull Map map, Player player) {
+        boolean willMoveX = new Random().nextBoolean();
+        int amount = new Random().nextInt(3) - 1;
+
+        int offsetX = willMoveX ? amount : 0;
+        int offsetY = willMoveX ? 0 : amount;
+
+        moveBy(map, offsetX, offsetY);
     }
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import pl.umcs.GameElement;
+import pl.umcs.Graph;
 import pl.umcs.items.Equipment;
 import pl.umcs.items.Item;
 import pl.umcs.map.Map;
@@ -101,8 +102,8 @@ public class Entity extends GameElement {
 
     /* Movement */
     public void moveBy(@NotNull Map map, int offsetX, int offsetY) {
-        int newX = this.getX() + offsetX;
-        int newY = this.getY() + offsetY;
+        int newX = map.validateX(this.getX() + offsetX);
+        int newY = map.validateY(this.getY() + offsetY);
 
         if (map.getFields()[newX][newY] instanceof Passage) {
             map.nextLevel();
@@ -121,6 +122,7 @@ public class Entity extends GameElement {
         }
 
         if (map.hasMonster(newX, newY)) {
+            if (!(this instanceof Player)) return;
             Entity opponent = map.getFields()[newX][newY].getEntity();
 
             // TODO: improve attack mechanic (user input during combat)
@@ -151,14 +153,24 @@ public class Entity extends GameElement {
         }
     }
 
-    public void move(@NotNull Map map, Player player) {
-        int pathToPlayer = map.pathToPlayer(this, player);
+    public void moveEntity(@NotNull Map map, Player player) {
+        List<Graph.Node> pathToPlayer = map.pathToPlayer(this, player);
 
-        if (pathToPlayer < 10) {
-            //            moveBy(map, pathToPlayer.get(0)[0], pathToPlayer.get(0)[1]);
+        int offsetX;
+        int offsetY;
+
+        if (pathToPlayer != null && (pathToPlayer.size() >= 1 && pathToPlayer.size() < 15)) {
+            offsetX = pathToPlayer.get(1).getX() - this.getX();
+            offsetY = pathToPlayer.get(1).getY() - this.getY();
         } else {
-            moveBy(map, new Random().nextInt(3) - 1, new Random().nextInt(3) - 1);
+            boolean willMoveX = new Random().nextBoolean();
+            int amount = new Random().nextInt(3) - 1;
+
+            offsetX = willMoveX ? amount : 0;
+            offsetY = willMoveX ? 0 : amount;
         }
+
+        moveBy(map, offsetX, offsetY);
     }
 
     public void printStatistics(@NotNull PrintWriter output) {
@@ -170,5 +182,21 @@ public class Entity extends GameElement {
                 this.getDefense(),
                 this.getIntelligence(),
                 this.getCharisma());
+    }
+
+    public void performAction(@NotNull Map map, @NotNull Player player) {
+        // Two types of actions
+        // 1. Move
+        // 2. Equip item, if any in the inventory (higher chance to equip better items)
+
+        // Move
+        moveEntity(map, player);
+
+        // Equip item
+//        List<Item> items = this.getEquipment().getItems();
+//
+//        if (!items.isEmpty()) {
+//            this.getEquipment().equipItem(items.get(random.nextInt(items.size())));
+//        }
     }
 }

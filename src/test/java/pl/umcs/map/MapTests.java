@@ -201,14 +201,26 @@ class MapTests {
         Player player = new Player();
         Myr myr = new Myr();
 
-        map.placeEntity(1, 1, player);
+        map.placeEntity(3, 3, player);
         map.placeEntity(8, 3, myr);
 
-        int length = map.pathToPlayer(myr, player);
+        int length = map.pathToPlayer(myr, player).size();
 
         map.print(level);
         System.out.println("Distance from entity to player: " + length);
 
         Assertions.assertEquals(19, length);
+    }
+
+    @Test
+    public void pathToPlayer_GeneratePathsForAllMonsters_Completes() {
+        Map map = new Map(10);
+        Player player = new Player();
+
+        map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
+
+        for (Entity entity : map.getEntities()) {
+            System.out.println(map.pathToPlayer(entity, player).size());
+        }
     }
 }

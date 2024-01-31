@@ -34,6 +34,7 @@ public class Player extends Entity {
         while (input != 'q') {
             // Show inventory
             this.getEquipment().printEquipmentAndInventory(output);
+            output.printf("Equip: e  Drop: d  Quit: q\n");
 
             // Get action
             input = reader.next().charAt(0);

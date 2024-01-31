@@ -183,8 +183,6 @@ public class Equipment {
 
         printEquipment(output);
         printItems(output);
-
-        output.printf("Press e to equip, d to drop, q to quit: ");
     }
 
     public void printEquipment(@NotNull PrintWriter output) {
