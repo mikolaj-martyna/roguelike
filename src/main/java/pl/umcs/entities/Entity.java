@@ -167,7 +167,7 @@ public class Entity extends GameElement {
             Entity opponent = map.getFields()[newX][newY].getEntity();
 
             // Monsters are not meant to fight each-other
-            if (!(this instanceof Player || opponent instanceof Player)) return;
+            if (!(this instanceof Player || opponent instanceof Player) || (this == opponent)) return;
 
             while (this.isAlive() && opponent.isAlive()) {
                 this.attack(opponent);
@@ -203,7 +203,7 @@ public class Entity extends GameElement {
 
     public void printStatistics(@NotNull PrintWriter output) {
         output.printf(
-                "\033[0;1mHP: %d\tATK: %d\tAGL: %d\tDEF: %d\tINT: %d\tCHA: %d\n\033[0m",
+                "\033[0;1mHP: %d  ATK: %d  AGL: %d  DEF: %d  INT: %d  CHA: %d\n\033[0m",
                 this.getHealth(),
                 this.getAttack(),
                 this.getAgility(),

@@ -34,13 +34,14 @@ public class Player extends Entity {
         while (input != 'q') {
             // Show inventory
             this.getEquipment().printEquipmentAndInventory(output);
-            output.printf("Equip: e  Use: u  Drop: d  Quit: q\n");
 
             // Get action
             input = reader.next().charAt(0);
 
             if (input == 'e') {
                 output.printf("Index of item to equip: ");
+                output.flush();
+
                 input = reader.next().charAt(0);
 
                 if (!this.getEquipment().getItems().isEmpty()) {
@@ -48,6 +49,8 @@ public class Player extends Entity {
                 }
             } else if (input == 'd') {
                 output.printf("Index of item to drop: ");
+                output.flush();
+
                 input = reader.next().charAt(0);
 
                 if (!this.getEquipment().getItems().isEmpty()) {
@@ -60,6 +63,8 @@ public class Player extends Entity {
                 }
             } else if (input == 'u') {
                 output.printf("Index of item to use: ");
+                output.flush();
+
                 input = reader.next().charAt(0);
 
                 if (!this.getEquipment().getItems().isEmpty()) {

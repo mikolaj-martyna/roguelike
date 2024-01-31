@@ -185,6 +185,9 @@ public class Equipment {
 
         printEquipment(output);
         printItems(output);
+
+        output.printf("Equip: e  Use: u  Drop: d  Quit: q\n");
+        output.flush();
     }
 
     public void printEquipment(@NotNull PrintWriter output) {

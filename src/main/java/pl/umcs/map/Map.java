@@ -1,26 +1,38 @@
 package pl.umcs.map;
 
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
-
 import pl.umcs.Graph;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.entities.monsters.*;
 import pl.umcs.items.Item;
-import pl.umcs.items.chestplates.*;
-import pl.umcs.items.consumables.Consumable;
+import pl.umcs.items.chestplates.Chainmail;
+import pl.umcs.items.chestplates.ClothArmor;
+import pl.umcs.items.chestplates.CrystallineArmor;
 import pl.umcs.items.consumables.HealthPotion;
-import pl.umcs.items.helms.*;
-import pl.umcs.items.shoes.*;
-import pl.umcs.items.special_items.*;
-import pl.umcs.items.weapons.*;
+import pl.umcs.items.helms.BasicHelm;
+import pl.umcs.items.helms.HelmetOfEnlightenment;
+import pl.umcs.items.shoes.AetherShoes;
+import pl.umcs.items.shoes.Sandals;
+import pl.umcs.items.shoes.WornOutShoes;
+import pl.umcs.items.special_items.AncientScroll;
+import pl.umcs.items.special_items.EternalDynamo;
+import pl.umcs.items.special_items.Feather;
+import pl.umcs.items.weapons.ClockworkAxe;
+import pl.umcs.items.weapons.CommonSword;
+import pl.umcs.items.weapons.Stick;
 import pl.umcs.map.walls.HorizontalWall;
 import pl.umcs.map.walls.VerticalWall;
 
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 @Builder
 @Getter
@@ -80,6 +92,14 @@ public class Map {
         return levels.get(level).getFields();
     }
 
+    public Field getField(int x, int y) {
+        return getField(currentLevelNumber, x, y);
+    }
+
+    public Field getField(int level, int x, int y) {
+        return levels.get(level).getFields()[x][y];
+    }
+
     public List<Item> getItems(int level) {
         return levels.get(level).getItems();
     }
@@ -135,7 +155,7 @@ public class Map {
     public boolean canPlaceItem(int level, int x, int y) {
         return isInBounds(level, x, y)
                 && (getFields(level)[x][y] instanceof Floor
-                        || getFields(level)[x][y] instanceof Bridge)
+                || getFields(level)[x][y] instanceof Bridge)
                 && getFields(level)[x][y].items.isEmpty();
     }
 
@@ -406,10 +426,10 @@ public class Map {
             doorTwoY = random.nextInt(roomTwo.getHeight() - 2) + roomTwo.getStartY() + 1;
 
             int distance = Math.abs(doorTwoX - doorOneX);
-            int[] delta = new int[] {1, 0};
+            int[] delta = new int[]{1, 0};
 
             int turnDistance = Math.abs(doorTwoY - doorOneY);
-            int[] deltaTurn = doorOneY < doorTwoY ? new int[] {0, 1} : new int[] {0, -1};
+            int[] deltaTurn = doorOneY < doorTwoY ? new int[]{0, 1} : new int[]{0, -1};
 
             drawBridge(level, doorOneX, doorOneY, distance, delta, turnDistance, deltaTurn);
         } else if (isGoingDown) {
@@ -426,10 +446,10 @@ public class Map {
             doorTwoY = roomTwo.getStartY();
 
             int distance = Math.abs(doorTwoY - doorOneY);
-            int[] delta = new int[] {0, 1};
+            int[] delta = new int[]{0, 1};
 
             int turnDistance = Math.abs(doorTwoX - doorOneX);
-            int[] deltaTurn = doorOneX < doorTwoX ? new int[] {1, 0} : new int[] {-1, 0};
+            int[] deltaTurn = doorOneX < doorTwoX ? new int[]{1, 0} : new int[]{-1, 0};
 
             drawBridge(level, doorOneX, doorOneY, distance, delta, turnDistance, deltaTurn);
         } else {
@@ -584,7 +604,7 @@ public class Map {
             y = random.nextInt(level.getHeight());
         } while (!canPlaceEntity(level, x, y));
 
-        return new int[] {x, y};
+        return new int[]{x, y};
     }
 
     public void generatePassage(@NotNull Level level) {
@@ -666,19 +686,24 @@ public class Map {
     }
 
     public void print(@NotNull PrintWriter output) {
-        output.print("\033[H\033[2J");
-        output.flush();
+        int height = getHeight();
+        int width = getWidth();
 
-        for (int currentY = 0; currentY < getHeight(currentLevelNumber); currentY++) {
-            for (int currentX = 0; currentX < getWidth(currentLevelNumber); currentX++) {
-                Entity entity = getFields(currentLevelNumber)[currentX][currentY].entity;
+        for (int currentY = 0; currentY < height; currentY++) {
+            for (int currentX = 0; currentX < width; currentX++) {
+                Field field = getField(currentX, currentY);
+                Entity entity = field.getEntity();
 
                 if (entity != null) {
                     output.printf("\033[0;1m%c\033[0m", entity.getSymbol());
-                } else if (!getFields(currentLevelNumber)[currentX][currentY].items.isEmpty()) {
-                    output.printf("%c", 'i');
+                } else if (!field.getItems().isEmpty()) {
+                    if (field.getItems().stream().filter(i -> i instanceof HealthPotion).toList().isEmpty()) {
+                        output.printf("%c", 'i');
+                    } else {
+                        output.printf("%c", '*');
+                    }
                 } else {
-                    output.printf("%c", getFields()[currentX][currentY].getSymbol());
+                    output.printf("%c", field.getSymbol());
                 }
             }
 
@@ -691,12 +716,15 @@ public class Map {
 
         if (player.getEquipment().getSpecialItem() instanceof EternalDynamo
                 || player.getEquipment().getItems().stream()
-                        .anyMatch(item -> item instanceof EternalDynamo))
+                .anyMatch(item -> item instanceof EternalDynamo)) {
             output.printf(
                     "You've found the Eternal Dynamo! You can head back to your island now. Rest now, you did well.");
-        else
+        } else {
             output.printf(
                     "You've failed this time, but worry not! You can search again whenever you like.");
+        }
+
+        output.flush();
     }
 
     /* Validators */

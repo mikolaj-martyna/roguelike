@@ -17,7 +17,7 @@ public class Game {
         Scanner reader = new Scanner(System.in, StandardCharsets.UTF_8);
 
         // Output
-        PrintWriter output = new PrintWriter(System.out, true, StandardCharsets.UTF_8);
+        PrintWriter output = new PrintWriter(System.out, false, StandardCharsets.UTF_8);
 
         // Game
         Map map = new Map(20);
@@ -51,9 +51,15 @@ public class Game {
                 round++;
 
                 // Print current map state
+                output.print("\033[H\033[2J");
+                output.flush();
+
                 map.print(output);
+
                 player.printStatistics(output);
+
                 output.printf("Round: %d\nMove: WASD  Inventory: I\nAction: ", round);
+                output.flush();
 
                 // Take input
                 char input = reader.next().charAt(0);
@@ -64,23 +70,23 @@ public class Game {
 
                 switch (input) {
                     case 'w':
-                        player.moveBy(map, 0, -1);
+                        currentEntity.moveBy(map, 0, -1);
                         break;
                     case 'a':
-                        player.moveBy(map, -1, 0);
+                        currentEntity.moveBy(map, -1, 0);
                         break;
                     case 's':
-                        player.moveBy(map, 0, 1);
+                        currentEntity.moveBy(map, 0, 1);
                         break;
                     case 'd':
-                        player.moveBy(map, 1, 0);
+                        currentEntity.moveBy(map, 1, 0);
                         break;
                     case 'i':
-                        player.handleEquipment(map, reader, output);
+                        ((Player) currentEntity).handleEquipment(map, reader, output);
                         break;
                 }
 
-                roundOrder.add(player);
+                roundOrder.add(currentEntity);
             } else if (currentEntity != null && currentEntity.isAlive()) {
                 currentEntity.performAction(map, player);
 
