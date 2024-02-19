@@ -1,118 +1,287 @@
-# Roguelike
 
-## Fabuła gry
+# Lost In Clouds
 
-W świecie, w którym cywilizacja trzyma się nieba, latające miasta i wyspy połączone skomplikowanymi sieciami mostów
-służą jako ostatnie bastiony ludzkości. Jako odważny kapitan sterowca, twoja podróż rozpoczyna się w tętniącym życiem
-latającym mieście Aeolus. Twój dziadek, znany wynalazca, pozostawił po sobie tajemniczy dziennik wypełniony tajemniczymi
-szkicami i wskazówkami na temat dawno zaginionego artefaktu znanego jako "Wieczne Dynamo". Urządzenie to podobno posiada
-moc utrzymywania lewitacji całych miast w nieskończoność.
+## Storyline
 
-Twoim zadaniem jest przemierzanie miast i wysp w poszukiwaniu tego bezcennego artefaktu, walcząc z nieuczciwymi piratami
-powietrznymi, zdradzieckimi automatami i nawigując po niebezpiecznych sieciach mostów. Po drodze odkryjesz spisek, który
-grozi pogrążeniem świata w chaosie. Twoje wybory i działania zadecydują o losie miast i zamieszkujących je ludzi.
+In a world where civilization clings to the sky, flying cities and islands connected by intricate networks of bridges serve as the last bastions of humanity. As the captain of an airship, your journey begins in the bustling flying city of Aeolus. Your grandfather, a renowned inventor, left behind a mysterious journal filled with cryptic sketches and clues about a long-lost artifact known as the 'Eternal Dynamo.' 
 
-## Główne mechaniki gry:
+The device is rumored to have the ability to keep entire cities levitated indefinitely.Your task is to explore cities and islands in search of this priceless artifact, battling hostile creatures and navigating dangerous networks of bridges. It is up to you and your persistence to search through the mazes and find the ancient artifact.
+## Screenshots
 
-1. **Miasta generowane proceduralnie:** Każda rozgrywka generuje unikalny zestaw miast i wysp, zapewniając, że żadne
-   dwie przygody nie będą takie same. Układ, architektura i mieszkańcy różnią się, oferując świeże wrażenia przy każdej
-   próbie.
-2. **Trwała śmierć:** Kiedy twoja postać umiera, traci wszystkie postępy, przedmioty i ulepszenia.
-3. **Dynamiczna nawigacja po mostach:** Mosty łączące miasta są głównym elementem rozgrywki. Sieci te pełne są
-   niebezpieczeństw, zagadek i wrogów. Wybory, których dokonujesz podczas poruszania się po nich, mogą wpłynąć na twoje
-   postępy. Użyj strategicznego planowania i sprytu, aby pokonać zdradzieckie ścieżki.
+#### Island
+![Island](https://via.placeholder.com/468x300?text=App+Screenshot+Here)  
 
-## Pola
+#### City
+![City](https://via.placeholder.com/468x300?text=App+Screenshot+Here)  
 
-1. ` ` - pustka, po której nie można się poruszać
-2. `@` - gracz
-3. `#` - most
-4. `.` - teren wyspy lub podłoga
-5. `|`, `-` - granice wyspy
-6. `1-5` - przeciwnik (wartość symbolizuje poziom trudności)
-7. `i` - przedmiot
-8. `*` - mikstura
+#### Equipment
+![Equipment](https://via.placeholder.com/468x300?text=App+Screenshot+Here)  
 
-## Walka
 
-1. Atak - Określa obrażenia, jakie istota może zadać przeciwnikowi. Im wyższa wartość, tym potężniejsze ataki.
-2. Obrona - Mierzy zdolność istoty do obrony się przed atakami przeciwnika. Wysoka wartość OBR zmniejsza otrzymywane obrażenia.
-3. Zręczność - Decyduje o szybkości i precyzji ruchów w walce. Wyższa zręczność może wpłynąć na unikanie ataków przeciwnika.
-4. Życie - Oznacza ogólną wytrzymałość istoty. Kiedy spadną do zera, istota ginie.
-5. Specjalne efekty przedmiotów - niektóre przedmioty posiadają specjalne efekty i statusy, które wpływają na statystyki bohatera.
+## Mechanics
 
-### Statystyki
+### Procedurally generated map
 
-[Przybliżona referencja statystyk](https://steampunkdnd.fandom.com/wiki/Classes)
+Each game generates a unique set of cities and islands, ensuring that no two adventures are be the same. The layout varies, offering a fresh experience with each attempt.
 
-[//]: # (### Umiejętności)
 
-[//]: # ()
-[//]: # ([TODO])
+#### Fields
 
-### Losowość
+1. ` ` - void
+2. `@` - player
+3. `#` - bridge
+4. `.` - island or floor
+5. `|`, `-` - walls
+6. `1-5` - enemies (number symbolizes difficulty level)
+7. `i` - item(s)
+8. `*` - potion
 
-Każda umiejętność ma przedział wartości, które może przyjąć. Przy jej wywołaniu losowana jest liczba z tego zakresu, a w przypadku niektórych umiejętności, na przykład uniku, losowana jest wartość z przedziału 0-100 i porównywana jest do szansy na unik (np. 30%, 0-30).
 
-## Potwory
+### Permadeath
+
+When you die, you lose everything. Become victorious or forgotten forever.
+
+
+### Combat
+
+
+
+### Equipment
+
+#### Slots
+1. [Helm](#-helms)
+2. [Chestplate](#-chestplates)
+3. [Shoes](#-shoes)
+4. [Weapon](#-weapons)
+5. [Special Item](#-special-items)
+
+### Statistics
+
+#### 👟 Agility
+
+Higher agility increases the likelihood of avoiding enemy attacks.
+
+#### 🗡️ Attack
+
+The amount of damage dealt to your opponents increases with your total attack.
+
+#### 🛡️ Defense
+
+The amount of defense is inversely proportional to the amount of damage received.
+
+#### ❤️ Health
+
+When the entity's health reaches zero, it is dead. In the case of the player, it means the end of the game.
+
+## Monsters
+
 ### Thought Eater
-[★☆☆☆☆]
+★☆☆☆☆
 
-**Atak:** 1\
-**Obrona:** 2\
-**Zręczność:** 4\
-**Życie:** 3
+**Agility:** 4\
+**Attack:** 1\
+**Defense:** 2\
+**Health:** 3
 
-**Zachowanie:** Poruszają się chaotycznie. Za ich akcjami nie stoi nic, poza instynktem do przeżycia.
+**Behavior:** They move in a chaotic manner. Their actions are solely driven by the instinct to survive.
 
 ### Myr
-[★★☆☆☆]
+★★☆☆☆
 
-**Atak:** 3\
-**Obrona:** 3\
-**Zręczność:** 7\
-**Życie:** 7
+**Agility:** 7\
+**Attack:** 3\
+**Defense:** 3\
+**Health:** 7
 
 ### Inevitable
-[★★★☆☆]
+★★★☆☆
 
-**Atak:** 5\
-**Obrona:** 5\
-**Zręczność:** 10\
-**Życie:** 10
+**Agility:** 10\
+**Attack:** 5\
+**Defense:** 5\
+**Health:** 10
 
-**Zachowanie:** Są w stanie dostrzec Cię z każdego miejsca. Możesz uciekać, ale nie możesz się schować.
+**Behavior:** They can spot you from anywhere. You can run, but you can't hide.
 
 ### Modron
-[★★★★☆]
+★★★★☆
 
-**Atak:** 10\
-**Obrona:** 20\
-**Zręczność:** 15\
-**Życie:** 18
+**Agility:** 15\
+**Attack:** 10\
+**Defense:** 20\
+**Health:** 18
 
 ### Clockwork Dragon
-[★★★★★]
+★★★★★
 
-**Atak:** 10\
-**Obrona:** 30\
-**Zręczność:** 2\
-**Życie:** 25
+**Agility:** 2\
+**Attack:** 10\
+**Defense:** 30\
+**Health:** 25
 
-## Ekwipunek
-### Sloty
-1. Hełm
-2. Pancerz
-3. Buty
-4. Broń
-5. Przedmiot specjalny
+**Behavior:** They move slowly but are impossible to walk around.
 
-#### Hełmy
+## Items
 
-#### Pancerze
 
-#### Buty
 
-#### Bronie
+### Helms
 
-#### Przedmioty specjalne
+#### Basic Helm
+
+**Defense:** 2  
+**Health:** 2  
+**Intelligence:** 3
+
+**Intelligence multiplier:** x1.1
+
+#### Helmet Of Enlightenment
+
+**Defense:** -10  
+**Health:** -4  
+**Intelligence:** 17
+
+**Intelligence multiplier:** x1.75
+
+
+### Chestplates
+
+#### Cloth Armor
+
+**Defense:** 4  
+**Health:** 4  
+
+**Defense multiplier:** x1.2  
+**Health multiplier:** x1.1  
+
+#### Chainmail
+
+**Agility:** -5  
+**Defense:** 7  
+**Health:** 10  
+
+
+**Defense multiplier:** x1.5  
+**Health multiplier:** x1.2
+
+#### Crystaline Armor
+
+**Defense:** 20  
+**Health:** 15  
+
+**Defense multiplier:** x2.0  
+**Health multiplier:** x1.5  
+
+
+### Shoes
+
+#### Worn Out Shoes
+
+**Agility:** 1  
+**Defense:** 2   
+
+**Agility multiplier:** x1.1  
+**Defense multiplier:** x1.1  
+
+#### Sandals
+
+**Agility:** 6  
+**Defense:** 3  
+**Health:** 1  
+
+
+**Agility multiplier:** x1.3  
+**Defense multiplier:** x1.1  
+
+#### Aether Shoes
+
+**Agility:** 17  
+**Defense:** 6  
+**Health:** 3  
+
+
+**Agility multiplier:** x2.0  
+**Defense multiplier:** x1.25  
+
+
+### Weapons
+
+#### Stick
+
+**Attack:** 2  
+**Agility:** 1  
+
+**Attack multiplier:** x1.1  
+**Agility multiplier:** x1.1  
+
+#### Common Sword
+
+**Attack:** 3  
+
+**Attack multiplier:** x1.25  
+
+#### Clockwork Axe
+
+**Attack:** 7  
+
+**Attack multiplier:** x1.75
+
+
+### Special items
+
+#### Feather
+
+**Agility:** 1  
+**Charisma:** 2  
+**Intelligence:** 3  
+
+**Agility multiplier:** x1.1  
+**Charisma multiplier:** x1.1  
+**Intelligence multiplier:** x1.1  
+
+#### Ancient Scroll
+
+**Agility:** 2  
+**Attack:** 3  
+**Charisma:** 20  
+**Defense:** 3  
+**Health:** 10  
+**Intelligence:** 12  
+
+**Agility multiplier:** x1.5  
+**Charisma multiplier:** x2.25  
+**Defense multiplier:** x1.1  
+**Intelligence multiplier:** x3  
+
+#### Eternal Dynamo
+
+**Agility:** 15  
+**Attack:** 10  
+**Defense:** 25  
+**Health:** 30  
+
+**Attack multiplier:** x2   
+
+
+### Consumables
+
+#### Health Potion
+
+**Effect:** Heals 2 health.
+## Building
+
+To build this project run
+
+```bash
+    mvn package
+```
+
+
+## Run
+
+To run the game use
+
+```bash
+    java -jar <name>.jar
+```
+
