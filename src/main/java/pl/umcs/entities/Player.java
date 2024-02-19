@@ -2,12 +2,10 @@ package pl.umcs.entities;
 
 import lombok.Builder;
 
-import org.jetbrains.annotations.NotNull;
-
 import pl.umcs.map.Map;
 
-import java.io.PrintWriter;
-import java.util.Scanner;
+import static pl.umcs.utils.Output.output;
+import static pl.umcs.utils.Reader.reader;
 
 @Builder
 public class Player extends Entity {
@@ -28,7 +26,7 @@ public class Player extends Entity {
         setCharisma(new Property(10));
     }
 
-    public void handleEquipment(Map map, @NotNull Scanner reader, PrintWriter output) {
+    public void handleEquipment(Map map) {
         char input = ' ';
 
         while (input != 'q') {
@@ -38,39 +36,55 @@ public class Player extends Entity {
             // Get action
             input = reader.next().charAt(0);
 
-            if (input == 'e') {
-                output.printf("Index of item to equip: ");
-                output.flush();
-
-                input = reader.next().charAt(0);
-
-                if (!this.getEquipment().getItems().isEmpty()) {
-                    this.getEquipment().equipItem(this.getEquipment().getItems().get(input - '1'));
-                }
-            } else if (input == 'd') {
-                output.printf("Index of item to drop: ");
-                output.flush();
-
-                input = reader.next().charAt(0);
-
-                if (!this.getEquipment().getItems().isEmpty()) {
-                    this.getEquipment()
-                            .dropItem(
-                                    map,
-                                    this.getEquipment().getItems().get(input - '1'),
-                                    this.getX(),
-                                    this.getY());
-                }
-            } else if (input == 'u') {
-                output.printf("Index of item to use: ");
-                output.flush();
-
-                input = reader.next().charAt(0);
-
-                if (!this.getEquipment().getItems().isEmpty()) {
-                    this.getEquipment().useItem(this, this.getEquipment().getItems().get(input - '1'));
-                }
+            switch (input) {
+                case 'e':
+                    equip();
+                    break;
+                case 'd':
+                    drop(map);
+                    break;
+                case 'u':
+                    use();
+                    break;
             }
+        }
+    }
+
+    void equip() {
+        output.printf("Index of item to equip: ");
+        output.flush();
+
+        char input = reader.next().charAt(0);
+
+        if (!this.getEquipment().getItems().isEmpty()) {
+            this.getEquipment().equipItem(this.getEquipment().getItems().get(input - '1'));
+        }
+    }
+
+    void drop(Map map) {
+        output.printf("Index of item to drop: ");
+        output.flush();
+
+        char input = reader.next().charAt(0);
+
+        if (!this.getEquipment().getItems().isEmpty()) {
+            this.getEquipment()
+                    .dropItem(
+                            map,
+                            this.getEquipment().getItems().get(input - '1'),
+                            this.getX(),
+                            this.getY());
+        }
+    }
+
+    void use() {
+        output.printf("Index of item to use: ");
+        output.flush();
+
+        char input = reader.next().charAt(0);
+
+        if (!this.getEquipment().getItems().isEmpty()) {
+            this.getEquipment().useItem(this, this.getEquipment().getItems().get(input - '1'));
         }
     }
 }

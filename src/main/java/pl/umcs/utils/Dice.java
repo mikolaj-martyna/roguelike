@@ -1,4 +1,4 @@
-package pl.umcs;
+package pl.umcs.utils;
 
 import java.util.Random;
 

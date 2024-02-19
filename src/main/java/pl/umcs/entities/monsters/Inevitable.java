@@ -1,14 +1,13 @@
 package pl.umcs.entities.monsters;
 
 import org.jetbrains.annotations.NotNull;
-import pl.umcs.Graph;
+import pl.umcs.utils.Graph;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.entities.Property;
 import pl.umcs.map.Map;
 
 import java.util.List;
-import java.util.Random;
 
 // https://forgottenrealms.fandom.com/wiki/Inevitable
 

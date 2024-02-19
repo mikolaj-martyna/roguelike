@@ -3,49 +3,45 @@ package pl.umcs;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.map.Map;
+import pl.umcs.utils.Reader;
 
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+
+import static pl.umcs.utils.Output.output;
+import static pl.umcs.utils.Reader.reader;
 
 public class Game {
     public static void main(String[] args) {
         /* Setup */
-        // Input
-        Scanner reader = new Scanner(System.in, StandardCharsets.UTF_8);
-
-        // Output
-        PrintWriter output = new PrintWriter(System.out, false, StandardCharsets.UTF_8);
-
         // Game
-        Map map = new Map(20);
+        Map map = new Map();
         Player player = new Player();
 
         map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
 
         // Rounds
-        Queue<Entity> roundOrder = new LinkedList<>();
-        roundOrder.add(player);
+        Queue<Entity> entityOrder = new LinkedList<>();
+        entityOrder.add(player);
 
         int currentGameLevel = -1;
         int round = 0;
 
         /* Main loop */
+        // TODO: Refactor output to its own class
         while (player.isAlive()) {
             if (currentGameLevel != map.getCurrentLevelNumber()) {
                 if (++currentGameLevel == map.getLevelsAmount()) break;
 
-                roundOrder.clear();
+                entityOrder.clear();
 
-                roundOrder.add(player);
-                roundOrder.addAll(map.getEntities().stream().filter(e -> !(e instanceof Player)).toList());
+                entityOrder.add(player);
+                entityOrder.addAll(map.getEntities().stream().filter(e -> !(e instanceof Player)).toList());
 
                 map.placeEntity(map.getCurrentStartingX(), map.getCurrentStartingY(), player);
             }
 
-            Entity currentEntity = roundOrder.poll();
+            Entity currentEntity = entityOrder.poll();
 
             if (currentEntity instanceof Player) {
                 round++;
@@ -54,7 +50,7 @@ public class Game {
                 output.print("\033[H\033[2J");
                 output.flush();
 
-                map.print(output);
+                map.print();
 
                 player.printStatistics(output);
 
@@ -62,7 +58,7 @@ public class Game {
                 output.flush();
 
                 // Take input
-                char input = reader.next().charAt(0);
+                char input = Reader.nextChar();
 
                 // Parse input
                 //// WASD <- movement
@@ -82,19 +78,19 @@ public class Game {
                         currentEntity.moveBy(map, 1, 0);
                         break;
                     case 'i':
-                        ((Player) currentEntity).handleEquipment(map, reader, output);
+                        ((Player) currentEntity).handleEquipment(map);
                         break;
                 }
 
-                roundOrder.add(currentEntity);
+                entityOrder.add(currentEntity);
             } else if (currentEntity != null && currentEntity.isAlive()) {
                 currentEntity.performAction(map, player);
 
-                if (currentEntity.isAlive()) roundOrder.add(currentEntity);
+                if (currentEntity.isAlive()) entityOrder.add(currentEntity);
             }
         }
 
-        map.printSummary(output, player);
+        map.printSummary(player);
 
         /* Cleanup */
         reader.close();

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
-import pl.umcs.Graph;
+import pl.umcs.utils.Graph;
 import pl.umcs.entities.Entity;
 import pl.umcs.entities.Player;
 import pl.umcs.entities.monsters.*;
@@ -28,11 +28,12 @@ import pl.umcs.items.weapons.Stick;
 import pl.umcs.map.walls.HorizontalWall;
 import pl.umcs.map.walls.VerticalWall;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import static pl.umcs.utils.Output.output;
 
 @Builder
 @Getter
@@ -47,7 +48,7 @@ public class Map {
     private List<Level> levels;
 
     public Map() {
-        this(100, 80, 24);
+        this(new Random().nextInt(70) + 30);
     }
 
     public Map(int levelsAmount) {
@@ -645,26 +646,6 @@ public class Map {
     }
 
     /* Printing */
-    public void print() {
-        System.out.flush();
-
-        for (int currentY = 0; currentY < getHeight(currentLevelNumber); currentY++) {
-            for (int currentX = 0; currentX < getWidth(currentLevelNumber); currentX++) {
-                Entity entity = getFields(currentLevelNumber)[currentX][currentY].entity;
-
-                if (entity != null) {
-                    System.out.print(entity.getSymbol());
-                } else if (!getFields(currentLevelNumber)[currentX][currentY].items.isEmpty()) {
-                    System.out.print('i');
-                } else {
-                    System.out.print(getFields()[currentX][currentY].getSymbol());
-                }
-            }
-
-            System.out.println();
-        }
-    }
-
     public void print(@NotNull Level level) {
         System.out.flush();
 
@@ -685,7 +666,7 @@ public class Map {
         }
     }
 
-    public void print(@NotNull PrintWriter output) {
+    public void print() {
         int height = getHeight();
         int width = getWidth();
 
@@ -711,7 +692,7 @@ public class Map {
         }
     }
 
-    public void printSummary(PrintWriter output, @NotNull Player player) {
+    public void printSummary(@NotNull Player player) {
         if (!player.isAlive()) output.printf("You died.\n");
 
         if (player.getEquipment().getSpecialItem() instanceof EternalDynamo

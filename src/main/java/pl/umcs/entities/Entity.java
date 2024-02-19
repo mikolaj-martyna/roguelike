@@ -5,7 +5,7 @@ import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import pl.umcs.GameElement;
-import pl.umcs.Graph;
+import pl.umcs.utils.Graph;
 import pl.umcs.items.Equipment;
 import pl.umcs.items.Item;
 import pl.umcs.items.consumables.HealthPotion;

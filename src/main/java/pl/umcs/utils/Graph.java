@@ -1,10 +1,9 @@
-package pl.umcs;
+package pl.umcs.utils;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.umcs.map.Field;
 import pl.umcs.map.Map;
 
 import java.util.*;
