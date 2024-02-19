@@ -51,11 +51,11 @@ When you die, you lose everything. Become victorious or forgotten forever.
 ### Equipment
 
 #### Slots
-1. [Helm](#helms)
-2. [Chestplate](#chestplates)
-3. [Shoes](#shoes)
-4. [Weapon](#weapons)
-5. [Special Item](#special-items)
+1. [Helm](#-helms-)
+2. [Chestplate](#-chestplates-)
+3. [Shoes](#-shoes-)
+4. [Weapon](#-weapons-)
+5. [Special Item](#-special-items-)
 
 ### Statistics
 
