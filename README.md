@@ -8,14 +8,14 @@ In a world where civilization clings to the sky, flying cities and islands conne
 The device is rumored to have the ability to keep entire cities levitated indefinitely.Your task is to explore cities and islands in search of this priceless artifact, battling hostile creatures and navigating dangerous networks of bridges. It is up to you and your persistence to search through the mazes and find the ancient artifact.
 ## Screenshots
 
-#### Island
-![Island](https://via.placeholder.com/468x300?text=App+Screenshot+Here)  
+#### 🏝️ Island
+![Island](https://github.com/mikolaj-martyna/roguelike/assets/149105135/92adbfe3-2e5a-4634-a380-252b16e45b23)
 
-#### City
-![City](https://via.placeholder.com/468x300?text=App+Screenshot+Here)  
+#### 🏙️ City
+![City](https://github.com/mikolaj-martyna/roguelike/assets/149105135/37e8214c-cac3-4898-b87d-cf2bdf87c094)
 
-#### Equipment
-![Equipment](https://via.placeholder.com/468x300?text=App+Screenshot+Here)  
+#### 🎒 Equipment
+![Inventory](https://github.com/mikolaj-martyna/roguelike/assets/149105135/09f08045-af8a-4cbf-95be-23c875c78acf)
 
 
 ## Mechanics
